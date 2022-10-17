@@ -5,6 +5,9 @@
 \usepackage[greek,english]{babel}
 \usepackage{alphabeta}
 
+\usepackage{adjustbox}
+\usepackage{float}
+
 \usepackage{subfiles} % Best loaded last in the preamble
 
               
@@ -16,6 +19,12 @@
 \begin{document}
 \maketitle
 \newpage
-test
+\tableofcontents
+\newpage
+\section{User Stories}
+\subfile{user_stories/user_stories.tex}
+\section{Use cases}
+\subfile{use_cases/choosePatternCategory.tex}
+\subfile{use_cases/exitSystem.tex}
 
 \end{document}
