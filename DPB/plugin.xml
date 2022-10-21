@@ -3,12 +3,21 @@
 <plugin>
 
    <extension
-         id="designpatternbuilder.fragment"
-         point="org.eclipse.e4.workbench.model">
-      <fragment
-            apply="notexists"
-            uri="fragment.e4xmi">
-      </fragment>
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Sample Wizards"
+            id="DPB">
+      </category>
+      <wizard
+            id="dpb.wizards.test"
+            name="Multi-page Editor file"
+            icon="icons/sample.png"
+            class="dpb.wizards.test"
+            category="DPB">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
    </extension>
 
 </plugin>
