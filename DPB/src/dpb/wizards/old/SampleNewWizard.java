@@ -1,4 +1,4 @@
-package dpb.wizards;
+package dpb.wizards.old;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;

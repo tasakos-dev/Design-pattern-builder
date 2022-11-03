@@ -5,12 +5,12 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="Sample Wizards"
+            name="Design pattern builder"
             id="DPB">
       </category>
       <wizard
             id="dpb.wizards.test"
-            name="Multi-page Editor file"
+            name="Import pattern..."
             icon="icons/sample.png"
             class="dpb.wizards.test"
             category="DPB">

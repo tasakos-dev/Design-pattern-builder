@@ -1,4 +1,7 @@
-package dpb.wizards;
+package dpb.wizards.mapWizard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -6,7 +9,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class test extends Wizard implements INewWizard {
+public class MapWizard extends Wizard implements INewWizard {
+	
+	
 	private ISelection selection;
 
 	@Override
@@ -15,21 +20,26 @@ public class test extends Wizard implements INewWizard {
 		
 	}
 
-	public test() {
+	public MapWizard() {
 		setWindowTitle("New Wizard");
 	}
 
 	@Override
 	public void addPages() {
-		addPage(new testPage(selection));
-		addPage(new SettingsPage(selection));
+		List<String> items = new ArrayList<>();
+		items.add("getId");
+		items.add("getName");
+		ArrayList<String> patternItems = new ArrayList<>();
+		patternItems.add("getInstance");
+		patternItems.add("getSingletonData");
+
+		addPage(new SelectItems(true, patternItems));
+		addPage(new MapItems(items, patternItems));
 	}
 
 	@Override
 	public boolean performFinish() {
 		return false;
 	}
-	
-	
 
 }

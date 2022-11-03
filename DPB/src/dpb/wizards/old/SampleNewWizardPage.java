@@ -1,4 +1,4 @@
-package dpb.wizards;
+package dpb.wizards.old;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
