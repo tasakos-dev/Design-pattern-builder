@@ -1,0 +1,12 @@
+<GoF>
+	<category id="creational">
+		<pattern id="abstract factory">
+		</pattern>
+		<pattern id="parametirized factory">
+		</pattern>
+	</category>
+	<category id="creational1">
+		<pattern id="parametirized1 factory">
+		</pattern>
+	</category>
+</GoF>

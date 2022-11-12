@@ -9,10 +9,10 @@
             id="DPB">
       </category>
       <wizard
-            id="dpb.wizards.test"
+            id="dpb.wizards.mainWizard.MainWizard"
             name="Import pattern..."
             icon="icons/sample.png"
-            class="dpb.wizards.test"
+            class="dpb.wizards.mainWizard.MainWizard"
             category="DPB">
       </wizard>
    </extension>
