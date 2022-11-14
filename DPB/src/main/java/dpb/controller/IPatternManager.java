@@ -1,7 +1,6 @@
-package dpb.io;
+package dpb.controller;
 
-public interface IFileParser {
-	
+public interface IPatternManager {
 	public String[] getPatternCategories();
 	public String[] getPatternsOfCategory(String category);
 	

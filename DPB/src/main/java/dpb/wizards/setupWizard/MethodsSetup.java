@@ -10,13 +10,20 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
+
 public class MethodsSetup extends WizardPage {
 	private Table table;
+	private String className;
+	private IPatternManager patternManager;
 
-	public MethodsSetup() {
+	public MethodsSetup(String className) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
+		this.className = className;
+		this.patternManager = new PatternManager();
 	}
 
 	@Override
@@ -46,21 +53,35 @@ public class MethodsSetup extends WizardPage {
 		scrolledComposite.setContent(table);
 		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		for (int i = 0; i < 1; i++) {
+//		for (int i = 0; i < 1; i++) {
+//		      new TableItem(table, SWT.NONE);
+//		 }
+//		String[] fieldsName = new String[] {"getInstance",};
+//		String[] fieldsType = new String[] {"Singleton"};
+		
+		String[][] methods = patternManager.getClassMethods(className);
+		String[] methodNames = new String[methods.length];
+		String[] methodTypes = new String[methods.length];
+		for (int i = 0; i < methods.length; i++) {
+			methodNames[i] = methods[i][1]; 
+			methodTypes[i] = methods[i][0];
+			
+		}
+		
+		for (int i = 0; i < methods.length; i++) {
 		      new TableItem(table, SWT.NONE);
-		    }
-		String[] fieldsName = new String[] {"getInstance",};
-		String[] fieldsType = new String[] {"Singleton"};
+		}
+		
 	    TableItem[] items = table.getItems();
 	    for (int i = 0; i < items.length; i++) {
 	      TableEditor editor = new TableEditor(table);
 	      Text type = new Text(table, SWT.NONE);
-	      type.setText(fieldsType[i]);
+	      type.setText(methodTypes[i]);
 	      editor.grabHorizontal = true;
 	      editor.setEditor(type, items[i], 0);
 	      editor = new TableEditor(table);
 	      Text name = new Text(table, SWT.NONE);
-	      name.setText(fieldsName[i]);
+	      name.setText(methodNames[i]);
 	      editor.grabHorizontal = true;
 	      editor.setEditor(name, items[i], 1);
 	      editor = new TableEditor(table);

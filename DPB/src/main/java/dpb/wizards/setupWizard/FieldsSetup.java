@@ -10,12 +10,19 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
+
 public class FieldsSetup extends WizardPage {
 	private Table table;
-	public FieldsSetup() {
+	private String className;
+	private IPatternManager patternManager;
+	public FieldsSetup(String className) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
+		this.className = className;
+		this.patternManager = new PatternManager();
 	}
 
 	@Override
@@ -43,11 +50,22 @@ public class FieldsSetup extends WizardPage {
 		tblclmnNewColumn_1.setText("name");
 		scrolledComposite.setContent(table);
 		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		for (int i = 0; i < 2; i++) {
+		
+		String[][] fields = patternManager.getClassFields(className);
+		String[] fieldsName = new String[fields.length];
+		String[] fieldsType = new String[fields.length];
+		for (int i = 0; i < fields.length; i++) {
+			fieldsType[i] = fields[i][0]; 
+			fieldsName[i] = fields[i][1];
+			
+		}
+		
+		for (int i = 0; i < fields.length; i++) {
 		      new TableItem(table, SWT.NONE);
-		    }
-		String[] fieldsName = new String[] {"uniqueInstance","singletonData"};
-		String[] fieldsType = new String[] {"Singleton","Object"};
+		}
+		
+		
+		
 	    TableItem[] items = table.getItems();
 	    for (int i = 0; i < items.length; i++) {
 	      TableEditor editor = new TableEditor(table);

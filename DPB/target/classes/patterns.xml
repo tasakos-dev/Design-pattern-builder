@@ -1,6 +1,20 @@
 <GoF>
 	<category id="creational">
 		<pattern id="abstract factory">
+			<class id="test">
+					<field id="myField">
+						<type>Object</type>
+					</field>
+					<field id="myField2">
+						<type>Object</type>
+					</field>
+					<field id="myField3">
+						<type>Object</type>
+					</field>
+					<method id="method1">
+						<type>Object</type>
+					</method>
+			</class>
 		</pattern>
 		<pattern id="parametirized factory">
 		</pattern>

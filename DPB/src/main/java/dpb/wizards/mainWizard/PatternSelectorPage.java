@@ -1,6 +1,6 @@
 package dpb.wizards.mainWizard;
 
-import org.eclipse.jface.viewers.ISelection;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -10,19 +10,24 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Label;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
+
 
 public class PatternSelectorPage extends WizardPage {
-	private ISelection selection;
 	private Combo patternCombo;
 	private boolean nextPage;
+	private IPatternManager patternManager;
+	private String pattern;
+
 	
 	
 
-	public PatternSelectorPage(ISelection selection) {
+	public PatternSelectorPage() {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.selection = selection;
+		this.patternManager = new PatternManager();
 		nextPage = false;
 	}
 
@@ -30,8 +35,8 @@ public class PatternSelectorPage extends WizardPage {
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		
-		String[] patternsCategory = new String[] {"Creational patterns", "Structural patterns", "Behavioral patterns"};
-
+		String[] patternsCategory = patternManager.getPatternCategories();
+		
 		setControl(container);
 		
 		ComboViewer comboViewer = new ComboViewer(container, SWT.BORDER | SWT.READ_ONLY);
@@ -57,16 +62,13 @@ public class PatternSelectorPage extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String category = categoryCombo.getText();
-				if (category.contains("Creational")) {
-					patternCombo.setItems(new String[] {"Abstract Factory", "Factory method", "Singleton"});
-					
-				} else if (category.contains("Structural")) {
-					patternCombo.setItems(new String[] {"Adapter", "Bridge", "Composite"});
-				} else if (category.contains("Behavioral")){
-					patternCombo.setItems(new String[] {"Command", "Interpeter", "Observer"});					
-				}
+				String[] patterns = patternManager.getPatternsOfCategory(category);
+				patternCombo.setItems(patterns);
 			}
 		});
+		
+		
+		
 		
 
 		
@@ -81,15 +83,44 @@ public class PatternSelectorPage extends WizardPage {
 		lblNewLabel_1.setBounds(55, 172, 63, 16);
 		lblNewLabel_1.setText("Pattern:");
 		
+		patternCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pattern = patternCombo.getText();
+				
+			}
+		});
+		
 	
 		
 	}
 
 	@Override
 	public boolean canFlipToNextPage() {
-		// TODO Auto-generated method stub
 		return nextPage;
 	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	
+	
+//	@Override
+//	public IWizardPage getNextPage() {
+//		
+//		PatternMainSetupPage patternMainSetupPage = (PatternMainSetupPage) getWizard().getNextPage(this);
+//		//new PatternMainSetupPage();
+//		patternMainSetupPage.setPattern("creational");
+//		
+//		
+//		return patternMainSetupPage;
+//		
+//	}
+//	
+	
+	
+	
 
 	
 	

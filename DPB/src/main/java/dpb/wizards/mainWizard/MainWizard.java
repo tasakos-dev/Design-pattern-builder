@@ -1,21 +1,19 @@
 package dpb.wizards.mainWizard;
 
-import org.eclipse.jface.viewers.ISelection;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dpb.io.FileParser;
-import dpb.io.IFileParser;
 
 public class MainWizard extends Wizard implements INewWizard {
-	private ISelection selection;
+
 
 	@Override
 	public void init(IWorkbench arg0, IStructuredSelection arg1) {
-		this.selection = arg1;
-		
+	
 	}
 
 	public MainWizard() {
@@ -24,16 +22,13 @@ public class MainWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		IFileParser fileParser = new FileParser();
+		PatternSelectorPage patternSelectorPage = new PatternSelectorPage();
 		
-		System.err.println(fileParser.getPatternCategories()[0]);
-		System.err.println(fileParser.getPatternCategories()[1]);
-		System.err.println(fileParser.getPatternsOfCategory("creational")[0]);
-		System.err.println(fileParser.getPatternsOfCategory("creational")[1]);
-		System.err.println(fileParser.getPatternsOfCategory("creational1")[0]);
-		System.exit(0);
-		addPage(new PatternSelectorPage(selection));
-		addPage(new PatternMainSetupPage(selection));
+
+
+		addPage(patternSelectorPage);
+			
+
 	}
 
 	@Override
@@ -41,6 +36,16 @@ public class MainWizard extends Wizard implements INewWizard {
 		return false;
 	}
 	
-	
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page instanceof PatternSelectorPage) {
+			PatternMainSetupPage patternMainSetupPage = new PatternMainSetupPage();
+			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
+			
+			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
+			addPage(patternMainSetupPage);
+		}
+		return super.getNextPage(page);
+	}
 
 }

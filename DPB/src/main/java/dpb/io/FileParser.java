@@ -108,6 +108,7 @@ public class FileParser implements IFileParser {
 		
 	}
 
+	// TODO refactor all methods below duplication!
 	@Override
 	public String[] getClasses(String pattern) {
 		
@@ -148,21 +149,53 @@ public class FileParser implements IFileParser {
 	}
 
 	@Override
-	public String[] getClassMethods(String className) {
-		// TODO Auto-generated method stub
-		return null;
+	public String[][] getClassMethods(String className) {
+		NodeList classesList = (NodeList) getElementByTagAndId("class", className).getElementsByTagName("method");
+		int length = classesList.getLength();
+		String[][] classMethods = new String[length][2];
+		
+		for (int i = 0; i < length; i++) {
+			Element element = (Element) classesList.item(i);
+			String name = element.getAttribute("id");
+			String type = element.getElementsByTagName("type").item(0).getTextContent();
+			classMethods[i] = new String[] {type, name};
+		}
+		
+		return classMethods;
 	}
 
 	@Override
-	public String[] getInterfaceMethods(String interfaceName) {
-		// TODO Auto-generated method stub
-		return null;
+	public String[][] getInterfaceMethods(String interfaceName) {
+		
+		NodeList interfaceList = (NodeList) getElementByTagAndId("interface", interfaceName).getElementsByTagName("method");
+		int length = interfaceList.getLength();
+		String[][] interfaceMethods = new String[length][2];
+		
+		for (int i = 0; i < length; i++) {
+			Element element = (Element) interfaceList.item(i);
+			String name = element.getAttribute("id");
+			String type = element.getElementsByTagName("type").item(0).getTextContent();
+			interfaceMethods[i] = new String[] {type, name};
+		}
+		
+		return interfaceMethods;
 	}
 
 	@Override
-	public String[] getClassFields(String className) {
-		// TODO Auto-generated method stub
-		return null;
+	public String[][] getClassFields(String className) {
+		
+		NodeList classesList = (NodeList) getElementByTagAndId("class", className).getElementsByTagName("field");
+		int length = classesList.getLength();
+		String[][] classFields = new String[length][2];
+		
+		for (int i = 0; i < length; i++) {
+			Element element = (Element) classesList.item(i);
+			String name = element.getAttribute("id");
+			String type = element.getElementsByTagName("type").item(0).getTextContent();
+			classFields[i] = new String[] {type, name};
+		}
+		
+		return classFields;
 	}
 	
 	
