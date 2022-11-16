@@ -89,19 +89,27 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String className = tree.getSelection()[0].getText();
-				System.err.println(className);
-				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(className));
+				
+				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(className, "class"));
 				wizardDialog.open();
 		
 			}
 		});
 		
+		
+		
 		Button editInterfaceBtn = new Button(container, SWT.NONE);
 		editInterfaceBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				String interfaceName = tree.getSelection()[0].getText();
+		
+				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(interfaceName, "interface"));
+				wizardDialog.open();
+		
 			}
 		});
+		
 		
 		editInterfaceBtn.setBounds(448, 94, 99, 32);
 		editInterfaceBtn.setText("Edit interface");

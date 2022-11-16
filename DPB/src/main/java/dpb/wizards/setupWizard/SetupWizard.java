@@ -8,6 +8,7 @@ import org.eclipse.ui.IWorkbench;
 
 public class SetupWizard extends Wizard implements INewWizard {
 	private String className;
+	private String module;
 	
 	
 	private ISelection selection;
@@ -18,15 +19,18 @@ public class SetupWizard extends Wizard implements INewWizard {
 		
 	}
 
-	public SetupWizard(String className) {
+	public SetupWizard(String className, String module) {
 		setWindowTitle("New Wizard");
 		this.className = className;
+		this.module = module;
 	}
 
 	@Override
 	public void addPages() {
 //		addPage(new ClassSetup(selection));
-		addPage(new FieldsSetup(className));
+		if (module.equals("class")) {
+			addPage(new FieldsSetup(className));
+		}
 		addPage(new MethodsSetup(className));
 	}
 

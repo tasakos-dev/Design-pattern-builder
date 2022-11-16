@@ -3,20 +3,29 @@ package dpb.wizards.setupWizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
+import dpb.model.ClassField;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 
 public class FieldsSetup extends WizardPage {
-	private Table table;
 	private String className;
 	private IPatternManager patternManager;
+	private Table table;
 	public FieldsSetup(String className) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
@@ -35,52 +44,116 @@ public class FieldsSetup extends WizardPage {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		table = new Table(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setHeaderVisible(true);
+		TableViewer tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
 		table.setLinesVisible(true);
-		
-		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.CENTER);
-		tblclmnNewColumn.setWidth(275);
-		tblclmnNewColumn.setText("type");
+		table.setHeaderVisible(true);
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		
 		
 		
-		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.CENTER);
-		tblclmnNewColumn_1.setWidth(275);
-		tblclmnNewColumn_1.setText("name");
+		TableViewerColumn tableViewerTypeColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn typeColumn = tableViewerTypeColumn.getColumn();
+		typeColumn.setWidth(280);
+		typeColumn.setAlignment(SWT.CENTER);
+		typeColumn.setResizable(false);
+		typeColumn.setText("Type");
+		
+		tableViewerTypeColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ClassField field = (ClassField) element;
+				return field.getType();
+			}
+		});
+		
+		tableViewerTypeColumn.setEditingSupport(new EditingSupport(tableViewer) {
+			
+			@Override
+			protected void setValue(Object arg0, Object arg1) {
+				
+				ClassField field = (ClassField) arg0;
+				field.setType(arg1.toString());
+				tableViewer.update(arg0, null);
+				
+			}
+			
+			@Override
+			protected Object getValue(Object arg0) {
+				
+				return ((ClassField) arg0).getType();
+			}
+			
+			@Override
+			protected CellEditor getCellEditor(Object arg0) {
+				
+				return new TextCellEditor(tableViewer.getTable());
+			}
+			
+			@Override
+			protected boolean canEdit(Object arg0) {
+			
+				return true;
+			}
+		});
+		
+		TableViewerColumn tableViewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn nameColumn = tableViewerNameColumn.getColumn();
+		nameColumn.setAlignment(SWT.CENTER);
+		nameColumn.setResizable(false);
+		nameColumn.setWidth(280);
+		nameColumn.setText("Name");
+		
+		tableViewerNameColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ClassField field = (ClassField) element;
+				return field.getName();
+			}
+		});
+		
+		tableViewerNameColumn.setEditingSupport(new EditingSupport(tableViewer) {
+			
+			@Override
+			protected void setValue(Object arg0, Object arg1) {
+				
+				ClassField field = (ClassField) arg0;
+				field.setName(arg1.toString());
+				tableViewer.update(arg0, null);
+				
+			}
+			
+			@Override
+			protected Object getValue(Object arg0) {
+				
+				return ((ClassField) arg0).getName();
+			}
+			
+			@Override
+			protected CellEditor getCellEditor(Object arg0) {
+				
+				return new TextCellEditor(tableViewer.getTable());
+			}
+			
+			@Override
+			protected boolean canEdit(Object arg0) {
+			
+				return true;
+			}
+		});
+		
+
+		
 		scrolledComposite.setContent(table);
 		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		 
 		
 		String[][] fields = patternManager.getClassFields(className);
-		String[] fieldsName = new String[fields.length];
-		String[] fieldsType = new String[fields.length];
+		List<ClassField> fieldsList = new ArrayList<ClassField>();
 		for (int i = 0; i < fields.length; i++) {
-			fieldsType[i] = fields[i][0]; 
-			fieldsName[i] = fields[i][1];
-			
+			fieldsList.add(new ClassField(fields[i][1], fields[i][0], "private"));
 		}
-		
-		for (int i = 0; i < fields.length; i++) {
-		      new TableItem(table, SWT.NONE);
-		}
-		
-		
-		
-	    TableItem[] items = table.getItems();
-	    for (int i = 0; i < items.length; i++) {
-	      TableEditor editor = new TableEditor(table);
-	      Text type = new Text(table, SWT.NONE);
-	      type.setText(fieldsType[i]);
-	      editor.grabHorizontal = true;
-	      editor.setEditor(type, items[i], 0);
-	      editor = new TableEditor(table);
-	      Text name = new Text(table, SWT.NONE);
-	      name.setText(fieldsName[i]);
-	      editor.grabHorizontal = true;
-	      editor.setEditor(name, items[i], 1);
-	      editor = new TableEditor(table);
-	      editor.horizontalAlignment = SWT.LEFT;
-	    }
+		tableViewer.setInput(fieldsList);
 	}
-
 }
