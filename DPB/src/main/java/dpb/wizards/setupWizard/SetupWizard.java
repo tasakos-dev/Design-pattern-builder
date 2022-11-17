@@ -1,6 +1,6 @@
 package dpb.wizards.setupWizard;
 
-import org.eclipse.jface.viewers.ISelection;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -11,11 +11,11 @@ public class SetupWizard extends Wizard implements INewWizard {
 	private String module;
 	
 	
-	private ISelection selection;
+//	private ISelection selection;
 
 	@Override
 	public void init(IWorkbench arg0, IStructuredSelection arg1) {
-		this.selection = arg1;
+//		this.selection = arg1;
 		
 	}
 
@@ -30,8 +30,12 @@ public class SetupWizard extends Wizard implements INewWizard {
 //		addPage(new ClassSetup(selection));
 		if (module.equals("class")) {
 			addPage(new FieldsSetup(className));
+			addPage(new ClassMethodsSetup(className));
+		}else {
+			addPage(new InterfaceMethodsSetup(className));
 		}
-		addPage(new MethodsSetup(className));
+		
+		
 	}
 
 	@Override

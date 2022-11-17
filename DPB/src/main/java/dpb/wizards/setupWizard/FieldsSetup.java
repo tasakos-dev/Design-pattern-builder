@@ -11,7 +11,6 @@ import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
 import dpb.model.ClassField;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -44,6 +43,13 @@ public class FieldsSetup extends WizardPage {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
+		buildTable(scrolledComposite);
+		
+		scrolledComposite.setContent(table);
+		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	}
+	
+	private void buildTable(ScrolledComposite scrolledComposite) {
 		TableViewer tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
@@ -55,7 +61,7 @@ public class FieldsSetup extends WizardPage {
 		TableViewerColumn tableViewerTypeColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn typeColumn = tableViewerTypeColumn.getColumn();
 		typeColumn.setWidth(280);
-		typeColumn.setAlignment(SWT.CENTER);
+		typeColumn.setAlignment(SWT.LEFT);
 		typeColumn.setResizable(false);
 		typeColumn.setText("Type");
 		
@@ -99,7 +105,7 @@ public class FieldsSetup extends WizardPage {
 		
 		TableViewerColumn tableViewerNameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn nameColumn = tableViewerNameColumn.getColumn();
-		nameColumn.setAlignment(SWT.CENTER);
+		nameColumn.setAlignment(SWT.LEFT);
 		nameColumn.setResizable(false);
 		nameColumn.setWidth(280);
 		nameColumn.setText("Name");
@@ -141,19 +147,10 @@ public class FieldsSetup extends WizardPage {
 				return true;
 			}
 		});
-		
-
-		
-		scrolledComposite.setContent(table);
-		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		 
 		
-		String[][] fields = patternManager.getClassFields(className);
-		List<ClassField> fieldsList = new ArrayList<ClassField>();
-		for (int i = 0; i < fields.length; i++) {
-			fieldsList.add(new ClassField(fields[i][1], fields[i][0], "private"));
-		}
+		List<ClassField> fieldsList = patternManager.getClassFields(className);
 		tableViewer.setInput(fieldsList);
 	}
 }

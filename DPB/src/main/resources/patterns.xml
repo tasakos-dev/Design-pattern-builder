@@ -15,6 +15,11 @@
 						<type>Object</type>
 					</method>
 			</class>
+			<interface id="Itest">
+					<method id="method1">
+						<type>Object</type>
+					</method>
+			</interface>
 		</pattern>
 		<pattern id="parametirized factory">
 		</pattern>

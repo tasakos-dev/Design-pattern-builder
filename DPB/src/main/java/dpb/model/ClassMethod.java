@@ -29,6 +29,19 @@ public class ClassMethod {
 	public List<String[]> getParameters() {
 		return parameters;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+	public void setParameters(List<String[]> parameters) {
+		this.parameters = parameters;
+	}
+	
 	
 
 
