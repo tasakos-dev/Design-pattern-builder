@@ -5,8 +5,8 @@ import java.util.List;
 
 import dpb.io.FileParser;
 import dpb.io.IFileParser;
-import dpb.model.ClassField;
-import dpb.model.ClassMethod;
+import dpb.model.Field;
+import dpb.model.Method;
 
 
 public class PatternManager implements IPatternManager {
@@ -21,54 +21,50 @@ public class PatternManager implements IPatternManager {
 
 	@Override
 	public String[] getPatternCategories() {
-		// TODO Auto-generated method stub
 		return fileParser.getPatternCategories();
 	}
 
 	@Override
 	public String[] getPatternsOfCategory(String category) {
-		// TODO Auto-generated method stub
 		return fileParser.getPatternsOfCategory(category);
 	}
 
 	@Override
 	public String[] getClasses(String pattern) {
-		// TODO Auto-generated method stub
 		return fileParser.getClasses(pattern);
 	}
 
 	@Override
 	public String[] getInterfaces(String pattern) {
-		// TODO Auto-generated method stub
 		return fileParser.getInterfaces(pattern);
 	}
 
 	@Override
-	public List<ClassMethod> getClassMethods(String className) {
+	public List<Method> getClassMethods(String className) {
 		String[][] methods = fileParser.getClassMethods(className);
-		List<ClassMethod> methodList = new ArrayList<ClassMethod>();
+		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			methodList.add(new ClassMethod(methods[i][1], methods[i][0], "private", null));
+			methodList.add(new Method(methods[i][1], methods[i][0], "public", null));
 		}
 		return methodList;
 	}
 
 	@Override
-	public List<ClassMethod> getInterfaceMethods(String interfaceName) {
+	public List<Method> getInterfaceMethods(String interfaceName) {
 		String[][] methods = fileParser.getInterfaceMethods(interfaceName);
-		List<ClassMethod> methodList = new ArrayList<ClassMethod>();
+		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			methodList.add(new ClassMethod(methods[i][1], methods[i][0], "private", null));
+			methodList.add(new Method(methods[i][1], methods[i][0], "public", null));
 		}
 		return methodList;
 	}
 
 	@Override
-	public List<ClassField> getClassFields(String className) {
+	public List<Field> getClassFields(String className) {
 		String[][] fields = fileParser.getClassFields(className);
-		List<ClassField> fieldsList = new ArrayList<ClassField>();
+		List<Field> fieldsList = new ArrayList<Field>();
 		for (int i = 0; i < fields.length; i++) {
-			fieldsList.add(new ClassField(fields[i][1], fields[i][0], "private"));
+			fieldsList.add(new Field(fields[i][1], fields[i][0], "private"));
 		}
 		return fieldsList;
 	}

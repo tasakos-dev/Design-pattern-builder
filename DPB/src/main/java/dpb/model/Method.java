@@ -3,14 +3,14 @@ package dpb.model;
 import java.util.List;
 
 
-public class ClassMethod {
+public class Method {
 	private String name;
 	private String type;
 	private String modifier;
 	private List<String[]> parameters;	
 	
 	
-	public ClassMethod(String name, String type, String modifier, List<String[]> parameters) {
+	public Method(String name, String type, String modifier, List<String[]> parameters) {
 		super();
 		this.name = name;
 		this.type = type;

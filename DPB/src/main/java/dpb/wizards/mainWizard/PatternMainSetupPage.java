@@ -1,6 +1,7 @@
 package dpb.wizards.mainWizard;
 
 
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -17,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
 
 public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	private String pattern;
@@ -98,10 +100,14 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 		
 		
+		
+		
 		Button editInterfaceBtn = new Button(container, SWT.NONE);
 		editInterfaceBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
+				
 				String interfaceName = tree.getSelection()[0].getText();
 		
 				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(interfaceName, "interface"));
@@ -109,10 +115,25 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 			}
 		});
-		
+		editClassBtn.setEnabled(false);
+		editInterfaceBtn.setEnabled(false);
 		
 		editInterfaceBtn.setBounds(448, 94, 99, 32);
 		editInterfaceBtn.setText("Edit interface");
+		
+		tree.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				if (tree.getSelection()[0].getParentItem().getText().equals("Classes")) {
+					editInterfaceBtn.setEnabled(false);
+					editClassBtn.setEnabled(true);
+				} else if(tree.getSelection()[0].getParentItem().getText().equals("Interfaces")) {
+					editClassBtn.setEnabled(false);
+					editInterfaceBtn.setEnabled(true);
+				}
+			}
+		});
 
 	}
 

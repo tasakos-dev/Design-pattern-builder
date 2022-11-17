@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
-import dpb.model.ClassField;
+import dpb.model.Field;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class FieldsSetup extends WizardPage {
 		tableViewerTypeColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ClassField field = (ClassField) element;
+				Field field = (Field) element;
 				return field.getType();
 			}
 		});
@@ -78,7 +78,7 @@ public class FieldsSetup extends WizardPage {
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
 				
-				ClassField field = (ClassField) arg0;
+				Field field = (Field) arg0;
 				field.setType(arg1.toString());
 				tableViewer.update(arg0, null);
 				
@@ -87,7 +87,7 @@ public class FieldsSetup extends WizardPage {
 			@Override
 			protected Object getValue(Object arg0) {
 				
-				return ((ClassField) arg0).getType();
+				return ((Field) arg0).getType();
 			}
 			
 			@Override
@@ -113,7 +113,7 @@ public class FieldsSetup extends WizardPage {
 		tableViewerNameColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ClassField field = (ClassField) element;
+				Field field = (Field) element;
 				return field.getName();
 			}
 		});
@@ -123,7 +123,7 @@ public class FieldsSetup extends WizardPage {
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
 				
-				ClassField field = (ClassField) arg0;
+				Field field = (Field) arg0;
 				field.setName(arg1.toString());
 				tableViewer.update(arg0, null);
 				
@@ -132,7 +132,7 @@ public class FieldsSetup extends WizardPage {
 			@Override
 			protected Object getValue(Object arg0) {
 				
-				return ((ClassField) arg0).getName();
+				return ((Field) arg0).getName();
 			}
 			
 			@Override
@@ -150,7 +150,7 @@ public class FieldsSetup extends WizardPage {
 
 		 
 		
-		List<ClassField> fieldsList = patternManager.getClassFields(className);
+		List<Field> fieldsList = patternManager.getClassFields(className);
 		tableViewer.setInput(fieldsList);
 	}
 }

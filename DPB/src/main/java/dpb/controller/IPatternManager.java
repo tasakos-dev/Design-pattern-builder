@@ -2,8 +2,8 @@ package dpb.controller;
 
 import java.util.List;
 
-import dpb.model.ClassField;
-import dpb.model.ClassMethod;
+import dpb.model.Field;
+import dpb.model.Method;
 
 
 public interface IPatternManager {
@@ -13,10 +13,10 @@ public interface IPatternManager {
 	public String[] getClasses(String pattern);
 	public String[] getInterfaces(String pattern);
 	
-	public List<ClassMethod> getClassMethods(String className);
-	public List<ClassMethod> getInterfaceMethods(String interfaceName);
+	public List<Method> getClassMethods(String className);
+	public List<Method> getInterfaceMethods(String interfaceName);
 	
-	public List<ClassField> getClassFields(String className);
+	public List<Field> getClassFields(String className);
 	
 	
 }

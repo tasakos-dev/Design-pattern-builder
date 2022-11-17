@@ -4,7 +4,7 @@ import java.util.List;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
-import dpb.model.ClassMethod;
+import dpb.model.Method;
 
 public class InterfaceMethodsSetup extends MethodsSetup {
 	private IPatternManager patternManager;
@@ -16,7 +16,7 @@ public class InterfaceMethodsSetup extends MethodsSetup {
 	}
 
 	@Override
-	protected List<ClassMethod> getMethods(String name) {
+	protected List<Method> getMethods(String name) {
 		return patternManager.getInterfaceMethods(name);
 	}
 

@@ -9,7 +9,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import dpb.model.ClassMethod;
+import dpb.model.Method;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -57,16 +57,58 @@ public abstract class MethodsSetup extends WizardPage {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		scrolledComposite.setContent(table);
+		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
+		TableViewerColumn modifierTableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn modifierColumn = modifierTableViewerColumn.getColumn();
+		modifierColumn.setText("Modifier");
+		modifierColumn.setResizable(false);
+		modifierColumn.setWidth(188);
+		modifierTableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Method method = (Method) element;
+				return method.getModifier();
+			}
+		});
+		
+		modifierTableViewerColumn.setEditingSupport(new EditingSupport(tableViewer) {
+			
+			@Override
+			protected void setValue(Object arg0, Object arg1) {
+				Method method = (Method) arg0;
+				method.setModifier(className);
+				tableViewer.update(arg0, null);
+				
+			}
+			
+			@Override
+			protected Object getValue(Object arg0) {
+				Method method = (Method) arg0;
+				return method.getModifier();
+			}
+			
+			@Override
+			protected CellEditor getCellEditor(Object arg0) {
+				return new TextCellEditor(tableViewer.getTable());
+			}
+			
+			@Override
+			protected boolean canEdit(Object arg0) {				
+				return true;
+			}
+		});
 		
 		TableViewerColumn returnTypeTableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn returnTypeColumn = returnTypeTableViewerColumn.getColumn();
 		returnTypeColumn.setResizable(false);
-		returnTypeColumn.setWidth(282);
+		returnTypeColumn.setWidth(188);
 		returnTypeColumn.setText("Return type");
 		returnTypeTableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ClassMethod method = (ClassMethod) element;
+				Method method = (Method) element;
 				return method.getType();
 			}
 		});
@@ -75,7 +117,7 @@ public abstract class MethodsSetup extends WizardPage {
 			
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
-				ClassMethod method = (ClassMethod) arg0;
+				Method method = (Method) arg0;
 				method.setType(arg1.toString());
 				tableViewer.update(arg0, null);
 				
@@ -83,7 +125,7 @@ public abstract class MethodsSetup extends WizardPage {
 			
 			@Override
 			protected Object getValue(Object arg0) {
-				ClassMethod method = (ClassMethod) arg0;
+				Method method = (Method) arg0;
 				return method.getType();
 			}
 			
@@ -101,15 +143,13 @@ public abstract class MethodsSetup extends WizardPage {
 		TableViewerColumn nameTableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn nameColumn = nameTableViewerColumn.getColumn();
 		nameColumn.setResizable(false);
-		nameColumn.setWidth(282);
+		nameColumn.setWidth(188);
 		nameColumn.setText("Name");
-		scrolledComposite.setContent(table);
-		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		nameTableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				ClassMethod method = (ClassMethod) element;
+				Method method = (Method) element;
 				return method.getName();
 			}
 		});
@@ -120,7 +160,7 @@ public abstract class MethodsSetup extends WizardPage {
 			
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
-				ClassMethod method = (ClassMethod) arg0;
+				Method method = (Method) arg0;
 				method.setName(arg1.toString());
 				tableViewer.update(arg0, null);
 				
@@ -128,7 +168,7 @@ public abstract class MethodsSetup extends WizardPage {
 			
 			@Override
 			protected Object getValue(Object arg0) {
-				ClassMethod method = (ClassMethod) arg0;
+				Method method = (Method) arg0;
 				return method.getName();
 			}
 			
@@ -142,10 +182,10 @@ public abstract class MethodsSetup extends WizardPage {
 				return true;
 			}
 		});
-		List<ClassMethod> methods = getMethods(className);
+		List<Method> methods = getMethods(className);
 		
 		tableViewer.setInput(methods);
 
 	}
-	abstract protected List<ClassMethod> getMethods(String name);
+	abstract protected List<Method> getMethods(String name);
 }

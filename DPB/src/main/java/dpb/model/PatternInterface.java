@@ -5,10 +5,10 @@ import java.util.List;
 public class PatternInterface {
 	private String name;
 	private String type;
-	private List<ClassMethod> methods;
+	private List<Method> methods;
 
 	
-	public PatternInterface(String name, String type, List<ClassMethod> methods) {
+	public PatternInterface(String name, String type, List<Method> methods) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -22,7 +22,7 @@ public class PatternInterface {
 		return type;
 	}
 
-	public List<ClassMethod> getMethods() {
+	public List<Method> getMethods() {
 		return methods;
 	}
 	

@@ -1,11 +1,11 @@
 package dpb.model;
 
-public class ClassField {
+public class Field {
 	private String name;
 	private String type;
 	private String modifier;
 	
-	public ClassField(String name, String type, String modifier) {
+	public Field(String name, String type, String modifier) {
 		super();
 		this.name = name;
 		this.type = type;
