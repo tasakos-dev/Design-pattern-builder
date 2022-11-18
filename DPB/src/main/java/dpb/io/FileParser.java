@@ -33,7 +33,6 @@ public class FileParser implements IFileParser {
 		try {
 			patternsFIle = new File(FileLocator.resolve(filUrl).toURI());
 		} catch (URISyntaxException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -46,7 +45,6 @@ public class FileParser implements IFileParser {
 			patternsDoc = documentBuilder.parse(patternsFIle);
 			patternsDoc.getDocumentElement().normalize();
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	

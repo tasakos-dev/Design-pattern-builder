@@ -125,6 +125,8 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
+				// TODO null pointer!
+				
 				if (tree.getSelection()[0].getParentItem().getText().equals("Classes")) {
 					editInterfaceBtn.setEnabled(false);
 					editClassBtn.setEnabled(true);

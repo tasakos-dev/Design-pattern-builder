@@ -15,13 +15,18 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public abstract class MethodsSetup extends WizardPage {
 	private String className;
-	
+	private List<Method> methods;
 	private Table table;
 
 	public MethodsSetup(String className) {
@@ -39,18 +44,48 @@ public abstract class MethodsSetup extends WizardPage {
 		setControl(container);
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setBounds(10, 10, 564, 296);
+		scrolledComposite.setBounds(10, 10, 589, 324);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
 		
-		buildTable(scrolledComposite);
+		TableViewer tableViewer = buildTable(scrolledComposite);
+		
+		Button addBtn = new Button(container, SWT.NONE);
+		addBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				methods.add(new Method("test", "test", "test", null));
+				tableViewer.refresh();
+				
+			}
+		});
+		addBtn.setBounds(605, 23, 70, 24);
+		addBtn.setText("Add");
+		
+		Button deleteBtn = new Button(container, SWT.NONE);
+		deleteBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Method method: methods) {
+					if( tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex()).equals(method)) {
+						methods.remove(method);
+						break;
+						
+					}
+//					
+				}
+				tableViewer.refresh();
+			}
+		});
+		deleteBtn.setBounds(605, 53, 70, 24);
+		deleteBtn.setText("Delete");
 		
 
 		
 	}
 	
-	private void buildTable(ScrolledComposite scrolledComposite) {
+	private TableViewer buildTable(ScrolledComposite scrolledComposite) {
 		
 		TableViewer tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
@@ -182,9 +217,11 @@ public abstract class MethodsSetup extends WizardPage {
 				return true;
 			}
 		});
-		List<Method> methods = getMethods(className);
+		methods = getMethods(className);
 		
 		tableViewer.setInput(methods);
+		
+		return tableViewer;
 
 	}
 	abstract protected List<Method> getMethods(String name);

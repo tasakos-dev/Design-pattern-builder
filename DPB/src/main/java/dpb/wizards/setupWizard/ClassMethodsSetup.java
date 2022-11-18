@@ -11,7 +11,6 @@ public class ClassMethodsSetup extends MethodsSetup {
 
 	public ClassMethodsSetup(String className) {
 		super(className);
-		// TODO Auto-generated constructor stub
 		this.patternManager = new PatternManager();
 	}
 

@@ -11,7 +11,6 @@ public class InterfaceMethodsSetup extends MethodsSetup {
 
 	public InterfaceMethodsSetup(String className) {
 		super(className);
-		// TODO Auto-generated constructor stub
 		this.patternManager = new PatternManager();
 	}
 
