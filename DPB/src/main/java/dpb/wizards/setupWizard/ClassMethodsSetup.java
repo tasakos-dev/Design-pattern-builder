@@ -15,7 +15,7 @@ public class ClassMethodsSetup extends MethodsSetup {
 	}
 
 	@Override
-	protected List<Method> getMethods(String name) {
+	protected List<Method> getElements(String name) {
 		return patternManager.getClassMethods(name);
 	}
 

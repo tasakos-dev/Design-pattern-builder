@@ -55,11 +55,9 @@ public class Method {
 		Method other = (Method) obj;
 		if (name == null) {
 			if (other.name != null) {
-				System.err.println("edww3");
 				return false;
 			}
 		} else if (!name.equals(other.name)) {
-			System.err.println("reles?");
 			return false;
 		}
 		if (parameters == null) {

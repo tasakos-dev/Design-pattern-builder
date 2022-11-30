@@ -15,8 +15,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -73,7 +71,7 @@ public abstract class MethodsSetup extends WizardPage {
 						break;
 						
 					}
-//					
+		
 				}
 				tableViewer.refresh();
 			}
@@ -217,12 +215,12 @@ public abstract class MethodsSetup extends WizardPage {
 				return true;
 			}
 		});
-		methods = getMethods(className);
+		methods = getElements(className);
 		
 		tableViewer.setInput(methods);
 		
 		return tableViewer;
 
 	}
-	abstract protected List<Method> getMethods(String name);
+	abstract protected List<Method> getElements(String name);
 }

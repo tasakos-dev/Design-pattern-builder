@@ -15,7 +15,7 @@ public class InterfaceMethodsSetup extends MethodsSetup {
 	}
 
 	@Override
-	protected List<Method> getMethods(String name) {
+	protected List<Method> getElements(String name) {
 		return patternManager.getInterfaceMethods(name);
 	}
 
