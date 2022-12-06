@@ -1,6 +1,5 @@
 package dpb.wizards.setupWizard;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -9,16 +8,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 
 public class ClassSetup extends WizardPage {
-	private ISelection selection;
+
 	private Text text;
 
-	
-
-	public ClassSetup(ISelection selection) {
+	public ClassSetup() {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.selection = selection;
+
 	}
 
 	@Override

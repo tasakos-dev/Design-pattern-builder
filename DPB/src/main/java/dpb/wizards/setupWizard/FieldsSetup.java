@@ -26,7 +26,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class FieldsSetup extends WizardPage {
-	private String className;
+//	private String className;
 	private IPatternManager patternManager;
 	private Table table;
 	private List<Field> fieldsList;
@@ -34,8 +34,9 @@ public class FieldsSetup extends WizardPage {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.className = className;
+//		this.className = className;
 		this.patternManager = new PatternManager();
+		fieldsList = patternManager.getClassFields(className);
 	}
 
 	@Override
@@ -229,9 +230,15 @@ public class FieldsSetup extends WizardPage {
 
 		 
 		
-		fieldsList = patternManager.getClassFields(className);
+		
 		tableViewer.setInput(fieldsList);
 		
 		return tableViewer;
 	}
+
+	public List<Field> getFieldsList() {
+		return fieldsList;
+	}
+	
+	
 }

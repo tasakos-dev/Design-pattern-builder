@@ -1,5 +1,6 @@
 package dpb.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -8,14 +9,20 @@ public class Method {
 	private String type;
 	private String modifier;
 	private List<String[]> parameters;	
+	private String code;
+	private boolean isOverride;
 	
 	
-	public Method(String name, String type, String modifier, List<String[]> parameters) {
+	public Method(String name, String type, String modifier, boolean isOverride, List<String[]> parameters) {
 		super();
 		this.name = name;
 		this.type = type;
+		this.isOverride = isOverride;
 		this.modifier = modifier;
 		this.parameters = parameters;
+		if (parameters == null) {
+			this.parameters = new ArrayList<String[]>();
+		}
 	}
 	public String getName() {
 		return name;
@@ -42,6 +49,20 @@ public class Method {
 		this.parameters = parameters;
 	}
 	
+	
+	
+	public boolean isOverride() {
+		return isOverride;
+	}
+	public void setOverride(boolean isOverride) {
+		this.isOverride = isOverride;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,6 +92,18 @@ public class Method {
 		} else if (!type.equals(other.type))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Method [name=");
+		builder.append(name);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", modifier=");
+		builder.append(modifier);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	

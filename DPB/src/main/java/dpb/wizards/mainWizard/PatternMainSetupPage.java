@@ -1,6 +1,7 @@
 package dpb.wizards.mainWizard;
 
 
+import java.util.List;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -12,6 +13,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
+import dpb.model.PatternClass;
+import dpb.model.PatternInterface;
 import dpb.wizards.setupWizard.SetupWizard;
 
 import org.eclipse.swt.widgets.Button;
@@ -26,16 +29,33 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	private TreeItem interfacesTreeItem;
 	private Tree tree;
 	private ScrolledComposite scrolledComposite;
+	
+	private IPatternManager patternManager;
+	
+	
+	private List<PatternClass> classes;
+	private List<PatternInterface> interfaces;
+	
+	private SetupWizard interfaceSetupWizard;
+	private SetupWizard classSetupWizard;
 
 
 	
 
-	public PatternMainSetupPage() {
+	public PatternMainSetupPage(String pattern) {
 		super("wizardPage");
+		this.pattern = pattern;
+		patternManager = new PatternManager();
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-//		this.patternClasses = patternClasses;
-//		this.patternInterfaces = patternInterfaces;		
+		
+		classes = patternManager.getClasses(pattern);
+		interfaces = patternManager.getInterfaces();
+		
+		
+		
+		
+		
 	}
 
 	@Override
@@ -63,17 +83,14 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 		
 		if (pattern != null) {
-			IPatternManager patternManager = new PatternManager();
-			String[] patternClasses = patternManager.getClasses(pattern);
-			String[] patternInterfaces = patternManager.getInterfaces(pattern);
-			for (String patternClass: patternClasses) {
+			for (PatternClass patternClass: classes) {
 				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternClass);
+				trtmNewTreeitem_1.setText(patternClass.getName());
 			}
 			
-			for (String patternInterface: patternInterfaces) {
+			for (PatternInterface patternInterface: interfaces) {
 				TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternInterface);
+				trtmNewTreeitem_1.setText(patternInterface.getName());
 			}
 		}
 		
@@ -91,9 +108,16 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String className = tree.getSelection()[0].getText();
-				
-				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(className, "class"));
+				classSetupWizard = new SetupWizard(className, "class");
+				WizardDialog wizardDialog = new WizardDialog(getShell(), classSetupWizard);
 				wizardDialog.open();
+				for (PatternClass patternClass : classes) {
+					if (patternClass.getName().equals(className)) {
+						patternClass.addMethods(classSetupWizard.getMethods());
+						patternClass.setFields(classSetupWizard.getFields());
+						break;
+					}
+				}
 		
 			}
 		});
@@ -109,9 +133,17 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				
 				
 				String interfaceName = tree.getSelection()[0].getText();
-		
-				WizardDialog wizardDialog = new WizardDialog(getShell(), new SetupWizard(interfaceName, "interface"));
+				interfaceSetupWizard = new SetupWizard(interfaceName, "interface");
+				
+				WizardDialog wizardDialog = new WizardDialog(getShell(), interfaceSetupWizard);
 				wizardDialog.open();
+				for (PatternInterface patternInterface : interfaces) {
+					if (patternInterface.getName().equals(interfaceName)) {
+						patternInterface.addMethods(interfaceSetupWizard.getMethods());
+						break;
+					}
+				}
+				
 		
 			}
 		});
@@ -142,6 +174,18 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
+
+	public List<PatternClass> getClasses() {
+		return classes;
+	}
+
+	public List<PatternInterface> getInterfaces() {
+		return interfaces;
+	}
+
+	
+	
+	
 
 	
 	

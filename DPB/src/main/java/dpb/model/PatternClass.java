@@ -6,21 +6,20 @@ public class PatternClass {
 	private String name;
 	private String type;
 	private PatternInterface implementedInterface;
+	private boolean isAbstract;
 	private List<Field> fields;
 	private List<Method> methods;
 	
-	public PatternClass(String name, String type, List<Field> fields, List<Method> methods, PatternInterface implementedInterface) {
+	
+	public PatternClass(String name, String type, boolean isAbstract, List<Field> fields, List<Method> methods, PatternInterface implementedInterface) {
 		super();
 		this.implementedInterface = implementedInterface;
 		this.name = name;
 		this.type = type;
 		this.fields = fields;
 		this.methods = methods;
-		
-		if (implementedInterface != null) {
-			for (Method imethod: implementedInterface.getMethods())
-			this.methods.add(imethod);
-		}
+		this.isAbstract = isAbstract;
+
 	}
 	
 	public String getName() {
@@ -35,6 +34,7 @@ public class PatternClass {
 	}
 
 	public List<Method> getMethods() {
+		
 		return methods;
 	}
 
@@ -42,9 +42,9 @@ public class PatternClass {
 		return implementedInterface;
 	}
 
-	public void setImplementedInterface(PatternInterface implementedInterface) {
-		this.implementedInterface = implementedInterface;
-	}
+//	public void setImplementedInterface(PatternInterface implementedInterface) {
+//		this.implementedInterface = implementedInterface;
+//	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -58,9 +58,22 @@ public class PatternClass {
 		this.fields = fields;
 	}
 
-	public void setMethods(List<Method> methods) {
-		this.methods = methods;
+	public void addMethods(List<Method> methods) {
+		for (Method method: methods) {
+			if (!this.methods.contains(method)) {
+				this.methods.add(method);
+			}
+		}
 	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+	
 	
 
 }

@@ -8,6 +8,9 @@ public interface IFileParser {
 	public String[] getClasses(String pattern);
 	public String[] getInterfaces(String pattern);
 	
+	public String getImplementedInterface(String className);
+	public boolean isAbstract(String className);
+	
 	public String[][] getClassMethods(String className);
 	public String[][] getInterfaceMethods(String interfaceName);
 	

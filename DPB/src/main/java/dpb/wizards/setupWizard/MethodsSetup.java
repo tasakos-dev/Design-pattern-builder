@@ -9,6 +9,8 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
 import dpb.model.Method;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -23,15 +25,16 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public abstract class MethodsSetup extends WizardPage {
-	private String className;
 	private List<Method> methods;
 	private Table table;
+	protected IPatternManager patternManager;
 
 	public MethodsSetup(String className) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.className = className;
+		patternManager = new PatternManager();
+		methods = getElements(className);
 		
 	}
 
@@ -53,7 +56,7 @@ public abstract class MethodsSetup extends WizardPage {
 		addBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				methods.add(new Method("test", "test", "test", null));
+				methods.add(getNewMethod());
 				tableViewer.refresh();
 				
 			}
@@ -111,7 +114,7 @@ public abstract class MethodsSetup extends WizardPage {
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
 				Method method = (Method) arg0;
-				method.setModifier(className);
+				method.setModifier(arg1.toString());
 				tableViewer.update(arg0, null);
 				
 			}
@@ -215,7 +218,7 @@ public abstract class MethodsSetup extends WizardPage {
 				return true;
 			}
 		});
-		methods = getElements(className);
+		
 		
 		tableViewer.setInput(methods);
 		
@@ -223,4 +226,11 @@ public abstract class MethodsSetup extends WizardPage {
 
 	}
 	abstract protected List<Method> getElements(String name);
+	abstract protected Method getNewMethod();
+
+	public List<Method> getMethods() {
+		return methods;
+	}
+	
+	
 }

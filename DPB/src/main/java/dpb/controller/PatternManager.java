@@ -7,16 +7,20 @@ import dpb.io.FileParser;
 import dpb.io.IFileParser;
 import dpb.model.Field;
 import dpb.model.Method;
+import dpb.model.PatternClass;
+import dpb.model.PatternInterface;
 
 
 public class PatternManager implements IPatternManager {
 	private IFileParser fileParser;
+	private List<PatternInterface> interfaces;
 	
 	
 
 	public PatternManager() {
 		super();
 		fileParser = new FileParser();
+		interfaces = new ArrayList<>();
 	}
 
 	@Override
@@ -30,13 +34,29 @@ public class PatternManager implements IPatternManager {
 	}
 
 	@Override
-	public String[] getClasses(String pattern) {
-		return fileParser.getClasses(pattern);
+	public List<PatternClass> getClasses(String pattern) {
+		List<PatternClass> classes = new ArrayList<>();
+		for (String className: fileParser.getClasses(pattern)) {
+			String interfaceName = fileParser.getImplementedInterface(className);
+			List<Method> interfaceMethods = getInterfaceMethods(interfaceName);
+			List<Method> classMethods = getClassMethods(className);
+			List<Field> classFields = getClassFields(className);
+			PatternInterface implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);
+			boolean isAbstract = fileParser.isAbstract(className);
+			PatternClass patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, implementedInterface);
+			System.err.println(implementedInterface.getMethods().size());
+			patternClass.addMethods(implementedInterface.getMethods());
+			classes.add(patternClass);
+			implementedInterface.addClass(patternClass);
+			
+			interfaces.add(implementedInterface);
+		}
+		return classes;
 	}
 
 	@Override
-	public String[] getInterfaces(String pattern) {
-		return fileParser.getInterfaces(pattern);
+	public List<PatternInterface> getInterfaces() {
+		return interfaces;
 	}
 
 	@Override
@@ -44,7 +64,7 @@ public class PatternManager implements IPatternManager {
 		String[][] methods = fileParser.getClassMethods(className);
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			methodList.add(new Method(methods[i][1], methods[i][0], "public", null));
+			methodList.add(new Method(methods[i][1], methods[i][0], "public",false, null));
 		}
 		return methodList;
 	}
@@ -54,7 +74,7 @@ public class PatternManager implements IPatternManager {
 		String[][] methods = fileParser.getInterfaceMethods(interfaceName);
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			methodList.add(new Method(methods[i][1], methods[i][0], "public", null));
+			methodList.add(new Method(methods[i][1], methods[i][0], "public",true, null));
 		}
 		return methodList;
 	}

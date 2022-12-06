@@ -56,6 +56,18 @@ public class Field {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Field [name=");
+		builder.append(name);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", modifier=");
+		builder.append(modifier);
+		builder.append("]");
+		return builder.toString();
+	}
 	
 	
 	

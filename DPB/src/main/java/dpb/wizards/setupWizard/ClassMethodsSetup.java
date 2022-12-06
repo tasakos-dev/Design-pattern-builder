@@ -2,16 +2,13 @@ package dpb.wizards.setupWizard;
 
 import java.util.List;
 
-import dpb.controller.IPatternManager;
-import dpb.controller.PatternManager;
 import dpb.model.Method;
 
 public class ClassMethodsSetup extends MethodsSetup {
-	private IPatternManager patternManager;
+
 
 	public ClassMethodsSetup(String className) {
 		super(className);
-		this.patternManager = new PatternManager();
 	}
 
 	@Override
@@ -19,4 +16,8 @@ public class ClassMethodsSetup extends MethodsSetup {
 		return patternManager.getClassMethods(name);
 	}
 
+	@Override
+	protected Method getNewMethod() {
+		return new Method("method", "Object", "public", false, null);
+	}
 }

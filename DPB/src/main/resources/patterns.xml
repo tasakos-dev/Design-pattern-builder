@@ -1,7 +1,7 @@
 <GoF>
 	<category id="creational">
 		<pattern id="abstract factory">
-			<class id="test">
+			<class id="test" implements="Itest">
 					<field id="myField">
 						<type>Object</type>
 					</field>
@@ -11,7 +11,7 @@
 					<field id="myField3">
 						<type>Object</type>
 					</field>
-					<method id="method1">
+					<method id="method0">
 						<type>Object</type>
 					</method>
 			</class>

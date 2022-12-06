@@ -178,6 +178,24 @@ public class FileParser implements IFileParser {
 		
 		return interfaceMethods;
 	}
+	
+	
+
+	@Override
+	public String getImplementedInterface(String className) {
+		Element patternClass = getElementByTagAndId("class", className);
+		
+		return patternClass.getAttribute("implements");
+		
+	}
+
+	@Override
+	public boolean isAbstract(String className) {
+		Element patternClass = getElementByTagAndId("class", className);
+		if (patternClass.getAttribute("isAbstract") != null)
+			return patternClass.getAttribute("isAbstract").equals("true");
+		return false;
+	}
 
 	@Override
 	public String[][] getClassFields(String className) {

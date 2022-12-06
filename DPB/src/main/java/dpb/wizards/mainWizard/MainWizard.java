@@ -1,14 +1,19 @@
 package dpb.wizards.mainWizard;
 
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
+import dpb.controller.IPatternGenerator;
+import dpb.controller.PatternGenerator;
+import dpb.model.PatternClass;
+import dpb.model.PatternInterface;
+
 
 public class MainWizard extends Wizard implements INewWizard {
+	private PatternMainSetupPage patternMainSetupPage;
 
 
 	@Override
@@ -23,9 +28,6 @@ public class MainWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		PatternSelectorPage patternSelectorPage = new PatternSelectorPage();
-		
-
-
 		addPage(patternSelectorPage);
 			
 
@@ -33,16 +35,28 @@ public class MainWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		return false;
+		IPatternGenerator patternGenerator = new PatternGenerator();
+
+		for (PatternClass patternClass: patternMainSetupPage.getClasses()) {
+			patternGenerator.generateClass(patternClass);
+			
+		}
+		
+		for (PatternInterface patternInterface: patternMainSetupPage.getInterfaces()) {
+			patternGenerator.generateInterface(patternInterface);
+			
+		}
+		
+		return true;
 	}
 	
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page instanceof PatternSelectorPage) {
-			PatternMainSetupPage patternMainSetupPage = new PatternMainSetupPage();
 			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
+			patternMainSetupPage = new PatternMainSetupPage(patternSelectorPage.getPattern());
 			
-			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
+//			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
 			addPage(patternMainSetupPage);
 		}
 		return super.getNextPage(page);
