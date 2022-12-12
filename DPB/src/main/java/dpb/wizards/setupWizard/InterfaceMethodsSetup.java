@@ -1,26 +1,20 @@
 package dpb.wizards.setupWizard;
 
-import java.util.List;
-
-
 import dpb.model.Method;
+import dpb.model.PatternElement;
 
 public class InterfaceMethodsSetup extends MethodsSetup {
 	
 
-	public InterfaceMethodsSetup(String className) {
-		super(className);
+	public InterfaceMethodsSetup(PatternElement patternElement) {
+		super(patternElement);
 //		this.patternManager = new PatternManager();
 	}
 
-	@Override
-	protected List<Method> getElements(String name) {
-		return patternManager.getInterfaceMethods(name);
-	}
 	
 	@Override
 	protected Method getNewMethod() {
-		return new Method("method", "Object", "public", true, null);
+		return new Method("method", "Object", "public", true, false, null, false);
 	}
 
 }

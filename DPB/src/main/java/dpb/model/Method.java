@@ -11,15 +11,19 @@ public class Method {
 	private List<String[]> parameters;	
 	private String code;
 	private boolean isOverride;
+	private boolean isAbstract;
+	private boolean isStatic;
 	
 	
-	public Method(String name, String type, String modifier, boolean isOverride, List<String[]> parameters) {
+	public Method(String name, String type, String modifier, boolean isOverride, boolean isAbstract , List<String[]> parameters, boolean isStatic) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.isOverride = isOverride;
 		this.modifier = modifier;
 		this.parameters = parameters;
+		this.isAbstract = isAbstract;
+		this.isStatic = isStatic;
 		if (parameters == null) {
 			this.parameters = new ArrayList<String[]>();
 		}
@@ -49,8 +53,23 @@ public class Method {
 		this.parameters = parameters;
 	}
 	
+	public void addParameter(String[] parameter) {
+		parameters.add(parameter);
+	}
+	
+	public void removeParameter(String[] parameter) {
+		parameters.remove(parameter);
+	}
 	
 	
+	
+	
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
 	public boolean isOverride() {
 		return isOverride;
 	}
@@ -62,6 +81,13 @@ public class Method {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	public boolean isStatic() {
+		return isStatic;
+	}
+	public void setStatic(boolean isStatic) {
+		this.isStatic = isStatic;
 	}
 	@Override
 	public boolean equals(Object obj) {

@@ -38,6 +38,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	
 	private SetupWizard interfaceSetupWizard;
 	private SetupWizard classSetupWizard;
+	private Button btnNewButton;
 
 
 	
@@ -108,17 +109,16 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String className = tree.getSelection()[0].getText();
-				classSetupWizard = new SetupWizard(className, "class");
-				WizardDialog wizardDialog = new WizardDialog(getShell(), classSetupWizard);
-				wizardDialog.open();
-				for (PatternClass patternClass : classes) {
+				PatternClass selectedClass = null;
+				for (PatternClass patternClass: classes) {
 					if (patternClass.getName().equals(className)) {
-						patternClass.addMethods(classSetupWizard.getMethods());
-						patternClass.setFields(classSetupWizard.getFields());
+						selectedClass = patternClass;
 						break;
 					}
 				}
-		
+				classSetupWizard = new SetupWizard(selectedClass, "class");
+				WizardDialog wizardDialog = new WizardDialog(getShell(), classSetupWizard);
+				wizardDialog.open();
 			}
 		});
 		
@@ -133,16 +133,18 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				
 				
 				String interfaceName = tree.getSelection()[0].getText();
-				interfaceSetupWizard = new SetupWizard(interfaceName, "interface");
-				
-				WizardDialog wizardDialog = new WizardDialog(getShell(), interfaceSetupWizard);
-				wizardDialog.open();
-				for (PatternInterface patternInterface : interfaces) {
+				PatternInterface selectedInterface = null;
+				for (PatternInterface patternInterface: interfaces) {
 					if (patternInterface.getName().equals(interfaceName)) {
-						patternInterface.addMethods(interfaceSetupWizard.getMethods());
+						selectedInterface = patternInterface;
 						break;
 					}
 				}
+				interfaceSetupWizard = new SetupWizard(selectedInterface, "interface");
+				
+				WizardDialog wizardDialog = new WizardDialog(getShell(), interfaceSetupWizard);
+				wizardDialog.open();
+				
 				
 		
 			}
@@ -152,6 +154,19 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 		editInterfaceBtn.setBounds(448, 94, 99, 32);
 		editInterfaceBtn.setText("Edit interface");
+		
+		btnNewButton = new Button(container, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PatternClass newClass = new PatternClass("NewClass", "public");
+				classes.add(newClass);
+				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
+				trtmNewTreeitem_1.setText(newClass.getName());
+			}
+		});
+		btnNewButton.setBounds(448, 132, 99, 24);
+		btnNewButton.setText("Add Class");
 		
 		tree.addSelectionListener(new SelectionAdapter() {
 			@Override

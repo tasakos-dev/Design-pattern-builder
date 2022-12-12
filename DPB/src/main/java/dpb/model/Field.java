@@ -4,12 +4,14 @@ public class Field {
 	private String name;
 	private String type;
 	private String modifier;
+	private boolean isStatic;
 	
-	public Field(String name, String type, String modifier) {
+	public Field(String name, String type, String modifier, boolean isStatic) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.modifier = modifier;
+		this.isStatic = isStatic;
 	}
 	public String getName() {
 		return name;
@@ -30,6 +32,13 @@ public class Field {
 		this.modifier = modifier;
 	}
 	
+	
+	public boolean isStatic() {
+		return isStatic;
+	}
+	public void setStatic(boolean isStatic) {
+		this.isStatic = isStatic;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

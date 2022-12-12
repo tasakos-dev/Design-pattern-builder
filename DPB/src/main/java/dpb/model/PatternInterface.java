@@ -3,43 +3,18 @@ package dpb.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatternInterface {
-	private String name;
-	private String type;
-	private List<Method> methods;
+public class PatternInterface extends PatternElement {
+
 	
 	private List<PatternClass> classesThatImplementsMe;
 
 	
 	public PatternInterface(String name, String type, List<Method> methods) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.methods = methods;
+		super(name, type, methods);
+
 		classesThatImplementsMe = new ArrayList<>();
 	}
 	
-	public String getName() {
-		return name;
-	}
-	public String getType() {
-		return type;
-	}
-
-	public List<Method> getMethods() {
-		return methods;
-	}
-
-	public void addMethods(List<Method> methods) {
-		for (Method method: methods) {
-			if (!this.methods.contains(method)) {
-				this.methods.add(method);
-			}
-		}
-		for (PatternClass patternClass : classesThatImplementsMe) {
-			patternClass.addMethods(methods);
-		}
-	}
 
 	public List<PatternClass> getClassesThatImplementsMe() {
 		return classesThatImplementsMe;
@@ -51,6 +26,22 @@ public class PatternInterface {
 	
 	public void addClass(PatternClass patternClass) {
 		classesThatImplementsMe.add(patternClass);
+	}
+	
+	@Override
+	public void addMethod(Method method) {
+		super.addMethod(method);
+		for (PatternClass classes: classesThatImplementsMe) {
+			classes.addMethod(method);
+		}
+	}
+	
+	@Override
+	public void removeMethod(Method method) {
+		super.removeMethod(method);
+		for (PatternClass classes: classesThatImplementsMe) {
+			classes.removeMethod(method);
+		}
 	}
 
 	

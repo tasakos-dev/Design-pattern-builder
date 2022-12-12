@@ -1,25 +1,23 @@
 package dpb.wizards.setupWizard;
 
 
-import java.util.List;
+
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dpb.model.Field;
-import dpb.model.Method;
+import dpb.model.PatternClass;
+import dpb.model.PatternElement;
+
 
 public class SetupWizard extends Wizard implements INewWizard {
 	private String module;
 	private FieldsSetup fieldsSetup;
 	private MethodsSetup methodsSetup;
-//	private MethodsSetup interfaceMethodsSetup;
-	
-	private List<Field> fields;
-	private List<Method> methods;
-//	private List<Method> interfaceMethods;
+	private ModuleSetup moduleSetup;
+
 	
 	
 
@@ -29,31 +27,28 @@ public class SetupWizard extends Wizard implements INewWizard {
 		
 	}
 
-	public SetupWizard(String className, String module) {
+	public SetupWizard(PatternElement patternElement, String module) {
 		setWindowTitle("New Wizard");
 		this.module = module;
-		
-		
-		if (module.equals("class")) {
-			fieldsSetup = new FieldsSetup(className);
-			methodsSetup = new ClassMethodsSetup(className);
-			fields = fieldsSetup.getFieldsList();
+	
+
+		moduleSetup = new ModuleSetup(patternElement, module);
+		if (module.equals("interface")) {
+			methodsSetup = new InterfaceMethodsSetup(patternElement);
+		} else {
+			fieldsSetup = new FieldsSetup((PatternClass) patternElement);
+			methodsSetup =  new ClassMethodsSetup(patternElement);
 		}
-		else {
-			methodsSetup = new InterfaceMethodsSetup(className);
-		}
 		
-		
-		methods = methodsSetup.getMethods();
-//		interfaceMethods = interfaceMethodsSetup.getMethods();
 	}
 
 	@Override
 	public void addPages() {
 		
+		
+		addPage(moduleSetup);
 		if (module.equals("class")) {
-			
-			
+
 			addPage(fieldsSetup);
 			addPage(methodsSetup);
 		}else {
@@ -66,25 +61,8 @@ public class SetupWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		if (module.equals("class"))
-			fields = fieldsSetup.getFieldsList();
-		methods = methodsSetup.getMethods();
 		return true;
 	}
-
-	public List<Field> getFields() {
-		return fields;
-	}
-
-	public List<Method> getMethods() {
-		return methods;
-	}
-
-	
-
-	
-	
-	
 	
 
 }

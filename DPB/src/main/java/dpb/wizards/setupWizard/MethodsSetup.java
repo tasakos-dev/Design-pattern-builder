@@ -1,7 +1,7 @@
 package dpb.wizards.setupWizard;
 
-import java.util.List;
 
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -9,9 +9,8 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import dpb.controller.IPatternManager;
-import dpb.controller.PatternManager;
 import dpb.model.Method;
+import dpb.model.PatternElement;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -25,16 +24,16 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public abstract class MethodsSetup extends WizardPage {
-	private List<Method> methods;
 	private Table table;
-	protected IPatternManager patternManager;
+	private PatternElement patternElement;
 
-	public MethodsSetup(String className) {
+
+	public MethodsSetup(PatternElement patternElement) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		patternManager = new PatternManager();
-		methods = getElements(className);
+		this.patternElement = patternElement;
+
 		
 	}
 
@@ -56,31 +55,43 @@ public abstract class MethodsSetup extends WizardPage {
 		addBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				methods.add(getNewMethod());
+				patternElement.addMethod(getNewMethod());
 				tableViewer.refresh();
 				
 			}
 		});
-		addBtn.setBounds(605, 23, 70, 24);
+		addBtn.setBounds(605, 23, 107, 24);
 		addBtn.setText("Add");
 		
 		Button deleteBtn = new Button(container, SWT.NONE);
 		deleteBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (Method method: methods) {
+				for (Method method: patternElement.getMethods()) {
 					if( tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex()).equals(method)) {
-						methods.remove(method);
-						break;
-						
+						patternElement.removeMethod(method);
+						break;					
 					}
 		
 				}
 				tableViewer.refresh();
 			}
 		});
-		deleteBtn.setBounds(605, 53, 70, 24);
+		deleteBtn.setBounds(605, 53, 108, 24);
 		deleteBtn.setText("Delete");
+		
+		Button editParametersBtn = new Button(container, SWT.NONE);
+		editParametersBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Method method = (Method) tableViewer.getElementAt(tableViewer.getTable().getSelectionIndex());
+				ParameterSetupWizard parameterSetupWizard = new ParameterSetupWizard(method);
+				WizardDialog wizardDialog = new WizardDialog(getShell(), parameterSetupWizard);
+				wizardDialog.open();
+			}
+		});
+		editParametersBtn.setBounds(606, 87, 111, 24);
+		editParametersBtn.setText("Edit Parameters");
 		
 
 		
@@ -220,17 +231,12 @@ public abstract class MethodsSetup extends WizardPage {
 		});
 		
 		
-		tableViewer.setInput(methods);
+		tableViewer.setInput(patternElement.getMethods());
 		
 		return tableViewer;
 
 	}
-	abstract protected List<Method> getElements(String name);
-	abstract protected Method getNewMethod();
 
-	public List<Method> getMethods() {
-		return methods;
-	}
 	
-	
+	abstract protected Method getNewMethod();
 }

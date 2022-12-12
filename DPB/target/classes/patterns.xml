@@ -1,27 +1,51 @@
 <GoF>
 	<category id="creational">
-		<pattern id="abstract factory">
-			<class id="test" implements="Itest">
-					<field id="myField">
-						<type>Object</type>
-					</field>
-					<field id="myField2">
-						<type>Object</type>
-					</field>
-					<field id="myField3">
-						<type>Object</type>
-					</field>
-					<method id="method0">
-						<type>Object</type>
-					</method>
-			</class>
-			<interface id="Itest">
-					<method id="method1">
+		<pattern id="Abstract factory">
+			<interface id="AbstractFactory">
+					<method id="create">
 						<type>Object</type>
 					</method>
 			</interface>
+			<class id="concreteFactoryA" implements="AbstractFactory">
+			</class>
+			<properties>
+				<preferedClassName>concrete</preferedClassName>
+			</properties>
 		</pattern>
-		<pattern id="parametirized factory">
+		<pattern id="Factory Method">
+		<interface id="FactoryMethod">
+					<method id="create">
+						<type>Object</type>
+					</method>
+			</interface>
+			<class id="concreteFactoryA" implements="FactoryMethod">
+			</class>
+			<properties>
+				<preferedClassName>concrete</preferedClassName>
+			</properties>
+		</pattern>
+		<pattern id="Parameterized factory">
+			<class id="Factory">
+					<method id="create">
+						<type>Object</type>
+					</method>
+			</class>	
+		</pattern>
+		<pattern id="Singleton">
+			<class id="Singleton">
+				<field id="instance" isStatic="true">
+					<type>Singleton</type>
+				</field>
+				<method id="getInstance" isStatic="true">
+					<type>Object</type>
+					<code>
+						if (instance == null) {
+							instance = new Singleton();
+						}
+						return instance;
+					</code>
+				</method>
+			</class>
 		</pattern>
 	</category>
 	<category id="creational1">

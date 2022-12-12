@@ -45,15 +45,25 @@ public class PatternGenerator implements IPatternGenerator {
 			implementString = " implements "+ patternClass.getImplementedInterface().getName();
 		buffer.append(patternClass.getType() + abstractClass + "class " +patternClass.getName()+implementString+"{\n\n");	
 		
+		
 		for (Field field: patternClass.getFields()) {
-			buffer.append("\t"+field.getModifier()+" "+field.getType()+" "+field.getName()+";\n");
+			String staticString = "";
+			if (field.isStatic()) {
+				staticString = "static ";
+			}
+					
+			buffer.append("\t"+field.getModifier()+" "+staticString+field.getType()+" "+field.getName()+";\n");
 		}
 		buffer.append("\n\n");
 		for (Method method: patternClass.getMethods()) {
 			if (method.isOverride()) {
 				buffer.append("\t@Override\n");
 			}
-			buffer.append("\t"+method.getModifier()+" "+method.getType()+" "+method.getName());
+			String staticString = "";
+			if (method.isStatic()) {
+				staticString = "static ";
+			}
+			buffer.append("\t"+method.getModifier()+" "+staticString+method.getType()+" "+method.getName());
 			buffer.append("(");
 			int numOfparameters = method.getParameters().size();
 			List<String[]> parameters = method.getParameters(); 

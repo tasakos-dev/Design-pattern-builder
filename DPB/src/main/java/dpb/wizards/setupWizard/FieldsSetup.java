@@ -7,10 +7,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import dpb.controller.IPatternManager;
-import dpb.controller.PatternManager;
 import dpb.model.Field;
-
+import dpb.model.PatternClass;
 
 import java.util.List;
 
@@ -26,17 +24,17 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class FieldsSetup extends WizardPage {
-//	private String className;
-	private IPatternManager patternManager;
 	private Table table;
 	private List<Field> fieldsList;
-	public FieldsSetup(String className) {
+	
+	
+	public FieldsSetup(PatternClass patternClass) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-//		this.className = className;
-		this.patternManager = new PatternManager();
-		fieldsList = patternManager.getClassFields(className);
+		
+		this.fieldsList = patternClass.getFields();
+
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class FieldsSetup extends WizardPage {
 		addBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fieldsList.add(new Field("fieldName", "Object", "private"));
+				fieldsList.add(new Field("fieldName", "Object", "private", false));
 				tableViewer.refresh();
 				
 			}

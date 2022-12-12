@@ -164,8 +164,14 @@ public class FileParser implements IFileParser {
 
 	@Override
 	public String[][] getInterfaceMethods(String interfaceName) {
+		NodeList interfaceList;
+		try {
+			interfaceList = (NodeList) getElementByTagAndId("interface", interfaceName).getElementsByTagName("method");
+		} catch (NullPointerException e) {
+			return null;
+		}
 		
-		NodeList interfaceList = (NodeList) getElementByTagAndId("interface", interfaceName).getElementsByTagName("method");
+		
 		int length = interfaceList.getLength();
 		String[][] interfaceMethods = new String[length][2];
 		
@@ -190,7 +196,7 @@ public class FileParser implements IFileParser {
 	}
 
 	@Override
-	public boolean isAbstract(String className) {
+	public boolean isAbstractClass(String className) {
 		Element patternClass = getElementByTagAndId("class", className);
 		if (patternClass.getAttribute("isAbstract") != null)
 			return patternClass.getAttribute("isAbstract").equals("true");
@@ -214,6 +220,40 @@ public class FileParser implements IFileParser {
 		return classFields;
 	}
 	
+	
+	@Override
+	public String getMethodCode(String method) {
+		Element patternClass = getElementByTagAndId("method", method);
+		if (patternClass.getElementsByTagName("code").item(0)!=null)
+			return patternClass.getElementsByTagName("code").item(0).getTextContent();
+		return null;
+		
+	}
+	@Override
+	public boolean isAbstractMethod(String method) {
+		Element patternClass = getElementByTagAndId("method", method);
+		System.err.println(patternClass);
+		if (patternClass.getAttribute("isAbstract") != null)
+			
+			return patternClass.getAttribute("isAbstract").equals("true");
+		return false;
+	}
+	
+	@Override
+	public boolean isStaticField(String name) {
+		Element patternClass = getElementByTagAndId("field", name);
+		if (patternClass.getAttribute("isStatic") != null)
+			return patternClass.getAttribute("isStatic").equals("true");
+		return false;
+	}
+	
+	@Override
+	public boolean isStaticMethod(String name) {
+		Element patternClass = getElementByTagAndId("method", name);
+		if (patternClass.getAttribute("isStatic") != null)
+			return patternClass.getAttribute("isStatic").equals("true");
+		return false;
+	}
 	
 
 }
