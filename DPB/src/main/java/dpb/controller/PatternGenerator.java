@@ -51,7 +51,7 @@ public class PatternGenerator implements IPatternGenerator {
 		buffer.append("\n\n");
 		for (Method method: patternClass.getMethods()) {
 			if (method.isOverride()) {
-				buffer.append("@Override\n");
+				buffer.append("\t@Override\n");
 			}
 			buffer.append("\t"+method.getModifier()+" "+method.getType()+" "+method.getName());
 			buffer.append("(");
@@ -88,7 +88,37 @@ public class PatternGenerator implements IPatternGenerator {
 
 	@Override
 	public void generateInterface(PatternInterface patternInterface) {
-		// TODO Auto-generated method stub
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("package "+selectedPackage.getElementName()+";\n\n");
+		
+		buffer.append(patternInterface.getType()+ " interface " +patternInterface.getName() + "{\n\n");	
+		
+		for (Method method: patternInterface.getMethods()) {
+			
+			buffer.append("\t"+method.getModifier()+" "+method.getType()+" "+method.getName());
+			buffer.append("(");
+			int numOfparameters = method.getParameters().size();
+			List<String[]> parameters = method.getParameters(); 
+			for (String[] parameter: parameters) {
+				String ending = "";
+				if (parameter[1].equals(parameters.get(numOfparameters-1))) {
+					ending = ", ";
+				}
+				buffer.append(parameter[0]+" "+parameter[1]+ending);
+			}
+			buffer.append(");\n");
+			
+			
+
+		}
+		buffer.append("}");
+		
+		try {
+			selectedPackage.createCompilationUnit(patternInterface.getName()+".java", buffer.toString(), false, null);
+		} catch (JavaModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
