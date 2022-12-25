@@ -225,7 +225,7 @@ public class FileParser implements IFileParser {
 	public String getMethodCode(String method) {
 		Element patternClass = getElementByTagAndId("method", method);
 		if (patternClass.getElementsByTagName("code").item(0)!=null)
-			return patternClass.getElementsByTagName("code").item(0).getTextContent();
+			return patternClass.getElementsByTagName("code").item(0).getTextContent().strip();
 		return null;
 		
 	}

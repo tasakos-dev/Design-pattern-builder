@@ -1,5 +1,6 @@
 package dpb.controller;
 
+
 import java.util.List;
 
 import org.eclipse.jdt.core.IPackageFragment;
@@ -74,12 +75,13 @@ public class PatternGenerator implements IPatternGenerator {
 				}
 				buffer.append(parameter[0]+" "+parameter[1]+ending);
 			}
-			buffer.append("){\n\t");
-			String code = method.getCode();
+			buffer.append("){\n");
+			String code = codeFormat(method.getCode());
 			if (code == null && !method.getType().equals("void")) {
 				code = "\treturn null;";				
 			}
-			buffer.append(code);
+			if (code != null)
+				buffer.append(code);
 			buffer.append("\n\t}\n");
 			
 
@@ -94,6 +96,18 @@ public class PatternGenerator implements IPatternGenerator {
 		}
 			
 
+	}
+	
+	private String codeFormat(String code) {
+		String formattedCode = "";
+		if (code == null) return formattedCode;
+		if (code.isBlank()) return formattedCode;
+		formattedCode = code.replace("\t", "");
+		formattedCode = formattedCode.replace("{\n", "{\n\t");
+		formattedCode = formattedCode.replace("\n", "\n\t\t");
+		formattedCode = "\t\t" + formattedCode;
+		
+		return formattedCode;
 	}
 
 	@Override
