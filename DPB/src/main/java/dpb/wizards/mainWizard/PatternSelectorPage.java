@@ -94,6 +94,7 @@ public class PatternSelectorPage extends WizardPage {
 	
 		
 	}
+	
 
 	@Override
 	public boolean canFlipToNextPage() {
