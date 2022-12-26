@@ -119,11 +119,8 @@ public class FileParser implements IFileParser {
 			Element element = (Element) patternList.item(i);
 			patternString = element.getAttribute("id");
 			patterns[i] = patternString;
-			
 		}
-		
 
-		
 		return patterns;
 	}
 
@@ -188,10 +185,18 @@ public class FileParser implements IFileParser {
 	
 
 	@Override
-	public String getImplementedInterface(String className) {
-		Element patternClass = getElementByTagAndId("class", className);
+	public String getImplementedInterface(String className, String pattern) {
+		NodeList patternClasses = getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
+		int length = patternClasses.getLength();
 		
-		return patternClass.getAttribute("implements");
+		
+		for (int i = 0; i < length; i++) {
+			Element element = (Element) patternClasses.item(i);
+			if (element.getAttribute("id").equals(className))
+				return element.getAttribute("implements");
+		}
+		
+		return null;
 		
 	}
 

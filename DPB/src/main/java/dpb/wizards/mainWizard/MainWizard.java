@@ -28,7 +28,10 @@ public class MainWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		PatternSelectorPage patternSelectorPage = new PatternSelectorPage();
+		patternMainSetupPage = new PatternMainSetupPage();
 		addPage(patternSelectorPage);
+		addPage(patternMainSetupPage);
+		
 			
 
 	}
@@ -59,11 +62,12 @@ public class MainWizard extends Wizard implements INewWizard {
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page instanceof PatternSelectorPage) {
-			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
-			patternMainSetupPage = new PatternMainSetupPage(patternSelectorPage.getPattern());
 			
-//			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
-			addPage(patternMainSetupPage);
+			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
+			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
+			patternMainSetupPage.addElements();
+
+			
 		}
 		return super.getNextPage(page);
 	}

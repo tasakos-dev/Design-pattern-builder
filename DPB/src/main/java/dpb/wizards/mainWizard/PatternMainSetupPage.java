@@ -43,15 +43,13 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 
 	
 
-	public PatternMainSetupPage(String pattern) {
+	public PatternMainSetupPage() {
 		super("wizardPage");
-		this.pattern = pattern;
 		patternManager = new PatternManager();
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
 		
-		classes = patternManager.getClasses(pattern);
-		interfaces = patternManager.getInterfaces();
+		
 		
 		
 		
@@ -81,22 +79,6 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		interfacesTreeItem = new TreeItem(tree, SWT.NONE);
 		interfacesTreeItem.setText("Interfaces");
 		interfacesTreeItem.setExpanded(true);
-		
-		
-		if (pattern != null) {
-			for (PatternClass patternClass: classes) {
-				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternClass.getName());
-			}
-			
-			for (PatternInterface patternInterface: interfaces) {
-				TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternInterface.getName());
-			}
-		}
-		
-		
-
 		
 		scrolledComposite.setContent(tree);
 		scrolledComposite.setMinSize(tree.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -199,7 +181,23 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	}
 
 	
-	
+	public void addElements() {
+		classes = patternManager.getClasses(pattern);
+		interfaces = patternManager.getInterfaces();
+		classesTreeItem.removeAll();
+		interfacesTreeItem.removeAll();
+//		if (pattern != null) {
+			for (PatternClass patternClass: classes) {
+				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
+				trtmNewTreeitem_1.setText(patternClass.getName());
+			}
+			
+			for (PatternInterface patternInterface: interfaces) {
+				TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
+				trtmNewTreeitem_1.setText(patternInterface.getName());
+			}
+//		}
+	}
 	
 
 	
