@@ -26,6 +26,7 @@ public class PatternGenerator implements IPatternGenerator {
 		IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection("org.eclipse.jdt.ui.PackageExplorer");
 		Object element = selection.getFirstElement();
 		selectedPackage = null;
+		System.err.println(element.getClass());
 		if (element instanceof IPackageFragment) {
 			selectedPackage = (IPackageFragment) element;
 		}
@@ -77,12 +78,12 @@ public class PatternGenerator implements IPatternGenerator {
 			}
 			buffer.append("){\n");
 			String code = codeFormat(method.getCode());
-			if (code == null && !method.getType().equals("void")) {
+			if (code.isBlank() && !method.getType().equals("void")) {
 				code = "\treturn null;";				
 			}
-			if (code != null)
-				buffer.append(code);
-			buffer.append("\n\t}\n");
+
+			buffer.append(code);
+			buffer.append("\t}\n");
 			
 
 		}
