@@ -92,7 +92,7 @@ public class PatternGenerator  implements IPatternGenerator {
 				buffer.append("){\n");
 				String code = codeFormat(method.getCode());
 				if (code.isBlank() && !method.getType().equals("void")) {
-					code = "\treturn null;\n";				
+					code = "\t\treturn null;\n";				
 				}
 	
 				buffer.append(code);
