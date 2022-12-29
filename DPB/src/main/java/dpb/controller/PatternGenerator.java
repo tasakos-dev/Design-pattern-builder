@@ -14,7 +14,7 @@ import dpb.model.Method;
 import dpb.model.PatternClass;
 import dpb.model.PatternInterface;
 
-public class PatternGenerator implements IPatternGenerator {
+public class PatternGenerator  implements IPatternGenerator {
 	private IPackageFragment selectedPackage;
 	
 	
@@ -43,9 +43,13 @@ public class PatternGenerator implements IPatternGenerator {
 			
 		}
 		String implementString = "";
+		String extendString = "";
 		if (patternClass.getImplementedInterface() != null)
 			implementString = " implements "+ patternClass.getImplementedInterface().getName();
-		buffer.append(patternClass.getType() + abstractClass + "class " +patternClass.getName()+implementString+"{\n\n");	
+		if (patternClass.getExtendedClass() != null)
+			implementString = " extends "+ patternClass.getExtendedClass().getName() + " ";
+		
+		buffer.append(patternClass.getType() + abstractClass + "class " +patternClass.getName()+extendString+implementString+"{\n\n");	
 		
 		
 		for (Field field: patternClass.getFields()) {
@@ -58,14 +62,19 @@ public class PatternGenerator implements IPatternGenerator {
 		}
 		buffer.append("\n\n");
 		for (Method method: patternClass.getMethods()) {
-			if (method.isOverride()) {
+			if (method.isOverride() || (method.isAbstract() && !method.getOwnerName().equals(patternClass.getName()))) {
 				buffer.append("\t@Override\n");
 			}
 			String staticString = "";
 			if (method.isStatic()) {
 				staticString = "static ";
 			}
-			buffer.append("\t"+method.getModifier()+" "+staticString+method.getType()+" "+method.getName());
+			String abstractString = " ";
+			if (method.isAbstract() && method.getOwnerName().equals(patternClass.getName())) {
+				abstractString = " abstract ";
+			}
+				
+			buffer.append("\t"+method.getModifier()+abstractString+staticString+method.getType()+" "+method.getName());
 			buffer.append("(");
 			int numOfparameters = method.getParameters().size();
 			List<String[]> parameters = method.getParameters(); 
@@ -76,14 +85,19 @@ public class PatternGenerator implements IPatternGenerator {
 				}
 				buffer.append(parameter[0]+" "+parameter[1]+ending);
 			}
-			buffer.append("){\n");
-			String code = codeFormat(method.getCode());
-			if (code.isBlank() && !method.getType().equals("void")) {
-				code = "\treturn null;";				
+			if (method.isAbstract() && method.getOwnerName().equals(patternClass.getName())) {
+				buffer.append(");\n");
 			}
-
-			buffer.append(code);
-			buffer.append("\t}\n");
+			else {
+				buffer.append("){\n");
+				String code = codeFormat(method.getCode());
+				if (code.isBlank() && !method.getType().equals("void")) {
+					code = "\treturn null;\n";				
+				}
+	
+				buffer.append(code);
+				buffer.append("\t}\n");
+			}
 			
 
 		}

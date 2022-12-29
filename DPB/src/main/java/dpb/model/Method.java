@@ -13,6 +13,7 @@ public class Method {
 	private boolean isOverride;
 	private boolean isAbstract;
 	private boolean isStatic;
+	private String ownerName;
 	
 	
 	public Method(String name, String type, String modifier, boolean isOverride, boolean isAbstract , List<String[]> parameters, boolean isStatic) {
@@ -62,8 +63,12 @@ public class Method {
 	}
 	
 	
-	
-	
+	public String getOwnerName() {
+		return ownerName;
+	}
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
 	public boolean isAbstract() {
 		return isAbstract;
 	}

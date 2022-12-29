@@ -12,6 +12,8 @@ public interface IFileParser {
 	public boolean isAbstractClass(String className);
 	public boolean isAbstractMethod(String method);
 	
+	public String getExtendedClass(String className, String pattern);
+	
 	public String[][] getClassMethods(String className);
 	public String[][] getInterfaceMethods(String interfaceName);
 	
@@ -20,6 +22,7 @@ public interface IFileParser {
 	public String[][] getClassFields(String className);
 	public boolean isStaticField(String name);
 	public boolean isStaticMethod(String name);
+	
 	
 	
 	

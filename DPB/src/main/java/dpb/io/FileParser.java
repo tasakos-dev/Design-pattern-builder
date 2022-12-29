@@ -207,6 +207,23 @@ public class FileParser implements IFileParser {
 			return patternClass.getAttribute("isAbstract").equals("true");
 		return false;
 	}
+	
+	
+
+	@Override
+	public String getExtendedClass(String className, String pattern) {
+		NodeList patternClasses = getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
+		int length = patternClasses.getLength();
+		
+		
+		for (int i = 0; i < length; i++) {
+			Element element = (Element) patternClasses.item(i);
+			if (element.getAttribute("id").equals(className))
+				return element.getAttribute("extends");
+		}
+		
+		return null;
+	}
 
 	@Override
 	public String[][] getClassFields(String className) {

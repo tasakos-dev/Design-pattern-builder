@@ -1,12 +1,12 @@
 <GoF>
 	<category id="creational">
 		<pattern id="Abstract factory">
-			<interface id="AbstractFactory">
-					<method id="create">
+			<class id="AbstractFactory" isAbstract="true">
+					<method id="create" isAbstract="true">
 						<type>Object</type>
 					</method>
-			</interface>
-			<class id="concreteFactoryA" implements="AbstractFactory">
+			</class>
+			<class id="concreteFactoryA" extends="AbstractFactory">
 			</class>
 			<properties>
 				<preferedClassName>concrete</preferedClassName>
