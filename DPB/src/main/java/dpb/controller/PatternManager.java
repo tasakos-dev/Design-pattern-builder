@@ -40,18 +40,19 @@ public class PatternManager implements IPatternManager {
 		List<PatternClass> classes = new ArrayList<>();
 		for (String className: fileParser.getClasses(pattern)) {
 			String interfaceName = fileParser.getImplementedInterface(className, pattern);
-			List<Method> interfaceMethods = getInterfaceMethods(interfaceName);
-			List<Method> classMethods = getClassMethods(className);
-			List<Field> classFields = getClassFields(className);
-			boolean isAbstract = fileParser.isAbstractClass(className);
+			List<Method> interfaceMethods = getInterfaceMethods(interfaceName, pattern);
+			List<Method> classMethods = getClassMethods(className, pattern);
+			List<Field> classFields = getClassFields(className, pattern);
+			boolean isAbstract = fileParser.isAbstractClass(className, pattern);
 			
 			PatternClass patternClass;
-			if (interfaceMethods != null && !interfaceName.isBlank()) {
+			if (interfaceName != null && !interfaceName.isBlank()) {
 				PatternInterface implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);		
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, implementedInterface);
-				patternClass.addMethods(implementedInterface.getMethods());
+				patternClass.overrideMethods(implementedInterface.getMethods());
 				implementedInterface.addClass(patternClass);
-				interfaces.add(implementedInterface);
+				if (!containsInterface(implementedInterface))
+					interfaces.add(implementedInterface);
 			} else {
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, null);
 			}
@@ -62,6 +63,15 @@ public class PatternManager implements IPatternManager {
 		}
 		setExtendedClass(classes, pattern);
 		return classes;
+	}
+	
+	private boolean containsInterface(PatternInterface patternInterface) {
+		for (PatternInterface pInterface : interfaces) {
+			if (pInterface.getName().equals(patternInterface.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void setExtendedClass(List<PatternClass> classes, String pattern) {
@@ -89,27 +99,33 @@ public class PatternManager implements IPatternManager {
 		return interfaces;
 	}
 
-	@Override
-	public List<Method> getClassMethods(String className) {
-		String[][] methods = fileParser.getClassMethods(className);
+	
+	private List<Method> getClassMethods(String className, String pattern) {
+		String[][] methods = fileParser.getClassMethods(className, pattern);
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = new Method(methods[i][1], methods[i][0], "public", false, fileParser.isAbstractMethod(methods[i][1]), null,fileParser.isStaticMethod(methods[i][1]));
-			method.setCode(fileParser.getMethodCode(methods[i][1]));
+			Method method = new Method(methods[i][1], methods[i][0], "public", false,
+									fileParser.isAbstractMethod(methods[i][1], className, pattern),
+									null,fileParser.isStaticMethod(methods[i][1], className, pattern));
+			method.setCode(fileParser.getMethodCode(methods[i][1], className, pattern));
 			method.setOwnerName(className);
+			String[][] parameters = fileParser.getMethodParameters(methods[0][1], className, pattern);
+			for (String[] parameter : parameters) {
+				method.addParameter(parameter);
+			}
 			methodList.add(method);
 		}
 		return methodList;
 	}
 
-	@Override
-	public List<Method> getInterfaceMethods(String interfaceName) {
-		String[][] methods = fileParser.getInterfaceMethods(interfaceName);
+	
+	private List<Method> getInterfaceMethods(String interfaceName, String pattern) {
+		String[][] methods = fileParser.getInterfaceMethods(interfaceName, pattern);
 		if (methods == null)
 			return null;
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = new Method(methods[i][1], methods[i][0], "public",true, false, null, fileParser.isStaticMethod(methods[i][1]));
+			Method method = new Method(methods[i][1], methods[i][0], "public",true, false, null, fileParser.isStaticMethod(methods[i][1], interfaceName, pattern));
 			method.setOwnerName(interfaceName);
 			methodList.add(method);
 			
@@ -118,12 +134,12 @@ public class PatternManager implements IPatternManager {
 		return methodList;
 	}
 
-	@Override
-	public List<Field> getClassFields(String className) {
-		String[][] fields = fileParser.getClassFields(className);
+	
+	private List<Field> getClassFields(String className, String pattern) {
+		String[][] fields = fileParser.getClassFields(className, pattern);
 		List<Field> fieldsList = new ArrayList<Field>();
 		for (int i = 0; i < fields.length; i++) {
-			fieldsList.add(new Field(fields[i][1], fields[i][0], "private", fileParser.isStaticField(fields[i][1])));
+			fieldsList.add(new Field(fields[i][1], fields[i][0], "private", fileParser.isStaticField(fields[i][1], className, pattern)));
 		}
 		return fieldsList;
 	}

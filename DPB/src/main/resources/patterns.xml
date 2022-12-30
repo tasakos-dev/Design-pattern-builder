@@ -1,35 +1,92 @@
 <GoF>
 	<category id="creational">
 		<pattern id="Abstract factory">
-			<class id="AbstractFactory" isAbstract="true">
-					<method id="create" isAbstract="true">
+			<interface id="AbstractFactory">
+					<method id="createProductA">
 						<type>Object</type>
 					</method>
-			</class>
-			<class id="concreteFactoryA" extends="AbstractFactory">
-			</class>
-			<properties>
-				<preferedClassName>concrete</preferedClassName>
-			</properties>
-		</pattern>
-		<pattern id="Factory Method">
-		<interface id="FactoryMethod">
-					<method id="create">
+					<method id="createProductB">
 						<type>Object</type>
 					</method>
 			</interface>
-			<class id="concreteFactoryA" implements="FactoryMethod">
+			<class id="concreteFactory1" implements="AbstractFactory">
+			</class>
+			<class id="concreteFactory2" implements="AbstractFactory">
 			</class>
 			<properties>
-				<preferedClassName>concrete</preferedClassName>
+				<preferedClassname>concreteFactory</preferedClassname>
 			</properties>
 		</pattern>
-		<pattern id="Parameterized factory">
-			<class id="Factory">
-					<method id="create">
+		<pattern id="Builder">
+			<interface id="Builder">
+				<method id="buildPart">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="ConcreteBuilder" implements="Builder"></class>
+		</pattern>
+		<pattern id="Factory Method">
+			<class id="Creator" isAbstract="true">
+					<method id="factoryMethod" isAbstract="true">
 						<type>Object</type>
 					</method>
+					<method id="anOperation">
+						<type>void</type>
+					</method>
+			</class>
+			<class id="concreteCreator" extends="FactoryMethod">
+			</class>
+			<properties>
+				<preferedClassName>concreteCreator</preferedClassName>
+			</properties>
+		</pattern>
+		<pattern id="Parameterized factory method">
+			<class id="Creator">
+					<method id="factoryMethod">
+						<type>Object</type>
+						<parameter id="id">
+							<type>int</type>
+						</parameter>
+					</method>
 			</class>	
+		</pattern>
+		<pattern id="Prototype">
+			<interface id="Prototype">
+				<method id="clone">
+					<type>Prototype</type>
+					<code>
+						return super.clone();
+					</code>
+				</method>
+			</interface>
+			<class id="ConcretePrototype1" implements="Prototype">
+				<method id="clone">
+					<type>Prototype</type>
+					<code>
+						try {
+							return (Prototype) super.clone();
+						} catch (CloneNotSupportedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						return null;
+					</code>
+				</method>
+			</class>
+			<class id="ConcretePrototype2" implements="Prototype">
+				<method id="clone">
+					<type>Prototype</type>
+					<code>
+						try {
+							return (Prototype) super.clone();
+						} catch (CloneNotSupportedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						return null;
+					</code>
+				</method>
+			</class>
 		</pattern>
 		<pattern id="Singleton">
 			<class id="Singleton">

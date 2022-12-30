@@ -48,13 +48,25 @@ public class PatternElement {
 		this.methods = methods;
 	}
 	
-	public void addMethods(List<Method> methods) {
-		for (Method method: methods) {
+	public void overrideMethods(List<Method> methods) {
+		for (int i = 0;i<methods.size();i++) {
+			Method method = methods.get(i);
 			if (!this.methods.contains(method)) {
 				this.methods.add(method);
+			} else {
+				searchMethod(method).setOverride(true);
 			}
 		}
 	}
+	private Method searchMethod(Method matchMethod) {
+		for (Method method: methods) {
+			if (method.equals(matchMethod)) {
+				return method;
+			}
+		}
+		return null;
+	}
+
 	
 	public void addMethod(Method method) {
 		this.methods.add(method);
