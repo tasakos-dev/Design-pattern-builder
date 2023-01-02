@@ -35,6 +35,7 @@ public class PatternGenerator  implements IPatternGenerator {
 
 	@Override
 	public void generateClass(PatternClass patternClass) {
+			
 		String abstractClass = " ";
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("package "+selectedPackage.getElementName()+";\n\n");
@@ -47,7 +48,7 @@ public class PatternGenerator  implements IPatternGenerator {
 		if (patternClass.getImplementedInterface() != null)
 			implementString = " implements "+ patternClass.getImplementedInterface().getName();
 		if (patternClass.getExtendedClass() != null)
-			implementString = " extends "+ patternClass.getExtendedClass().getName() + " ";
+			extendString = " extends "+ patternClass.getExtendedClass().getName() + " ";
 		
 		buffer.append(patternClass.getType() + abstractClass + "class " +patternClass.getName()+extendString+implementString+"{\n\n");	
 		
@@ -67,7 +68,7 @@ public class PatternGenerator  implements IPatternGenerator {
 			}
 			String staticString = "";
 			if (method.isStatic()) {
-				staticString = "static ";
+				staticString = " static ";
 			}
 			String abstractString = " ";
 			if (method.isAbstract() && method.getOwnerName().equals(patternClass.getName())) {
@@ -90,8 +91,9 @@ public class PatternGenerator  implements IPatternGenerator {
 			}
 			else {
 				buffer.append("){\n");
+				buffer.append("\t\t// TODO Auto-generated block\n");
 				String code = codeFormat(method.getCode());
-				if (code.isBlank() && !method.getType().equals("void")) {
+				if (code.isBlank() && (!method.getType().isEmpty() && !method.getType().equals("void"))) {
 					code = "\t\treturn null;";				
 				}
 	

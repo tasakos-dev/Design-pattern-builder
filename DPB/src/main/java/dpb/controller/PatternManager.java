@@ -104,12 +104,12 @@ public class PatternManager implements IPatternManager {
 		String[][] methods = fileParser.getClassMethods(className, pattern);
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = new Method(methods[i][1], methods[i][0], "public", false,
+			Method method = new Method(methods[i][2], methods[i][1], methods[i][0], false,
 									fileParser.isAbstractMethod(methods[i][1], className, pattern),
 									null,fileParser.isStaticMethod(methods[i][1], className, pattern));
-			method.setCode(fileParser.getMethodCode(methods[i][1], className, pattern));
+			method.setCode(fileParser.getMethodCode(methods[i][2], className, pattern));
 			method.setOwnerName(className);
-			String[][] parameters = fileParser.getMethodParameters(methods[0][1], className, pattern);
+			String[][] parameters = fileParser.getMethodParameters(methods[0][2], className, pattern);
 			for (String[] parameter : parameters) {
 				method.addParameter(parameter);
 			}

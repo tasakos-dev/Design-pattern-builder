@@ -59,7 +59,7 @@ public class FileParser implements IFileParser {
 		
 		for (int i = 0;i < length;i++) {
 			Element element = (Element) categoriesNodeList.item(i);
-			categoryString = element.getAttribute("id");
+			categoryString = element.getAttribute("id").strip();
 			categories[i] = categoryString;
 			
 		}
@@ -70,7 +70,6 @@ public class FileParser implements IFileParser {
 
 	@Override
 	public String[] getPatternsOfCategory(String category) {
-//		System.err.println(patternsDoc.getElementsByTagName("category"));
 		NodeList patternList = (NodeList) getElementByTagAndId("category", category).getElementsByTagName("pattern");
 		int length = patternList.getLength();
 		String[] patterns = new String[length];
@@ -78,7 +77,7 @@ public class FileParser implements IFileParser {
 		
 		for (int i = 0;i < length;i++) {
 			Element element = (Element) patternList.item(i);
-			patternString = element.getAttribute("id");
+			patternString = element.getAttribute("id").strip();
 			patterns[i] = patternString;
 			
 		}
@@ -117,7 +116,7 @@ public class FileParser implements IFileParser {
 		
 		for (int i = 0;i < length;i++) {
 			Element element = (Element) patternList.item(i);
-			patternString = element.getAttribute("id");
+			patternString = element.getAttribute("id").strip();
 			patterns[i] = patternString;
 		}
 
@@ -133,7 +132,7 @@ public class FileParser implements IFileParser {
 		
 		for (int i = 0;i < length;i++) {
 			Element element = (Element) patternList.item(i);
-			patternString = element.getAttribute("id");
+			patternString = element.getAttribute("id").strip();
 			patterns[i] = patternString;
 			
 		}
@@ -151,13 +150,16 @@ public class FileParser implements IFileParser {
 		
 		NodeList methods = (NodeList) element.getElementsByTagName("method");
 		int length = methods.getLength();
-		String[][] classMethods = new String[length][2];
+		String[][] classMethods = new String[length][3];
 		
 		for (int j = 0; j<length;j++) {
 			Element method =(Element) methods.item(j);
-			String name = method.getAttribute("id");
-			String type = method.getElementsByTagName("type").item(0).getTextContent();
-			classMethods[j] = new String[] {type, name};
+			String visibility = method.getAttribute("visibility").strip();
+			if (visibility.isBlank()) visibility = "public";
+			System.err.println(visibility);
+			String name = method.getAttribute("id").strip();
+			String type = method.getElementsByTagName("type").item(0).getTextContent().strip();
+			classMethods[j] = new String[] {visibility, type, name};
 		}
 		
 		return classMethods;
@@ -183,8 +185,8 @@ public class FileParser implements IFileParser {
 		String[][] interfaceMethods =  new String[length][2];
 		for (int j = 0;j<length;j++) {
 			Element method = (Element) methods.item(j);
-			String name = method.getAttribute("id");
-			String type = method.getElementsByTagName("type").item(0).getTextContent();
+			String name = method.getAttribute("id").strip();
+			String type = method.getElementsByTagName("type").item(0).getTextContent().strip();
 			interfaceMethods[j] = new String[] {type, name};					
 		}
 		
@@ -195,15 +197,14 @@ public class FileParser implements IFileParser {
 	public String getImplementedInterface(String className, String pattern) {
 		NodeList patternClasses = getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
 		int length = patternClasses.getLength();
-		
-		
+
 		for (int i = 0; i < length; i++) {
 			Element element = (Element) patternClasses.item(i);
 			if (element.getAttribute("id").equals(className))
-				return element.getAttribute("implements");
+				return element.getAttribute("implements").strip();
 		}
 		
-		return null;
+		return "";
 		
 	}
 
@@ -222,7 +223,7 @@ public class FileParser implements IFileParser {
 	public String getExtendedClass(String className, String pattern) {
 		Element element = getPatternElement(className, pattern, "class");
 		if (element != null) 
-			return element.getAttribute("extends");
+			return element.getAttribute("extends").strip();
 		return "";
 	}
 
@@ -237,8 +238,8 @@ public class FileParser implements IFileParser {
 
 		for (int i = 0; i < length; i++) {
 			Element field = (Element) fields.item(i);
-			String name = field.getAttribute("id");
-			String type = field.getElementsByTagName("type").item(0).getTextContent();
+			String name = field.getAttribute("id").strip();
+			String type = field.getElementsByTagName("type").item(0).getTextContent().strip();
 			classFields[i] = new String[] {type, name};
 		}
 		
@@ -307,8 +308,8 @@ public class FileParser implements IFileParser {
 		String[][] parameters = new String[length][2];
 		for (int i = 0;i<length;i++) {
 			Element parameter = (Element) parametersList.item(i);
-			String name = parameter.getAttribute("id");
-			String type = parameter.getElementsByTagName("type").item(0).getTextContent();
+			String name = parameter.getAttribute("id").strip();
+			String type = parameter.getElementsByTagName("type").item(0).getTextContent().strip();
 			parameters[i][0] = type;
 			parameters[i][1] = name;
 		}

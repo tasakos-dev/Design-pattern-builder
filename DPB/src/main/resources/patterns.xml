@@ -1,21 +1,31 @@
+
 <GoF>
 	<category id="creational">
-		<pattern id="Abstract factory">
+		<pattern id="Abstract Factory">
 			<interface id="AbstractFactory">
 					<method id="createProductA">
-						<type>Object</type>
+						<type>ProductA</type>
 					</method>
 					<method id="createProductB">
-						<type>Object</type>
+						<type>ProductB</type>
 					</method>
 			</interface>
-			<class id="concreteFactory1" implements="AbstractFactory">
-			</class>
-			<class id="concreteFactory2" implements="AbstractFactory">
-			</class>
-			<properties>
-				<preferedClassname>concreteFactory</preferedClassname>
-			</properties>
+			<interface id="ProductA">
+				<method id="doStuff">
+					<type>void</type>
+				</method>
+			</interface>
+			<interface id="ProductB">
+				<method id="doStuff">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="concreteFactory1" implements="AbstractFactory"></class>
+			<class id="concreteFactory2" implements="AbstractFactory"></class>
+			<class id="concreteProductA1" implements="ProductA"></class>
+			<class id="concreteProductA2" implements="ProductA"></class>
+			<class id="concreteProductB1" implements="ProductB"></class>
+			<class id="concreteProductB2" implements="ProductB"></class>
 		</pattern>
 		<pattern id="Builder">
 			<interface id="Builder">
@@ -24,31 +34,58 @@
 				</method>
 			</interface>
 			<class id="ConcreteBuilder" implements="Builder"></class>
+			<class id="Director">
+				<field id="builder">
+					<type>Builder</type>
+				</field>
+				<method id="construct">
+					<type>void</type>
+					<code>
+						/*
+							for all objects in structure {
+								builder.buildPart();
+							}
+						*/
+						
+					</code>
+				</method>
+			</class>
 		</pattern>
 		<pattern id="Factory Method">
+			<interface id="Product">
+				<method id="doStuff">
+					<type>void</type>
+				</method>
+			</interface>
 			<class id="Creator" isAbstract="true">
 					<method id="factoryMethod" isAbstract="true">
-						<type>Object</type>
+						<type>Product</type>
 					</method>
 					<method id="anOperation">
 						<type>void</type>
 					</method>
 			</class>
-			<class id="concreteCreator" extends="FactoryMethod">
-			</class>
+			<class id="ConcreteCreator" extends="Creator"></class>
+			<class id="ConcreteProduct" implements="Product"></class>
 			<properties>
 				<preferedClassName>concreteCreator</preferedClassName>
 			</properties>
 		</pattern>
-		<pattern id="Parameterized factory method">
+		<pattern id="Parameterized Factory Method">
+			<interface id="Product">
+				<method id="doStuff">
+					<type>void</type>
+				</method>
+			</interface>
 			<class id="Creator">
 					<method id="factoryMethod">
-						<type>Object</type>
+						<type>Product</type>
 						<parameter id="id">
 							<type>int</type>
 						</parameter>
 					</method>
 			</class>	
+			<class id="ConcreteProduct" implements="Product"></class>
 		</pattern>
 		<pattern id="Prototype">
 			<interface id="Prototype">
@@ -66,7 +103,6 @@
 						try {
 							return (Prototype) super.clone();
 						} catch (CloneNotSupportedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						return null;
@@ -80,10 +116,23 @@
 						try {
 							return (Prototype) super.clone();
 						} catch (CloneNotSupportedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						return null;
+					</code>
+				</method>
+			</class>
+			<class>
+				<field id="prototype">
+					<type>
+						Prototype
+					</type>
+				</field>
+				<method id="operation">
+					<type>void</type>
+					<code>
+						Prototype p = null;
+						p = prototype.clone();
 					</code>
 				</method>
 			</class>
@@ -93,6 +142,9 @@
 				<field id="instance" isStatic="true">
 					<type>Singleton</type>
 				</field>
+				<method id="Singleton" visibility="private">
+					<type></type>
+				</method>
 				<method id="getInstance" isStatic="true">
 					<type>Object</type>
 					<code>
@@ -105,8 +157,208 @@
 			</class>
 		</pattern>
 	</category>
-	<category id="creational1">
-		<pattern id="parametirized1 factory">
+	<category id="Structural">
+		<pattern id="Object Adapter">
+			<interface id="Target">
+				<method id="request">
+					<type>void</type>
+				</method>				
+			</interface>
+			<class id="Adapter" implements="Target">
+				<field id="adaptee"><type>Adaptee</type></field>
+				<method id="request">
+					<type>void</type>
+					<code>
+						adaptee.specificRequest();
+					</code>
+				</method>	
+			</class>
+			<class id="Adaptee">
+				<method id="specificRequest">
+					<type>void</type>
+				</method>	
+			</class>
+			<class id="client">
+				<field id="target">
+					<type>Target</type>
+				</field>
+			</class>
 		</pattern>
+		<pattern id="Class Adapter">
+			<interface id="Target">
+				<method id="request">
+					<type>void</type>
+				</method>				
+			</interface>
+			<class id="Adapter" implements="Target" extends="Adaptee">
+				<method id="request">
+					<type>void</type>
+					<code>
+						super.specificRequest();
+					</code>
+				</method>	
+			</class>
+			<class id="Adaptee">
+				<method id="specificRequest">
+					<type>void</type>
+				</method>	
+			</class>
+			<class id="client">
+				<field id="target">
+					<type>Target</type>
+				</field>
+			</class>
+		</pattern>
+		<pattern id="Bridge">
+			<interface id="Implementor">
+				<method id="operationImp">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="Abstraction">
+				<field id="imp">
+					<type>Implementor</type>
+				</field>
+				<method id="operation">
+					<type>void</type>
+					<code>
+						imp.operationImp();
+					</code>
+				</method>
+			</class>
+			<class id="RefinedAbstraction" extends="Abstraction"></class>
+			<class id="ConcreteImplementorA" implements="Implementor"></class>
+			<class id="ConcreteImplementorA" implements="Implementor"></class>			
+		</pattern>
+		<pattern id="Composite">
+			<interface id="Component">
+				<method id="operation">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="Leaf" implements="Component"></class>
+			<class id="Composite" implements="Component">
+				<field id="children"><type>Component[]</type></field>
+				<method id="add">
+					<type>void</type>
+					<parameter id="c"><type>Component</type></parameter>
+				</method>
+				<method id="remove">
+					<type>void</type>
+					<parameter id="c"><type>Component</type></parameter>
+				</method>
+				<method id="getChildren"><type>Component</type></method>
+			</class>
+		</pattern>
+		<pattern id="Decorator">
+			<interface id="Component">
+				<method id="operation"><type>void</type></method>
+			</interface>
+			<class id="ConcreteComponent" implements="Component"></class>
+			<class id="Decorator" implements="Component" isAbstract="true">
+				<field id="component"><type>Component</type></field>
+				<method id="operation">
+					<type>void</type>
+					<code>component.operation();</code>
+				</method>
+			</class>
+			<class id="ConcreteDecoratorA" extends="Decorator">
+				<method id="addedBehavior"><type>void</type></method>
+				<method id="operation">
+					<type>void</type>
+					<code>
+						super.operation();
+						addedBehavior();
+					</code>
+				</method>
+			</class>
+			<class id="ConcreteDecoratorB" extends="Decorator">
+				<field id="addedState"><type>Object</type></field>
+			</class>
+		</pattern>
+		<pattern id="Facade">
+			<class id="Subsystem1">
+				<method id="operation">
+					<type>void</type>
+				</method>
+			</class>
+			<class id="Facade">
+				<field id="subsystem"><type>Subsystem1</type></field>
+				<method id="subsystemOperation">
+					<type>void</type>
+					<code>
+						subsystem.operation();
+					</code>
+					</method>
+			</class>
+		</pattern>
+		<pattern id="Flyweight">
+			<class id="Flyweight" isAbstract="true">
+				<field id="repeatingState"><type>Object</type></field>
+				<method id="operation" isAbstract="true">
+					<type>void</type>
+					<parameter id="extinsicState"><type>Object</type></parameter>
+				</method>
+			</class>
+			<class id="FlyweightFactory">
+				<field id="flyweights"><type>Flyweight[]</type></field>
+				<method id="getFlyweight">
+					<type>Flyweight</type>
+					<parameter id="key"><type>int</type></parameter>
+					<code>
+						if (flyweights[key] == null) {
+							flyweights[key] = new Flyweight();
+						}
+						return flyweights[key];
+					</code>
+				</method>
+			</class>
+			<class id="ConcreteFlyweight" extends="Flyweight">
+				<field id="intrinsicState"><type>Object</type></field>
+			</class>
+			<class id="UnsharedConcreteFlyweight" extends="Flyweight">
+				<field id="allState"><type>Object</type></field>
+			</class>
+		</pattern>
+		<pattern id="Proxy">
+			<interface id="Subject">
+				<method id="request">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="Proxy" implements="Subject">
+				<field id="realService"><type>RealService</type></field>
+				<method id="checkAccess"><type>boolean</type>
+					<code>
+						return false;
+					</code>
+				</method>
+				<method id="request">
+					<type>void</type>
+					<code>
+						if (checkAccess()){
+							realService.request();
+						}
+					</code>
+				</method>
+			</class>
+			<class id="RealService">
+				<method id="request"><type>void</type></method>
+			</class>
+		</pattern>
+		
+	</category>
+	<category id="Behavioral">
+		<pattern id="Chain of Responsibility"></pattern>
+		<pattern id="Command"></pattern>
+		<pattern id="Interpeter"></pattern>
+		<pattern id="Iterator"></pattern>
+		<pattern id="Mediator"></pattern>
+		<pattern id="Memento"></pattern>
+		<pattern id="Observer"></pattern>
+		<pattern id="State"></pattern>
+		<pattern id="Strategy"></pattern>
+		<pattern id="Template Method"></pattern>
+		<pattern id="Visitor"></pattern>
 	</category>
 </GoF>
