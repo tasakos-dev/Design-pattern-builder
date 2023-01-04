@@ -45,7 +45,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 
 	public PatternMainSetupPage() {
 		super("wizardPage");
-		patternManager = new PatternManager();
+		patternManager = (PatternManager) PatternManager.getInstance();
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
 		

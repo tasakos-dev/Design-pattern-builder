@@ -9,6 +9,8 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
 import dpb.model.Method;
 import dpb.model.PatternElement;
 
@@ -26,15 +28,14 @@ import org.eclipse.swt.events.SelectionEvent;
 public abstract class MethodsSetup extends WizardPage {
 	private Table table;
 	private PatternElement patternElement;
+	private TableViewer tableViewer;
 
 
 	public MethodsSetup(PatternElement patternElement) {
 		super("wizardPage");
 		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setDescription("Wizard Page description");	
 		this.patternElement = patternElement;
-
-		
 	}
 
 	@Override
@@ -47,9 +48,9 @@ public abstract class MethodsSetup extends WizardPage {
 		scrolledComposite.setBounds(10, 10, 589, 324);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
+		tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 
-		
-		TableViewer tableViewer = buildTable(scrolledComposite);
+		buildTable(scrolledComposite);
 		
 		Button addBtn = new Button(container, SWT.NONE);
 		addBtn.addSelectionListener(new SelectionAdapter() {
@@ -98,8 +99,8 @@ public abstract class MethodsSetup extends WizardPage {
 	}
 	
 	private TableViewer buildTable(ScrolledComposite scrolledComposite) {
+		IPatternManager patternManager = (PatternManager) PatternManager.getInstance(); 
 		
-		TableViewer tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -208,7 +209,8 @@ public abstract class MethodsSetup extends WizardPage {
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
 				Method method = (Method) arg0;
-				method.setName(arg1.toString());
+//				method.setName(arg1.toString());
+				patternManager.updateMethodName(arg1.toString(), method);
 				tableViewer.update(arg0, null);
 				
 			}
@@ -231,10 +233,13 @@ public abstract class MethodsSetup extends WizardPage {
 		});
 		
 		
-		tableViewer.setInput(patternElement.getMethods());
+		
 		
 		return tableViewer;
 
+	}
+	public void addMethods() {
+		tableViewer.setInput(patternElement.getMethods());
 	}
 
 	

@@ -35,7 +35,7 @@ public class ModuleSetup extends WizardPage {
 		setDescription("Wizard Page description");
 		this.patternElement = patternElement;
 		this.module = module;
-		this.patternManager = new PatternManager();
+		this.patternManager = (PatternManager) PatternManager.getInstance();
 
 	}
 
@@ -89,9 +89,8 @@ public class ModuleSetup extends WizardPage {
 		
 		
 	}
-	@Override
-	public IWizardPage getNextPage() {
-		patternElement.setName(text.getText());
+	public void finish() {
+		patternManager.updateClassName(text.getText(), patternElement);
 		if (module.equals("class")) {
 			PatternClass patternClass = (PatternClass) patternElement;
 			patternClass.setAbstract(btnCheckButton.getSelection());
@@ -104,7 +103,5 @@ public class ModuleSetup extends WizardPage {
 			}
 			
 		}
-	
-		return super.getNextPage();
 	}
 }

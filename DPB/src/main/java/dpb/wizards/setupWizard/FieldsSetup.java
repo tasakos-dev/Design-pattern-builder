@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
+import dpb.controller.IPatternManager;
+import dpb.controller.PatternManager;
 import dpb.model.Field;
 import dpb.model.PatternClass;
 
@@ -26,28 +28,31 @@ import org.eclipse.swt.events.SelectionEvent;
 public class FieldsSetup extends WizardPage {
 	private Table table;
 	private List<Field> fieldsList;
+	private PatternClass patternClass;
+	private TableViewer tableViewer;
 	
 	
 	public FieldsSetup(PatternClass patternClass) {
+		
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		
-		this.fieldsList = patternClass.getFields();
-
+		this.patternClass = patternClass;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
+		
 
 		setControl(container);
 		ScrolledComposite scrolledComposite = new ScrolledComposite(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setBounds(10, 10, 480, 296);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
+		tableViewer  = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		
-		TableViewer tableViewer = buildTable(scrolledComposite);
+		buildTable();
 		
 		scrolledComposite.setContent(table);
 		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -83,8 +88,8 @@ public class FieldsSetup extends WizardPage {
 		deleteBtn.setText("Delete");
 	}
 	
-	private TableViewer buildTable(ScrolledComposite scrolledComposite) {
-		TableViewer tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+	private void buildTable() {
+		IPatternManager patternManager = (PatternManager) PatternManager.getInstance(); 
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -202,7 +207,8 @@ public class FieldsSetup extends WizardPage {
 			protected void setValue(Object arg0, Object arg1) {
 				
 				Field field = (Field) arg0;
-				field.setName(arg1.toString());
+//				field.setName(arg1.toString());
+				patternManager.updateFieldName(arg1.toString(), field, patternClass);
 				tableViewer.update(arg0, null);
 				
 			}
@@ -225,17 +231,12 @@ public class FieldsSetup extends WizardPage {
 				return true;
 			}
 		});
-
-		 
 		
-		
-		tableViewer.setInput(fieldsList);
-		
-		return tableViewer;
 	}
-
-	public List<Field> getFieldsList() {
-		return fieldsList;
+	
+	public void addFields() {
+		fieldsList = patternClass.getFields();
+		tableViewer.setInput(fieldsList);
 	}
 	
 	

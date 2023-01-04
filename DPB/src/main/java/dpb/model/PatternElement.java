@@ -2,6 +2,7 @@ package dpb.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PatternElement {
 	private String name;
@@ -75,6 +76,21 @@ public class PatternElement {
 	public void removeMethod(Method method) {
 		this.methods.remove(method);
 	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PatternElement other = (PatternElement) obj;
+		return Objects.equals(name, other.name);
+	}
+	
 	
 
 	

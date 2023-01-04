@@ -27,7 +27,7 @@ public class PatternSelectorPage extends WizardPage {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.patternManager = new PatternManager();
+		this.patternManager = (PatternManager) PatternManager.getInstance();
 		nextPage = false;
 	}
 

@@ -8,19 +8,28 @@ import dpb.io.IFileParser;
 import dpb.model.Field;
 import dpb.model.Method;
 import dpb.model.PatternClass;
+import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
 
 
 public class PatternManager implements IPatternManager {
 	private IFileParser fileParser;
 	private List<PatternInterface> interfaces;
+	private List<PatternClass> classes;
+	private static IPatternManager instance = null;
 	
+	public static IPatternManager getInstance() {
+		if (instance == null)
+			instance = new PatternManager();
+		return instance;
+	}
 	
 
-	public PatternManager() {
+	private PatternManager() {
 		super();
 		fileParser = new FileParser();
 		interfaces = new ArrayList<>();
+		classes = new ArrayList<>();
 	}
 
 	@Override
@@ -37,7 +46,6 @@ public class PatternManager implements IPatternManager {
 	public List<PatternClass> getClasses(String pattern) {
 		// TODO maybe discover interfaces on the other method 
 		interfaces.clear();
-		List<PatternClass> classes = new ArrayList<>();
 		for (String className: fileParser.getClasses(pattern)) {
 			String interfaceName = fileParser.getImplementedInterface(className, pattern);
 			List<Method> interfaceMethods = getInterfaceMethods(interfaceName, pattern);
@@ -58,7 +66,6 @@ public class PatternManager implements IPatternManager {
 			}
 			
 			classes.add(patternClass);
-			
 			
 		}
 		setExtendedClass(classes, pattern);
@@ -144,4 +151,61 @@ public class PatternManager implements IPatternManager {
 		return fieldsList;
 	}
 
+	@Override
+	public void updateClassName(String newName, PatternElement element) {
+		String oldName = element.getName();
+		element.setName(newName);
+		for (PatternClass patternClass: classes) {
+			List<Field> fields = patternClass.getFields();
+			List<Method> methods = patternClass.getMethods();
+			
+			for (Field field : fields) {
+				if (field.getType().equals(oldName)) {
+					field.setType(newName);
+				}
+			}
+			
+			for (Method method : methods) {
+				String code = method.getCode();
+				if (code != null) { 
+					String newCode = code.replace(oldName, newName);
+					method.setCode(newCode);
+				}
+				if(method.getName().equals(oldName)) method.setName(newName);	
+				if (method.getType().equals(oldName)) method.setType(newName);
+			}
+		}
+		
+		
+	}
+	
+	private void updateNameRefences(String oldName, String newName, PatternClass patternClass) {
+			List<Method> methods = patternClass.getMethods();
+			
+			for (Method method : methods) {
+				String code = method.getCode();
+				if (code != null) { 
+					String newCode = code.replace(oldName, newName);
+					method.setCode(newCode);
+				}
+			}
+	}
+	
+	@Override
+	public void updateFieldName(String newName, Field field, PatternClass patternClass) {
+		String oldName = field.getName();
+		field.setName(newName);
+		updateNameRefences(oldName, newName, patternClass);
+		
+	}
+
+	@Override
+	public void updateMethodName(String newName, Method method) {
+		String oldName = method.getName();
+		method.setName(newName);
+		for (PatternClass patternClass : classes)
+			updateNameRefences(oldName, newName, patternClass);
+		
+		
+	}
 }
