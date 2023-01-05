@@ -46,6 +46,7 @@ public class PatternManager implements IPatternManager {
 	public List<PatternClass> getClasses(String pattern) {
 		// TODO maybe discover interfaces on the other method 
 		interfaces.clear();
+		classes.clear();
 		for (String className: fileParser.getClasses(pattern)) {
 			String interfaceName = fileParser.getImplementedInterface(className, pattern);
 			List<Method> interfaceMethods = getInterfaceMethods(interfaceName, pattern);

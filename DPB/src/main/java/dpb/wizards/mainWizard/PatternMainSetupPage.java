@@ -183,23 +183,18 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	
 	public void addElements() {
 		classes = patternManager.getClasses(pattern);
+		System.err.println(classes.size());
 		interfaces = patternManager.getInterfaces();
 		classesTreeItem.removeAll();
 		interfacesTreeItem.removeAll();
-//		if (pattern != null) {
-			for (PatternClass patternClass: classes) {
-				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternClass.getName());
-			}
-			
-			for (PatternInterface patternInterface: interfaces) {
-				TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(patternInterface.getName());
-			}
-//		}
+		for (PatternClass patternClass: classes) {
+			TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
+			trtmNewTreeitem_1.setText(patternClass.getName());
+		}
+		
+		for (PatternInterface patternInterface: interfaces) {
+			TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
+			trtmNewTreeitem_1.setText(patternInterface.getName());
+		}
 	}
-	
-
-	
-	
 }

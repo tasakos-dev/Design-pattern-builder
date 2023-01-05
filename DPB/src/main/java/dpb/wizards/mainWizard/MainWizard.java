@@ -38,7 +38,7 @@ public class MainWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public boolean canFinish() {
-		return patternMainSetupPage != null;
+		return patternMainSetupPage.getClasses().size() > 0;
 		
 	}
 

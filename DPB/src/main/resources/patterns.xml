@@ -122,7 +122,7 @@
 					</code>
 				</method>
 			</class>
-			<class>
+			<class id="Client">
 				<field id="prototype">
 					<type>
 						Prototype
