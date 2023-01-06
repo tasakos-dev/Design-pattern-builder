@@ -18,7 +18,7 @@ public class SetupWizard extends Wizard implements INewWizard {
 	private FieldsSetup fieldsSetup;
 	private MethodsSetup methodsSetup;
 	private ModuleSetup moduleSetup;
-	private PatternElement patternElement;
+//	private PatternElement patternElement;
 
 	
 	
@@ -32,7 +32,7 @@ public class SetupWizard extends Wizard implements INewWizard {
 	public SetupWizard(PatternElement patternElement, String module) {
 		setWindowTitle("New Wizard");
 		this.module = module;
-		this.patternElement = patternElement;
+//		this.patternElement = patternElement;
 
 		moduleSetup = new ModuleSetup(patternElement, module);
 		if (module.equals("interface")) {
@@ -46,23 +46,18 @@ public class SetupWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void addPages() {
-		
-		
 		addPage(moduleSetup);
 		if (module.equals("class")) {
-
 			addPage(fieldsSetup);
 			addPage(methodsSetup);
-		}else {
-			
+		} else {	
 			addPage(methodsSetup);
-		}
-		
-		
+		}		
 	}
 
 	@Override
 	public boolean performFinish() {
+		moduleSetup.finish();
 		return true;
 	}
 	
@@ -70,10 +65,13 @@ public class SetupWizard extends Wizard implements INewWizard {
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page instanceof ModuleSetup) {
 			moduleSetup.finish();
-			fieldsSetup.addFields();
+			if (fieldsSetup != null) { 
+				fieldsSetup.addFields();
+			} else {
+				methodsSetup.addMethods();
+			}
 		}
-		
-		if (page instanceof FieldsSetup) {
+		else if (page instanceof FieldsSetup) {
 			methodsSetup.addMethods();
 		} 
 		return super.getNextPage(page);

@@ -91,17 +91,17 @@ public class ModuleSetup extends WizardPage {
 	}
 	public void finish() {
 		patternManager.updateClassName(text.getText(), patternElement);
-		if (module.equals("class")) {
-			PatternClass patternClass = (PatternClass) patternElement;
-			patternClass.setAbstract(btnCheckButton.getSelection());
-			for (PatternInterface patternInterface: patternManager.getInterfaces()) {
-				if (patternInterface.getName().equals(combo.getText())) {
-					patternInterface.addClass(patternClass);
-					patternClass.setImplementedInterface(patternInterface);
-					break;
-				} 
-			}
-			
-		}
+//		if (module.equals("class")) {
+//			PatternClass patternClass = (PatternClass) patternElement;
+//			patternClass.setAbstract(btnCheckButton.getSelection());
+//			for (PatternInterface patternInterface: patternManager.getInterfaces()) {
+//				if (patternInterface.getName().equals(combo.getText())) {
+//					patternInterface.addClass(patternClass);
+//					patternClass.setImplementedInterface(patternInterface);
+//					break;
+//				} 
+//			}
+//			
+//		}
 	}
 }

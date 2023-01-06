@@ -357,8 +357,47 @@
 		<pattern id="Memento"></pattern>
 		<pattern id="Observer"></pattern>
 		<pattern id="State"></pattern>
-		<pattern id="Strategy"></pattern>
-		<pattern id="Template Method"></pattern>
+		<pattern id="Strategy">
+			<interface id="Strategy">
+				<method id="algorithmInterface">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="ConcreteStrategyA" implements="Strategy"></class>
+			<class id="ConcreteStrategyB" implements="Strategy"></class>
+			<class id="ConcreteStrategyC" implements="Strategy"></class>
+			<class id="Context">
+				<field id="strategy">
+					<type>Strategy</type>
+				</field>
+				<method id="contextInterface">
+					<type>void</type>
+					</method>
+			</class>
+		</pattern>
+		<pattern id="Template Method">
+			<class id="AbstractClass" isAbstract="true">
+				<method id="templateMethod">
+					<type>void</type>
+					<code>
+						primitiveOperation1();
+						primitiveOperation2();
+						primitiveOperation3();
+					</code>
+				</method>
+				<method id="primitiveOperation1" visibility="private">
+					<type>void</type>
+				</method>
+				<method id="primitiveOperation2" visibility="protected" isAbstract="true">
+					<type>void</type>
+				</method>
+				<method id="primitiveOperation3" visibility="protected" isAbstract="true">
+					<type>void</type>
+				</method>
+			</class>
+			<class id="ConcreteClassA" extends="AbstractClass"></class>
+			<class id="ConcreteClassB" extends="AbstractClass"></class>
+		</pattern>
 		<pattern id="Visitor"></pattern>
 	</category>
 </GoF>

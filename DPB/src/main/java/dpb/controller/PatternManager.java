@@ -56,7 +56,13 @@ public class PatternManager implements IPatternManager {
 			
 			PatternClass patternClass;
 			if (interfaceName != null && !interfaceName.isBlank()) {
-				PatternInterface implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);		
+				PatternInterface implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);
+					for (PatternInterface patternInterface : interfaces) {
+						if (implementedInterface.equals(patternInterface)) {
+							implementedInterface = patternInterface;
+							break;
+						}
+					}
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, implementedInterface);
 				patternClass.overrideMethods(implementedInterface.getMethods());
 				implementedInterface.addClass(patternClass);
@@ -75,7 +81,7 @@ public class PatternManager implements IPatternManager {
 	
 	private boolean containsInterface(PatternInterface patternInterface) {
 		for (PatternInterface pInterface : interfaces) {
-			if (pInterface.getName().equals(patternInterface.getName())) {
+			if (patternInterface.equals(pInterface)) {
 				return true;
 			}
 		}
