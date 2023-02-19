@@ -1,7 +1,12 @@
 package dpb.wizards.mainWizard;
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -10,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.xml.sax.SAXException;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
@@ -45,16 +51,15 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 
 	public PatternMainSetupPage() {
 		super("wizardPage");
-		patternManager = (PatternManager) PatternManager.getInstance();
+		try {
+			patternManager = (PatternManager) PatternManager.getInstance();
+		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		
-		
-		
-		
-		
-		
-		
+		classes = new ArrayList<>();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package dpb.wizards.mainWizard;
 
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -47,12 +48,22 @@ public class MainWizard extends Wizard implements INewWizard {
 		IPatternGenerator patternGenerator = new PatternGenerator();
 
 		for (PatternClass patternClass: patternMainSetupPage.getClasses()) {
-			patternGenerator.generateClass(patternClass);
+			try {
+				patternGenerator.generateClass(patternClass);
+			} catch (JavaModelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		
 		for (PatternInterface patternInterface: patternMainSetupPage.getInterfaces()) {
-			patternGenerator.generateInterface(patternInterface);
+			try {
+				patternGenerator.generateInterface(patternInterface);
+			} catch (JavaModelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		

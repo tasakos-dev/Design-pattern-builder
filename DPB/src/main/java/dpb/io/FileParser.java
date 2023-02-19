@@ -25,28 +25,20 @@ public class FileParser implements IFileParser {
 	
 	
 	
-	public FileParser() {
+	public FileParser() throws ParserConfigurationException, SAXException,
+						IOException, URISyntaxException {
 		File patternsFIle = null;
 		Bundle bundle = Platform.getBundle("DPB");
 		URL filUrl = bundle.getEntry("src/main/resources/patterns.xml");
-		
-		try {
-			patternsFIle = new File(FileLocator.resolve(filUrl).toURI());
-		} catch (URISyntaxException | IOException e1) {
-			e1.printStackTrace();
-		}
+		patternsFIle = new File(FileLocator.resolve(filUrl).toURI());
 
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		
-		try {
-			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			patternsDoc = documentBuilder.parse(patternsFIle);
-			patternsDoc.getDocumentElement().normalize();
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+	
+		documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		patternsDoc = documentBuilder.parse(patternsFIle);
+		patternsDoc.getDocumentElement().normalize();
 	
 	}
 
@@ -63,7 +55,6 @@ public class FileParser implements IFileParser {
 			categories[i] = categoryString;
 			
 		}
-		
 		
 		return categories;
 	}
@@ -124,25 +115,6 @@ public class FileParser implements IFileParser {
 	}
 
 	@Override
-	public String[] getInterfaces(String pattern) {
-		NodeList patternList = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("interface");
-		int length = patternList.getLength();
-		String[] patterns = new String[length];
-		String patternString;
-		
-		for (int i = 0;i < length;i++) {
-			Element element = (Element) patternList.item(i);
-			patternString = element.getAttribute("id").strip();
-			patterns[i] = patternString;
-			
-		}
-		
-
-		
-		return patterns;
-	}
-
-	@Override
 	public String[][] getClassMethods(String className, String pattern) {
 			
 		Element element = getPatternElement(className, pattern, "class");
@@ -156,7 +128,6 @@ public class FileParser implements IFileParser {
 			Element method =(Element) methods.item(j);
 			String visibility = method.getAttribute("visibility").strip();
 			if (visibility.isBlank()) visibility = "public";
-			System.err.println(visibility);
 			String name = method.getAttribute("id").strip();
 			String type = method.getElementsByTagName("type").item(0).getTextContent().strip();
 			classMethods[j] = new String[] {visibility, type, name};
@@ -256,7 +227,7 @@ public class FileParser implements IFileParser {
 		
 	}
 	
-	private Element getClassElement(String methodName, String classname, String pattern, String type) {
+	private Element getClassElement(String name, String classname, String pattern, String type) {
 		Element classElement = getPatternElement(classname, pattern, "class");
 		if (classElement == null) return null;
 		
@@ -264,12 +235,28 @@ public class FileParser implements IFileParser {
 		
 		for (int i = 0;i<methods.getLength();i++) {
 			Element method =(Element) methods.item(i);
-			if (method.getAttribute("id").equals(methodName))
+			if (method.getAttribute("id").equals(name))
 				return method;
 		}
 		return null;
 		
 	}
+	
+	private Element getMethodElement(String methodName, String patternElementName, String pattern) {
+		Element method = getClassElement(methodName, patternElementName, pattern, "method");
+		if (method == null) {
+			Element interfaceElement = getPatternElement(patternElementName, pattern, "interface");
+			NodeList methods = interfaceElement.getElementsByTagName("method");
+			
+			for (int i = 0;i<methods.getLength();i++) {
+				method =(Element) methods.item(i);
+				if (method.getAttribute("id").equals(methodName))
+					break;
+			}
+		}
+		return method;
+	}
+	
 	
 	@Override
 	public boolean isAbstractMethod(String methodName, String classname, String pattern) {
@@ -301,9 +288,11 @@ public class FileParser implements IFileParser {
 	
 	@Override
 	public String[][] getMethodParameters(String methodName, String classname, String pattern) {
-		Element method = getClassElement(methodName, classname, pattern, "method");
-		if (method == null) return new String[][] {};  
+		Element method = getMethodElement(methodName, classname, pattern);
+		
+		if (method == null)	return new String[][] {};
 		NodeList parametersList = (NodeList) method.getElementsByTagName("parameter");
+		System.err.println(methodName + ": " + parametersList.getLength());
 		int length = parametersList.getLength();
 		String[][] parameters = new String[length][2];
 		for (int i = 0;i<length;i++) {

@@ -6,7 +6,7 @@ public interface IFileParser {
 	public String[] getPatternsOfCategory(String category);
 	
 	public String[] getClasses(String pattern);
-	public String[] getInterfaces(String pattern);
+//	public String[] getInterfaces(String pattern);
 	
 	public String getImplementedInterface(String className, String pattern);
 	public boolean isAbstractClass(String className, String pattern);

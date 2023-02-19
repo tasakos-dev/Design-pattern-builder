@@ -112,11 +112,6 @@ public class Method {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (parameters == null) {
-			if (other.parameters != null)
-				return false;
-		} else if (!parameters.equals(other.parameters))
-			return false;
 		if (type == null) {
 			if (other.type != null)
 				return false;

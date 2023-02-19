@@ -1,17 +1,19 @@
 package dpb.wizards.setupWizard;
 
-import org.eclipse.jface.wizard.IWizardPage;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.xml.sax.SAXException;
 
 import dpb.controller.PatternManager;
 import dpb.model.PatternClass;
 import dpb.model.PatternElement;
-import dpb.model.PatternInterface;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,7 +27,6 @@ public class ModuleSetup extends WizardPage {
 	private String module;
 	private Button btnCheckButton;
 	private Combo combo;
-	private boolean isAbstract;
 	private PatternManager patternManager;
 	
 
@@ -35,7 +36,12 @@ public class ModuleSetup extends WizardPage {
 		setDescription("Wizard Page description");
 		this.patternElement = patternElement;
 		this.module = module;
-		this.patternManager = (PatternManager) PatternManager.getInstance();
+		try {
+			this.patternManager = (PatternManager) PatternManager.getInstance();
+		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -62,15 +68,6 @@ public class ModuleSetup extends WizardPage {
 			
 			btnCheckButton = new Button(container, SWT.CHECK);
 			btnCheckButton.setSelection(patternClass.isAbstract());
-//			isAbstract = btnCheckButton.getSelection();
-			
-//			btnCheckButton.addSelectionListener(new SelectionAdapter() {
-//				@Override
-//				public void widgetSelected(SelectionEvent e) {
-//					Button btn = (Button) e.getSource();
-//					isAbstract = btn.getSelection();
-//				}
-//			});
 			
 			Label lblNewLabel_2 = new Label(container, SWT.NONE);
 			lblNewLabel_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -79,8 +76,6 @@ public class ModuleSetup extends WizardPage {
 			for (int i = 0;i<patternManager.getInterfaces().size();i++) {
 				interfaceNames[i] = patternManager.getInterfaces().get(i).getName();
 			}
-			
-			
 			
 			combo = new Combo(container, SWT.NONE);
 			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -91,17 +86,5 @@ public class ModuleSetup extends WizardPage {
 	}
 	public void finish() {
 		patternManager.updateClassName(text.getText(), patternElement);
-//		if (module.equals("class")) {
-//			PatternClass patternClass = (PatternClass) patternElement;
-//			patternClass.setAbstract(btnCheckButton.getSelection());
-//			for (PatternInterface patternInterface: patternManager.getInterfaces()) {
-//				if (patternInterface.getName().equals(combo.getText())) {
-//					patternInterface.addClass(patternClass);
-//					patternClass.setImplementedInterface(patternInterface);
-//					break;
-//				} 
-//			}
-//			
-//		}
 	}
 }

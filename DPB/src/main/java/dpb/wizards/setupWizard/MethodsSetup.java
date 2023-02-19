@@ -8,11 +8,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.xml.sax.SAXException;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
 import dpb.model.Method;
 import dpb.model.PatternElement;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -99,7 +105,7 @@ public abstract class MethodsSetup extends WizardPage {
 	}
 	
 	private TableViewer buildTable(ScrolledComposite scrolledComposite) {
-		IPatternManager patternManager = (PatternManager) PatternManager.getInstance(); 
+		
 		
 		table = tableViewer.getTable();
 		table.setHeaderVisible(true);
@@ -209,7 +215,13 @@ public abstract class MethodsSetup extends WizardPage {
 			@Override
 			protected void setValue(Object arg0, Object arg1) {
 				Method method = (Method) arg0;
-//				method.setName(arg1.toString());
+				IPatternManager patternManager = null;
+				try {
+					patternManager = (PatternManager) PatternManager.getInstance();
+				} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				patternManager.updateMethodName(arg1.toString(), method);
 				tableViewer.update(arg0, null);
 				

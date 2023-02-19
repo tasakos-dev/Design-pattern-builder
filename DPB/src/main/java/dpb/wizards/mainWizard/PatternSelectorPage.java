@@ -7,8 +7,15 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Label;
+import org.xml.sax.SAXException;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
@@ -27,7 +34,12 @@ public class PatternSelectorPage extends WizardPage {
 		super("wizardPage");
 		setTitle("Wizard Page title");
 		setDescription("Wizard Page description");
-		this.patternManager = (PatternManager) PatternManager.getInstance();
+		try {
+			this.patternManager = (PatternManager) PatternManager.getInstance();
+		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		nextPage = false;
 	}
 

@@ -228,7 +228,7 @@
 			</class>
 			<class id="RefinedAbstraction" extends="Abstraction"></class>
 			<class id="ConcreteImplementorA" implements="Implementor"></class>
-			<class id="ConcreteImplementorA" implements="Implementor"></class>			
+			<class id="ConcreteImplementorB" implements="Implementor"></class>			
 		</pattern>
 		<pattern id="Composite">
 			<interface id="Component">
@@ -307,7 +307,7 @@
 					<parameter id="key"><type>int</type></parameter>
 					<code>
 						if (flyweights[key] == null) {
-							flyweights[key] = new Flyweight();
+							flyweights[key] = new ConcreteFlyweight();
 						}
 						return flyweights[key];
 					</code>
@@ -349,14 +349,249 @@
 		
 	</category>
 	<category id="Behavioral">
-		<pattern id="Chain of Responsibility"></pattern>
-		<pattern id="Command"></pattern>
-		<pattern id="Interpeter"></pattern>
-		<pattern id="Iterator"></pattern>
-		<pattern id="Mediator"></pattern>
-		<pattern id="Memento"></pattern>
-		<pattern id="Observer"></pattern>
-		<pattern id="State"></pattern>
+		<pattern id="Chain of Responsibility">
+			<class id="Handler">
+				<field id="successor"><type>Handler</type></field>
+				<method id="setSuccessor">
+					<type>void</type>
+					<parameter id="successor1"><type>Handler</type></parameter>
+					<code>
+						this.successor = successor1;
+					</code>
+				</method>
+				<method id="handleRequest">
+					<type>void</type>
+					<code>
+						if (successor != null) {
+							successor.handleRequest();
+						}
+					</code>
+				</method>
+			</class>
+			<class id="ConcreteHandler1" extends="Handler">
+			</class>
+			<class id="ConcreteHandler2" extends="Handler">
+			</class>			
+		</pattern>
+		<pattern id="Command">
+			<interface id="Command">
+				<method id="execute">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="ConcreteCommand" implements="Command">
+				<field id="state"><type>Object</type></field>
+				<field id="receiver"><type>Receiver</type></field>
+				<method id="execute">
+					<type>void</type>
+					<code>
+						receiver.action();
+					</code>
+				</method>
+			</class>
+			<class id="Receiver">
+				<method id="action">
+					<type>void</type>
+				</method>
+			</class>
+			<class id="Invoker">
+				<field id="command"><type>Command</type></field>
+				<method id="setCommand">
+					<type>void</type>
+					<parameter id="command"><type>Command</type></parameter>
+					<code>
+						this.command = command;
+					</code>
+				</method>
+				<method id="executeCommand">
+					<type>void</type>
+					<code>
+						command.execute();
+					</code>
+				</method>
+			</class>
+		</pattern>
+		<pattern id="Interpeter">
+			<interface id="AbstractExpression">
+				<method id="interpet">
+					<type>void</type>
+					<parameter id="context"><type>Context</type></parameter>
+				</method>
+			</interface>
+			<class id="TerminalExpression" implements="AbstractExpression"></class>
+			<class id="NonTerminalExpression" implements="AbstractExpression">
+				<field id="expression"><type>AbstractExpression</type></field>
+			</class>
+			<class id="Context"></class>
+			<class id="Client">
+				<field id="context"><type>Context</type></field>
+				<field id="expr"><type>AbstractExpression</type></field>
+			</class>
+		</pattern>
+		<pattern id="Iterator">
+			<interface id="Iterator">
+				<method id="getNext">
+					<type>Object</type>
+				</method>
+				<method id="hasNext">
+					<type>boolean</type>
+				</method>
+			</interface>
+			<class id="ConcreteIterator" implements="Iterator">
+				<field id="collection"><type>ConcreteCollection</type></field>
+				<field id="iterationState"><type>Object</type></field>
+				<method id="ConcreteIterator">
+					<type></type>
+					<parameter id="c"><type>ConcreteCollection</type></parameter>
+					<code>
+						this.collection = c;
+					</code>
+				</method>
+				<method id="hasNext">
+					<type>boolean</type>
+					<code>return false;</code>
+				</method>
+			</class>
+			<interface id="Collection">
+				<method id="createIterator">
+					<type>Iterator</type>
+				</method>
+			</interface>
+			<class id="ConcreteCollection" implements="Collection"></class>
+		</pattern>
+		<pattern id="Mediator">
+			<interface id="Mediator">
+				<method id="mediate">
+					<type>void</type>
+					<parameter id="colleague"><type>Colleague</type></parameter>
+				</method>
+			</interface>
+			<class id="ConcreteMediator" implements="Mediator">
+				<field id="concreteColleague1"><type>ConcreteColleague1</type></field>
+				<field id="concreteColleague2"><type>ConcreteColleague2</type></field>
+			</class>
+			<class id="Colleague" isAbstract="false">
+				<field id="mediator"><type>Mediator</type></field>
+				<method id="operation">
+					<type>void</type>
+					<code>
+						mediator.mediate(this);
+					</code>
+				</method>
+			</class>
+			<class id="ConcreteColleague1" extends="Colleague"></class>
+			<class id="ConcreteColleague2" extends="Colleague"></class>
+		</pattern>
+		<pattern id="Memento">
+			<class id="Originator">
+				<field id="state">
+					<type>Object</type>
+				</field>
+				<method id="setMemento">
+					<type>void</type>
+					<parameter id="m">
+						<type>Memento</type>
+					</parameter>
+					<code>state = m.getState();</code>
+				</method>
+				<method id="createMemento">
+					<type>Memento</type>
+					<code>return new Memento(state);</code>
+				</method>
+			</class>
+			<class id="Memento">
+				<field id="state"><type>Object</type></field>
+				<method id="Memento">
+					<type></type>
+					<parameter id="state">
+						<type>Object</type>
+					</parameter>
+					<code>this.state = state;</code>
+				</method>
+				<method id="getState">
+					<type>Object</type>
+					<code>return state;</code>
+				</method>
+				<method id="setState">
+					<type>void</type>
+					<parameter id="state">
+						<type>Object</type>
+					</parameter>
+					<code>this.state = state;</code>
+				</method>
+			</class>
+			<class id="Caretaker">
+				<field id="memento"><type>Memento</type></field>
+			</class>
+		</pattern>
+		<pattern id="Observer">
+			<class id="Subject">
+				<field id="observers"><type>Observer[]</type></field>
+				<method id="attach">
+					<type>void</type>
+					<parameter id="o"><type>Observer</type></parameter>
+					<code>// observers.add(o);</code>
+				</method>
+				<method id="detach">
+					<type>void</type>
+					<parameter id="o"><type>Observer</type></parameter>
+					<code>// observers.remove(o);</code>
+				</method>
+				<method id="notifyObservers">
+					<type>void</type>
+					<code>
+						for (Observer o: observers) {
+							o.update();
+						}
+					</code>
+				</method>
+			</class>
+			<class id="ConcreteSubject" extends="Subject">
+				<field id="subjectState"><type>Object</type></field>
+				<method id="getState">
+					<type>Object</type>
+					<code>
+						return subjectState;
+					</code>
+				</method>
+				<method id="setState">
+					<type>void</type>
+					<parameter id="subjectState"><type>Object</type></parameter>
+					<code>
+						this.subjectState = subjectState;
+					</code>
+				</method>
+			</class>
+			<interface id="Observer">
+				<method id="update">
+					<type>void</type>
+				</method>
+			</interface>
+			<class id="ConcreteObserver" implements="Observer">
+				<field id="observerState"><type>Object</type></field>
+				<field id="subject"><type>ConcreteSubject</type></field>
+				<method id="update">
+					<type>void</type>
+					<code>observerState = subject.getState();</code>
+				</method>
+			</class>
+		</pattern>
+		<pattern id="State">
+			<class id="Context">
+				<field id="state"><type>State</type></field>
+				<method id="request">
+					<type>void</type>
+					<code>
+						state.handle();
+					</code>
+				</method>
+			</class>
+			<interface id="State">
+				<method id="handle"><type>void</type></method>
+			</interface>
+			<class id="ConcreteStateA" implements="State"></class>
+			<class id="ConcreteStateB" implements="State"></class>
+		</pattern>
 		<pattern id="Strategy">
 			<interface id="Strategy">
 				<method id="algorithmInterface">
@@ -398,6 +633,52 @@
 			<class id="ConcreteClassA" extends="AbstractClass"></class>
 			<class id="ConcreteClassB" extends="AbstractClass"></class>
 		</pattern>
-		<pattern id="Visitor"></pattern>
+		<pattern id="Visitor">
+			<interface id="Visitor">
+				<method id="visitConcreteElementA">
+					<type>void</type>
+					<parameter id="concreteElementA"><type>ConcreteElementA</type></parameter>
+				</method>
+				<method id="visitConcreteElementB">
+					<type>void</type>
+					<parameter id="concreteElementB"><type>ConcreteElementB</type></parameter>
+				</method>
+			</interface>
+			<interface id="Element">
+				<method id="accept">
+					<type>void</type>
+					<parameter id="visitor"><type>Visitor</type></parameter>
+				</method>
+			</interface>
+			<class id="ConcreteVisitor1" implements="Visitor"></class>
+			<class id="ConcreteVisitor2" implements="Visitor"></class>
+			<class id="ConcreteElementA" implements="Element">
+				<method id="accept">
+					<type>void</type>
+					<parameter id="visitor"><type>Visitor</type></parameter>
+					<code>visitor.visitConcreteElementA(this);</code>
+				</method>
+				<method id="operationA">
+					<type>void</type>
+				</method>
+			</class>
+			<class id="ConcreteElementB" implements="Element">
+				<method id="accept">
+					<type>void</type>
+					<parameter id="visitor"><type>Visitor</type></parameter>
+					<code>visitor.visitConcreteElementB(this);</code>
+				</method>
+				<method id="operationB">
+					<type>void</type>
+				</method>
+			</class>
+			<class id="ObjectStructure">
+				<field id="element"><type>Element</type></field>
+			</class>
+			<class id="Client">
+				<field id="objectStructure"><type>ObjectStructure</type></field>
+				<field id="visitor"><type>Visitor</type></field>
+			</class>
+		</pattern>
 	</category>
 </GoF>

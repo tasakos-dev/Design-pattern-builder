@@ -1,7 +1,13 @@
 package dpb.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import dpb.io.FileParser;
 import dpb.io.IFileParser;
@@ -18,14 +24,14 @@ public class PatternManager implements IPatternManager {
 	private List<PatternClass> classes;
 	private static IPatternManager instance = null;
 	
-	public static IPatternManager getInstance() {
+	public static IPatternManager getInstance() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		if (instance == null)
 			instance = new PatternManager();
 		return instance;
 	}
 	
 
-	private PatternManager() {
+	private PatternManager() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		super();
 		fileParser = new FileParser();
 		interfaces = new ArrayList<>();
@@ -119,11 +125,11 @@ public class PatternManager implements IPatternManager {
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
 			Method method = new Method(methods[i][2], methods[i][1], methods[i][0], false,
-									fileParser.isAbstractMethod(methods[i][1], className, pattern),
-									null,fileParser.isStaticMethod(methods[i][1], className, pattern));
+									fileParser.isAbstractMethod(methods[i][2], className, pattern),
+									null,fileParser.isStaticMethod(methods[i][2], className, pattern));
 			method.setCode(fileParser.getMethodCode(methods[i][2], className, pattern));
 			method.setOwnerName(className);
-			String[][] parameters = fileParser.getMethodParameters(methods[0][2], className, pattern);
+			String[][] parameters = fileParser.getMethodParameters(methods[i][2], className, pattern);
 			for (String[] parameter : parameters) {
 				method.addParameter(parameter);
 			}
@@ -139,8 +145,12 @@ public class PatternManager implements IPatternManager {
 			return null;
 		List<Method> methodList = new ArrayList<Method>();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = new Method(methods[i][1], methods[i][0], "public",true, false, null, fileParser.isStaticMethod(methods[i][1], interfaceName, pattern));
+			Method method = new Method(methods[i][1], methods[i][0], "public", true, false, null, fileParser.isStaticMethod(methods[i][1], interfaceName, pattern));
 			method.setOwnerName(interfaceName);
+			String[][] parameters = fileParser.getMethodParameters(methods[i][1], interfaceName, pattern);
+			for (String[] parameter : parameters) {
+				method.addParameter(parameter);
+			}
 			methodList.add(method);
 			
 			
@@ -186,7 +196,7 @@ public class PatternManager implements IPatternManager {
 		
 	}
 	
-	private void updateNameRefences(String oldName, String newName, PatternClass patternClass) {
+	private void updateNameReferences(String oldName, String newName, PatternClass patternClass) {
 			List<Method> methods = patternClass.getMethods();
 			
 			for (Method method : methods) {
@@ -202,7 +212,7 @@ public class PatternManager implements IPatternManager {
 	public void updateFieldName(String newName, Field field, PatternClass patternClass) {
 		String oldName = field.getName();
 		field.setName(newName);
-		updateNameRefences(oldName, newName, patternClass);
+		updateNameReferences(oldName, newName, patternClass);
 		
 	}
 
@@ -211,7 +221,7 @@ public class PatternManager implements IPatternManager {
 		String oldName = method.getName();
 		method.setName(newName);
 		for (PatternClass patternClass : classes)
-			updateNameRefences(oldName, newName, patternClass);
+			updateNameReferences(oldName, newName, patternClass);
 		
 		
 	}

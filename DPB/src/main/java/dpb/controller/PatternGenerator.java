@@ -34,7 +34,7 @@ public class PatternGenerator  implements IPatternGenerator {
 	}
 
 	@Override
-	public void generateClass(PatternClass patternClass) {
+	public void generateClass(PatternClass patternClass) throws JavaModelException{
 			
 		String abstractClass = " ";
 		StringBuffer buffer = new StringBuffer();
@@ -105,12 +105,8 @@ public class PatternGenerator  implements IPatternGenerator {
 		}
 		buffer.append("}");
 		
-		try {
-			selectedPackage.createCompilationUnit(patternClass.getName()+".java", buffer.toString(), false, null);
-		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		selectedPackage.createCompilationUnit(patternClass.getName()+".java", buffer.toString(), false, null);
+		
 			
 
 	}
@@ -128,7 +124,7 @@ public class PatternGenerator  implements IPatternGenerator {
 	}
 
 	@Override
-	public void generateInterface(PatternInterface patternInterface) {
+	public void generateInterface(PatternInterface patternInterface) throws JavaModelException{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("package "+selectedPackage.getElementName()+";\n\n");
 		
@@ -153,13 +149,7 @@ public class PatternGenerator  implements IPatternGenerator {
 
 		}
 		buffer.append("}");
-		
-		try {
-			selectedPackage.createCompilationUnit(patternInterface.getName()+".java", buffer.toString(), false, null);
-		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		selectedPackage.createCompilationUnit(patternInterface.getName()+".java", buffer.toString(), false, null);
 
 	}
 

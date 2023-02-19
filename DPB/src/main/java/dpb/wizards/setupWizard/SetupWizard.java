@@ -18,8 +18,6 @@ public class SetupWizard extends Wizard implements INewWizard {
 	private FieldsSetup fieldsSetup;
 	private MethodsSetup methodsSetup;
 	private ModuleSetup moduleSetup;
-//	private PatternElement patternElement;
-
 	
 	
 

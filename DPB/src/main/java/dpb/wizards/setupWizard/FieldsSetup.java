@@ -6,13 +6,18 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.xml.sax.SAXException;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
 import dpb.model.Field;
 import dpb.model.PatternClass;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -88,8 +93,7 @@ public class FieldsSetup extends WizardPage {
 		deleteBtn.setText("Delete");
 	}
 	
-	private void buildTable() {
-		IPatternManager patternManager = (PatternManager) PatternManager.getInstance(); 
+	private void buildTable() { 
 		table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -207,7 +211,13 @@ public class FieldsSetup extends WizardPage {
 			protected void setValue(Object arg0, Object arg1) {
 				
 				Field field = (Field) arg0;
-//				field.setName(arg1.toString());
+				IPatternManager patternManager = null; 
+				try {
+					patternManager = (PatternManager) PatternManager.getInstance();
+				} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				patternManager.updateFieldName(arg1.toString(), field, patternClass);
 				tableViewer.update(arg0, null);
 				
