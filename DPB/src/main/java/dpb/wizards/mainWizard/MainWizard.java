@@ -1,6 +1,7 @@
 package dpb.wizards.mainWizard;
 
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -23,7 +24,7 @@ public class MainWizard extends Wizard implements INewWizard {
 	}
 
 	public MainWizard() {
-		setWindowTitle("New Wizard");
+		setWindowTitle("Add new Design Pattern");
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class MainWizard extends Wizard implements INewWizard {
 			try {
 				patternGenerator.generateClass(patternClass);
 			} catch (JavaModelException e) {
-				// TODO Auto-generated catch block
+				MessageDialog.openError(getShell(), "Error", e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -61,7 +62,7 @@ public class MainWizard extends Wizard implements INewWizard {
 			try {
 				patternGenerator.generateInterface(patternInterface);
 			} catch (JavaModelException e) {
-				// TODO Auto-generated catch block
+				MessageDialog.openError(getShell(), "Error", e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -76,9 +77,9 @@ public class MainWizard extends Wizard implements INewWizard {
 			
 			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
 			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
+			patternMainSetupPage.setTitle("Setup "+patternSelectorPage.getPattern()+" Design Pattern");
+			patternMainSetupPage.setDescription(patternSelectorPage.getDescription());
 			patternMainSetupPage.addElements();
-
-			
 		}
 		return super.getNextPage(page);
 	}

@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -32,14 +33,14 @@ public class ModuleSetup extends WizardPage {
 
 	public ModuleSetup(PatternElement patternElement, String module) {
 		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("Setup "+module);
+		setDescription("Setup "+module+" properties");
 		this.patternElement = patternElement;
 		this.module = module;
 		try {
 			this.patternManager = (PatternManager) PatternManager.getInstance();
 		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
+			MessageDialog.openError(getShell(), "Error", e.getMessage());
 			e.printStackTrace();
 		}
 

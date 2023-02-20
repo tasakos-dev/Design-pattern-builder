@@ -28,9 +28,8 @@ public class SetupWizard extends Wizard implements INewWizard {
 	}
 
 	public SetupWizard(PatternElement patternElement, String module) {
-		setWindowTitle("New Wizard");
+		setWindowTitle(module+" setup");
 		this.module = module;
-//		this.patternElement = patternElement;
 
 		moduleSetup = new ModuleSetup(patternElement, module);
 		if (module.equals("interface")) {

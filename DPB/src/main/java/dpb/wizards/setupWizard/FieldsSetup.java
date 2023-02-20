@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -40,8 +41,8 @@ public class FieldsSetup extends WizardPage {
 	public FieldsSetup(PatternClass patternClass) {
 		
 		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("Setup class fields");
+		setDescription("Setup name, type & visibility of every field");
 		this.patternClass = patternClass;
 	}
 
@@ -215,7 +216,7 @@ public class FieldsSetup extends WizardPage {
 				try {
 					patternManager = (PatternManager) PatternManager.getInstance();
 				} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
-					// TODO Auto-generated catch block
+					MessageDialog.openError(getShell(), "Error", e.getMessage());
 					e.printStackTrace();
 				}
 				patternManager.updateFieldName(arg1.toString(), field, patternClass);

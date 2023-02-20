@@ -8,7 +8,6 @@ public class InterfaceMethodsSetup extends MethodsSetup {
 
 	public InterfaceMethodsSetup(PatternElement patternElement) {
 		super(patternElement);
-//		this.patternManager = new PatternManager();
 	}
 
 	

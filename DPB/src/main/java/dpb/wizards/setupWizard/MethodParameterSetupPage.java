@@ -25,8 +25,8 @@ public class MethodParameterSetupPage extends WizardPage {
 
 	public MethodParameterSetupPage(Method method) {
 		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("Setup method parameters");
+		setDescription("Setup name & type every parameter");
 		this.method = method;
 	}
 

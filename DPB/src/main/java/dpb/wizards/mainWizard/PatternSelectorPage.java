@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.widgets.Label;
 import org.xml.sax.SAXException;
@@ -32,12 +33,12 @@ public class PatternSelectorPage extends WizardPage {
 
 	public PatternSelectorPage() {
 		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("New Design Pattern");
+		setDescription("Select a design pattern category & the design pattern");
 		try {
 			this.patternManager = (PatternManager) PatternManager.getInstance();
 		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
+			MessageDialog.openError(getShell(), "Error", e.getMessage());
 			e.printStackTrace();
 		}
 		nextPage = false;
@@ -79,11 +80,6 @@ public class PatternSelectorPage extends WizardPage {
 			}
 		});
 		
-		
-		
-		
-
-		
 		patternCombo.setBounds(140, 172, 201, 38);
 		
 		
@@ -116,26 +112,9 @@ public class PatternSelectorPage extends WizardPage {
 	public String getPattern() {
 		return pattern;
 	}
+	
+	public String getPatternDescription() {
+		return "";
+	}
 
-	
-	
-//	@Override
-//	public IWizardPage getNextPage() {
-//		
-//		PatternMainSetupPage patternMainSetupPage = (PatternMainSetupPage) getWizard().getNextPage(this);
-//		//new PatternMainSetupPage();
-//		patternMainSetupPage.setPattern("creational");
-//		
-//		
-//		return patternMainSetupPage;
-//		
-//	}
-//	
-	
-	
-	
-
-	
-	
-	
 }
