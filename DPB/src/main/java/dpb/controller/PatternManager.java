@@ -29,7 +29,7 @@ public class PatternManager implements IPatternManager {
 			instance = new PatternManager();
 		return instance;
 	}
-	
+		
 
 	private PatternManager() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		super();
@@ -46,6 +46,11 @@ public class PatternManager implements IPatternManager {
 	@Override
 	public String[] getPatternsOfCategory(String category) {
 		return fileParser.getPatternsOfCategory(category);
+	}
+	
+	@Override
+	public String getPatternDescription(String pattern) {
+		return fileParser.getPatternDescription(pattern);
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class MainWizard extends Wizard implements INewWizard {
 				patternGenerator.generateClass(patternClass);
 			} catch (JavaModelException e) {
 				MessageDialog.openError(getShell(), "Error", e.getMessage());
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 			
 		}
@@ -63,7 +63,7 @@ public class MainWizard extends Wizard implements INewWizard {
 				patternGenerator.generateInterface(patternInterface);
 			} catch (JavaModelException e) {
 				MessageDialog.openError(getShell(), "Error", e.getMessage());
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 			
 		}
@@ -74,12 +74,10 @@ public class MainWizard extends Wizard implements INewWizard {
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page instanceof PatternSelectorPage) {
-			
 			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
-			patternMainSetupPage.setPattern(patternSelectorPage.getPattern());
 			patternMainSetupPage.setTitle("Setup "+patternSelectorPage.getPattern()+" Design Pattern");
-			patternMainSetupPage.setDescription(patternSelectorPage.getDescription());
-			patternMainSetupPage.addElements();
+//			patternMainSetupPage.setDescription(patternSelectorPage.getPatternDescription());
+			patternMainSetupPage.addElements(patternSelectorPage.getPattern());
 		}
 		return super.getNextPage(page);
 	}

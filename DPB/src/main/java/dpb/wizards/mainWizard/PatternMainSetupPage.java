@@ -31,7 +31,6 @@ import org.eclipse.swt.events.SelectionEvent;
 
 
 public class PatternMainSetupPage extends WizardPage implements IWizardPage {
-	private String pattern;
 	private TreeItem classesTreeItem;
 	private TreeItem interfacesTreeItem;
 	private Tree tree;
@@ -172,9 +171,6 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 
 	}
 
-	public void setPattern(String pattern) {
-		this.pattern = pattern;
-	}
 
 	public List<PatternClass> getClasses() {
 		return classes;
@@ -185,9 +181,9 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	}
 
 	
-	public void addElements() {
+	public void addElements(String pattern) {
+		setDescription(patternManager.getPatternDescription(pattern));
 		classes = patternManager.getClasses(pattern);
-		System.err.println(classes.size());
 		interfaces = patternManager.getInterfaces();
 		classesTreeItem.removeAll();
 		interfacesTreeItem.removeAll();

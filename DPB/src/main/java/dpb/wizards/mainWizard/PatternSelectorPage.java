@@ -97,10 +97,7 @@ public class PatternSelectorPage extends WizardPage {
 				pattern = patternCombo.getText();
 				
 			}
-		});
-		
-	
-		
+		});	
 	}
 	
 
@@ -113,8 +110,4 @@ public class PatternSelectorPage extends WizardPage {
 		return pattern;
 	}
 	
-	public String getPatternDescription() {
-		return "";
-	}
-
 }

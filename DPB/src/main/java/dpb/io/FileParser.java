@@ -100,18 +100,18 @@ public class FileParser implements IFileParser {
 	@Override
 	public String[] getClasses(String pattern) {
 		
-		NodeList patternList = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
-		int length = patternList.getLength();
-		String[] patterns = new String[length];
-		String patternString;
+		NodeList classList = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
+		int length = classList.getLength();
+		String[] classes = new String[length];
+		String classString;
 		
 		for (int i = 0;i < length;i++) {
-			Element element = (Element) patternList.item(i);
-			patternString = element.getAttribute("id").strip();
-			patterns[i] = patternString;
+			Element element = (Element) classList.item(i);
+			classString = element.getAttribute("id").strip();
+			classes[i] = classString;
 		}
 
-		return patterns;
+		return classes;
 	}
 
 	@Override
@@ -177,6 +177,12 @@ public class FileParser implements IFileParser {
 		
 		return "";
 		
+	}
+	
+	@Override
+	public String getPatternDescription(String pattern) {
+		NodeList description = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
+		return description.item(0).getTextContent();
 	}
 
 	@Override
