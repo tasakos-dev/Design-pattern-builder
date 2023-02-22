@@ -159,14 +159,16 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				
 				// TODO null pointer!
 				
-				if (tree.getSelection()[0].getParentItem().getText().equals("Classes")) {
-					editInterfaceBtn.setEnabled(false);
-					editClassBtn.setEnabled(true);
-				} else if(tree.getSelection()[0].getParentItem().getText().equals("Interfaces")) {
-					editClassBtn.setEnabled(false);
-					editInterfaceBtn.setEnabled(true);
+				if(tree.getSelection()[0].getParentItem() != null) { 
+					if (tree.getSelection()[0].getParentItem().getText().equals("Classes")) {
+						editInterfaceBtn.setEnabled(false);
+						editClassBtn.setEnabled(true);
+					} else if(tree.getSelection()[0].getParentItem().getText().equals("Interfaces")) {
+						editClassBtn.setEnabled(false);
+						editInterfaceBtn.setEnabled(true);
+					}
+					}
 				}
-			}
 		});
 
 	}
