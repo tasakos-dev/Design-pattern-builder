@@ -155,10 +155,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 		tree.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				
-				// TODO null pointer!
-				
+			public void widgetSelected(SelectionEvent e) {			
 				if(tree.getSelection()[0].getParentItem() != null) { 
 					if (tree.getSelection()[0].getParentItem().getText().equals("Classes")) {
 						editInterfaceBtn.setEnabled(false);
@@ -167,8 +164,8 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 						editClassBtn.setEnabled(false);
 						editInterfaceBtn.setEnabled(true);
 					}
-					}
 				}
+			}
 		});
 
 	}

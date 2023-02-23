@@ -96,7 +96,6 @@ public class FileParser implements IFileParser {
 		
 	}
 
-	// TODO refactor all methods below duplication!
 	@Override
 	public String[] getClasses(String pattern) {
 		
@@ -298,7 +297,6 @@ public class FileParser implements IFileParser {
 		
 		if (method == null)	return new String[][] {};
 		NodeList parametersList = (NodeList) method.getElementsByTagName("parameter");
-		System.err.println(methodName + ": " + parametersList.getLength());
 		int length = parametersList.getLength();
 		String[][] parameters = new String[length][2];
 		for (int i = 0;i<length;i++) {
