@@ -14,12 +14,14 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.xml.sax.SAXException;
 
 import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
+import dpb.exceptions.NoPropertiesException;
 import dpb.model.PatternClass;
 import dpb.model.PatternInterface;
 import dpb.wizards.setupWizard.SetupWizard;
@@ -35,13 +37,12 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	private TreeItem interfacesTreeItem;
 	private Tree tree;
 	private ScrolledComposite scrolledComposite;
-	
 	private IPatternManager patternManager;
 	
 	
 	private List<PatternClass> classes;
 	private List<PatternInterface> interfaces;
-	
+	private String[] availableInterfaces;
 	private SetupWizard interfaceSetupWizard;
 	private SetupWizard classSetupWizard;
 	private Button btnNewButton;
@@ -101,16 +102,13 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 						break;
 					}
 				}
-				classSetupWizard = new SetupWizard(selectedClass, "class");
+				classSetupWizard = new SetupWizard(selectedClass, "class", availableInterfaces);
 				WizardDialog wizardDialog = new WizardDialog(getShell(), classSetupWizard);
 				wizardDialog.open();
 			}
 		});
 		
-		
-		
-		
-		
+
 		Button editInterfaceBtn = new Button(container, SWT.NONE);
 		editInterfaceBtn.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -125,7 +123,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 						break;
 					}
 				}
-				interfaceSetupWizard = new SetupWizard(selectedInterface, "interface");
+				interfaceSetupWizard = new SetupWizard(selectedInterface, "interface", null);
 				
 				WizardDialog wizardDialog = new WizardDialog(getShell(), interfaceSetupWizard);
 				wizardDialog.open();
@@ -134,22 +132,14 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 			}
 		});
+		
 		editClassBtn.setEnabled(false);
 		editInterfaceBtn.setEnabled(false);
 		
 		editInterfaceBtn.setBounds(448, 94, 99, 32);
 		editInterfaceBtn.setText("Edit interface");
 		
-		btnNewButton = new Button(container, SWT.NONE);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				PatternClass newClass = new PatternClass("NewClass", "public");
-				classes.add(newClass);
-				TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
-				trtmNewTreeitem_1.setText(newClass.getName());
-			}
-		});
+		btnNewButton = new Button(container, SWT.PUSH);	
 		btnNewButton.setBounds(448, 132, 99, 24);
 		btnNewButton.setText("Add Class");
 		
@@ -186,6 +176,31 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		interfaces = patternManager.getInterfaces();
 		classesTreeItem.removeAll();
 		interfacesTreeItem.removeAll();
+		Listener[] listeners = btnNewButton.getListeners(SWT.Selection);
+		for (Listener listener : listeners) {
+		    btnNewButton.removeListener(SWT.Selection, listener);
+		}
+
+		try {
+			String[] properties = patternManager.getProperties(pattern);
+			if (properties.length == 0) btnNewButton.setEnabled(false);
+				
+			btnNewButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					PatternClass newClass = new PatternClass("NewClass", "public");
+					// TODO refactor it please!
+					availableInterfaces = properties;
+					classes.add(newClass);
+					TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
+					trtmNewTreeitem_1.setText(newClass.getName());
+				}
+			});
+		} catch (NoPropertiesException e) {
+			btnNewButton.setEnabled(false);
+		}
+		
+
 		for (PatternClass patternClass: classes) {
 			TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternClass.getName());

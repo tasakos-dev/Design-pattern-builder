@@ -1,8 +1,6 @@
 package dpb.wizards.setupWizard;
 
 
-
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -20,6 +18,7 @@ public class SetupWizard extends Wizard implements INewWizard {
 	private ModuleSetup moduleSetup;
 	
 	
+	
 
 	@Override
 	public void init(IWorkbench arg0, IStructuredSelection arg1) {
@@ -27,11 +26,12 @@ public class SetupWizard extends Wizard implements INewWizard {
 		
 	}
 
-	public SetupWizard(PatternElement patternElement, String module) {
+	public SetupWizard(PatternElement patternElement, String module, String[] availableInterfaces) {
 		setWindowTitle(module+" setup");
 		this.module = module;
+//		this.availableInterfaces = availableInterfaces;
 
-		moduleSetup = new ModuleSetup(patternElement, module);
+		moduleSetup = new ModuleSetup(patternElement, module, availableInterfaces);
 		if (module.equals("interface")) {
 			methodsSetup = new InterfaceMethodsSetup(patternElement);
 		} else {

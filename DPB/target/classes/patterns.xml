@@ -1,5 +1,6 @@
-
-<GoF>
+<?xml version="1.0" encoding="UTF-8"?>
+<GoF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="patterns_schema.xsd">
 	<category id="creational">
 		<pattern id="Abstract Factory">
 			<description>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.</description>
@@ -27,6 +28,12 @@
 			<class id="concreteProductA2" implements="ProductA"></class>
 			<class id="concreteProductB1" implements="ProductB"></class>
 			<class id="concreteProductB2" implements="ProductB"></class>
+			<properties>
+				<newClass implements= "AbstractFactory" />
+				<newClass implements= "ProductA"/>
+				<newClass implements= "ProductB"/>
+				<newMethod belongs="AbstractFactory"/>
+			</properties>
 		</pattern>
 		<pattern id="Builder">
 			<description>Separate the construction of a complex object from its representation so that thesame construction process can create different representations.</description>
@@ -52,18 +59,20 @@
 					</code>
 				</method>
 			</class>
+			<properties>
+				<newClass implements="Builder"/>
+			</properties>
 		</pattern>
 		<pattern id="Factory Method">
 			<description>Define an interface for creating an object, but let subclasses decide which class to instantiate.
-			 Factory Method lets a class defer instantiation to subclasses.
-</description>
+			 Factory Method lets a class defer instantiation to subclasses.</description>
 			<interface id="Product">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
 			<class id="Creator" isAbstract="true">
-					<method id="factoryMethod" isAbstract="true">
+					<method id="factoryMethodA" isAbstract="true">
 						<type>Product</type>
 					</method>
 					<method id="anOperation">
@@ -71,27 +80,11 @@
 					</method>
 			</class>
 			<class id="ConcreteCreator" extends="Creator"></class>
-			<class id="ConcreteProduct" implements="Product"></class>
+			<class id="ConcreteProductA" implements="Product"></class>
 			<properties>
-				<preferedClassName>concreteCreator</preferedClassName>
+				<newClass implements="Product"/>
+				<newMethod belongs="Creator" />
 			</properties>
-		</pattern>
-		<pattern id="Parameterized Factory Method">
-			<description></description>
-			<interface id="Product">
-				<method id="doStuff">
-					<type>void</type>
-				</method>
-			</interface>
-			<class id="Creator">
-					<method id="factoryMethod">
-						<type>Product</type>
-						<parameter id="id">
-							<type>int</type>
-						</parameter>
-					</method>
-			</class>	
-			<class id="ConcreteProduct" implements="Product"></class>
 		</pattern>
 		<pattern id="Prototype">
 			<description>Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.</description>
@@ -143,6 +136,9 @@
 					</code>
 				</method>
 			</class>
+			<properties>
+				<newClass implements="Prototype"/>
+			</properties>
 		</pattern>
 		<pattern id="Singleton">
 			<description>Ensure a class only has one instance, and provide a global point of access to it.</description>

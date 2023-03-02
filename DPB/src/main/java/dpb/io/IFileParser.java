@@ -1,9 +1,13 @@
 package dpb.io;
 
+import dpb.exceptions.NoPropertiesException;
+
 public interface IFileParser {
 	
 	public String[] getPatternCategories();
 	public String[] getPatternsOfCategory(String category);
+	
+	public String[] getProperties(String pattern) throws NoPropertiesException;
 	
 	public String[] getClasses(String pattern);
 	public String getPatternDescription(String pattern);

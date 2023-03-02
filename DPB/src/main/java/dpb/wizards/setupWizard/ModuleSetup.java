@@ -2,7 +2,6 @@ package dpb.wizards.setupWizard;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -29,13 +28,15 @@ public class ModuleSetup extends WizardPage {
 	private Button btnCheckButton;
 	private Combo combo;
 	private PatternManager patternManager;
+	private String[] availableInterfaces;
 	
 
-	public ModuleSetup(PatternElement patternElement, String module) {
+	public ModuleSetup(PatternElement patternElement, String module, String[] availableInterfaces) {
 		super("wizardPage");
 		setTitle("Setup "+module);
 		setDescription("Setup "+module+" properties");
 		this.patternElement = patternElement;
+		this.availableInterfaces = availableInterfaces;
 		this.module = module;
 		try {
 			this.patternManager = (PatternManager) PatternManager.getInstance();
@@ -75,22 +76,27 @@ public class ModuleSetup extends WizardPage {
 			Label lblNewLabel_2 = new Label(container, SWT.NONE);
 			lblNewLabel_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 			lblNewLabel_2.setText("Implement Interface:");
-			String[] interfaceNames = new String[patternManager.getInterfaces().size()];
-			int implementedInterfaceIndex = -1;
-			for (int i = 0;i<patternManager.getInterfaces().size();i++) {
-				interfaceNames[i] = patternManager.getInterfaces().get(i).getName();
-				if (patternClass.getImplementedInterface().getName().equals(interfaceNames[i])) {
-					implementedInterfaceIndex = i;
-				}
-			}
+			
+			// TODO maybe remove it
+//			String[] interfaceNames = new String[patternManager.getInterfaces().size()];
+//			int implementedInterfaceIndex = -1;
+//			for (int i = 0;i<patternManager.getInterfaces().size();i++) {
+//				interfaceNames[i] = patternManager.getInterfaces().get(i).getName();
+//				if (patternClass.getImplementedInterface().getName().equals(interfaceNames[i])) {
+//					implementedInterfaceIndex = i;
+//				}
+//			}
 		
 			 
 			
 			combo = new Combo(container, SWT.NONE);
 			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-			combo.setItems(interfaceNames);
-			if (implementedInterfaceIndex > 0) combo.select(implementedInterfaceIndex);
-			if (patternClass.getImplementedInterface() != null) combo.setEnabled(false);
+			combo.setItems(availableInterfaces);
+			combo.select(0);
+			
+			// TODO maybe remove it
+//			if (implementedInterfaceIndex > 0) combo.select(implementedInterfaceIndex);
+//			if (patternClass.getImplementedInterface() != null) combo.setEnabled(false);
 		}
 		
 		

@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import dpb.exceptions.NoPropertiesException;
 import dpb.io.FileParser;
 import dpb.io.IFileParser;
 import dpb.model.Field;
@@ -29,6 +30,12 @@ public class PatternManager implements IPatternManager {
 			instance = new PatternManager();
 		return instance;
 	}
+	
+	@Override
+	public String[] getProperties(String pattern) throws NoPropertiesException {
+		return fileParser.getProperties(pattern);
+		
+	}	
 		
 
 	private PatternManager() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {

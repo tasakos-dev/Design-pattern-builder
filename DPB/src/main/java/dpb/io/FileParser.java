@@ -19,6 +19,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import dpb.exceptions.NoPropertiesException;
+
+
 
 public class FileParser implements IFileParser {
 	private Document patternsDoc;
@@ -41,6 +44,26 @@ public class FileParser implements IFileParser {
 		patternsDoc.getDocumentElement().normalize();
 	
 	}
+	
+	@Override
+	public String[] getProperties(String pattern) throws NoPropertiesException {
+		Element properties =(Element) getElementByTagAndId("pattern", pattern).getElementsByTagName("properties").item(0);
+		if (properties == null) throw new NoPropertiesException();
+		
+		NodeList classPropertiesList = (NodeList) properties.getElementsByTagName("newClass");
+		int length = classPropertiesList.getLength();
+		String implementsString;
+		String[] newClasses = new String[length];
+		
+		for (int i = 0; i < length;i++) {
+			implementsString = ((Element)classPropertiesList.item(i)).getAttribute("implements");	
+			newClasses[i] = implementsString;
+		}
+		return newClasses;
+		
+	}
+	
+
 
 	@Override
 	public String[] getPatternCategories() {
@@ -113,6 +136,7 @@ public class FileParser implements IFileParser {
 		return classes;
 	}
 
+	// TODO change return type!
 	@Override
 	public String[][] getClassMethods(String className, String pattern) {
 			
@@ -146,6 +170,7 @@ public class FileParser implements IFileParser {
 		return null;	
 	}
 
+	// TODO change return type!
 	@Override
 	public String[][] getInterfaceMethods(String interfaceName, String pattern) {
 		Element element = getPatternElement(interfaceName, pattern, "interface");
@@ -181,7 +206,7 @@ public class FileParser implements IFileParser {
 	@Override
 	public String getPatternDescription(String pattern) {
 		NodeList description = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
-		return description.item(0).getTextContent();
+		return description.item(0).getTextContent().strip();
 	}
 
 	@Override
@@ -203,6 +228,8 @@ public class FileParser implements IFileParser {
 		return "";
 	}
 
+	
+	// TODO change return type!
 	@Override
 	public String[][] getClassFields(String className, String pattern) {
 		Element element = getPatternElement(className, pattern, "class");
@@ -291,6 +318,7 @@ public class FileParser implements IFileParser {
 	}
 
 	
+	// TODO change return type!
 	@Override
 	public String[][] getMethodParameters(String methodName, String classname, String pattern) {
 		Element method = getMethodElement(methodName, classname, pattern);
