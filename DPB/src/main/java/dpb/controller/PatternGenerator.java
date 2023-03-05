@@ -1,19 +1,22 @@
 package dpb.controller;
 
 
-import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import dpb.model.Field;
-import dpb.model.Method;
-import dpb.model.PatternClass;
 import dpb.model.PatternElement;
-import dpb.model.PatternInterface;
 
 public abstract class PatternGenerator  implements IPatternGenerator {
 	private IPackageFragment selectedPackage;
@@ -21,142 +24,53 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 	
 	
 
-	public PatternGenerator() {
+	public PatternGenerator() throws CoreException {
 		super();
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection("org.eclipse.jdt.ui.PackageExplorer");
-		Object element = selection.getFirstElement();
-		selectedPackage = null;
-		System.err.println(element.getClass());
-		if (element instanceof IPackageFragment) {
-			selectedPackage = (IPackageFragment) element;
+//		Object element = selection.getFirstElement();
+		
+		if (selection != null && !selection.isEmpty()) {
+		    Object selectedElement = selection.getFirstElement();
+		    if (selectedElement instanceof IPackageFragment) {
+		        selectedPackage = (IPackageFragment) selectedElement;
+		    } else if (selectedElement instanceof IJavaElement) {
+		        selectedPackage = (IPackageFragment) ((IJavaElement) selectedElement).getAncestor(IJavaElement.PACKAGE_FRAGMENT);
+		    }
 		}
-		
-	}
-
-	@Override
-	public void generateClass(PatternClass patternClass) throws JavaModelException{
-			
-		String abstractClass = " ";
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("package "+selectedPackage.getElementName()+";\n\n");
-		if (patternClass.isAbstract()) {
-			abstractClass = " abstract ";
-			
-		}
-		String implementString = "";
-		String extendString = "";
-		if (patternClass.getImplementedInterface() != null)
-			implementString = " implements "+ patternClass.getImplementedInterface().getName();
-		if (patternClass.getExtendedClass() != null)
-			extendString = " extends "+ patternClass.getExtendedClass().getName() + " ";
-		
-		buffer.append(patternClass.getType() + abstractClass + "class " +patternClass.getName()+extendString+implementString+"{\n\n");	
-		
-		
-		for (Field field: patternClass.getFields()) {
-			String staticString = "";
-			if (field.isStatic()) {
-				staticString = "static ";
-			}
-					
-			buffer.append("\t"+field.getModifier()+" "+staticString+field.getType()+" "+field.getName()+";\n");
-		}
-		buffer.append("\n\n");
-		for (Method method: patternClass.getMethods()) {
-			if (method.isOverride() || (method.isAbstract() && !method.getOwnerName().equals(patternClass.getName()))) {
-				buffer.append("\t@Override\n");
-			}
-			String staticString = "";
-			if (method.isStatic()) {
-				staticString = " static ";
-			}
-			String abstractString = " ";
-			if (method.isAbstract() && method.getOwnerName().equals(patternClass.getName())) {
-				abstractString = " abstract ";
-			}
-				
-			buffer.append("\t"+method.getModifier()+abstractString+staticString+method.getType()+" "+method.getName());
-			buffer.append("(");
-			int numOfparameters = method.getParameters().size();
-			List<String[]> parameters = method.getParameters(); 
-			for (String[] parameter: parameters) {
-				String ending = "";
-				if (parameter[1].equals(parameters.get(numOfparameters-1))) {
-					ending = ", ";
+		if (selectedPackage == null) {
+		    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		    IProject[] projects = root.getProjects();
+		    for (IProject project : projects) {
+				if (project.isOpen() && project.hasNature(JavaCore.NATURE_ID)) {
+				    IJavaProject javaProject = JavaCore.create(project);
+				    selectedPackage = javaProject.getPackageFragmentRoot(project.getFolder("src")).getPackageFragment("");
+				    if (selectedPackage != null) {
+				        break;
+				    }
 				}
-				buffer.append(parameter[0]+" "+parameter[1]+ending);
-			}
-			if (method.isAbstract() && method.getOwnerName().equals(patternClass.getName())) {
-				buffer.append(");\n");
-			}
-			else {
-				buffer.append("){\n");
-				buffer.append("\t\t// TODO Auto-generated block\n");
-				String code = codeFormat(method.getCode());
-				if (code.isBlank() && (!method.getType().isEmpty() && !method.getType().equals("void"))) {
-					code = "\t\treturn null;";				
-				}
-	
-				buffer.append(code);
-				buffer.append("\n\t}\n");
-			}
-			
-
+		    }
 		}
-		buffer.append("}");
 		
-		selectedPackage.createCompilationUnit(patternClass.getName()+".java", buffer.toString(), false, null);
-		
-			
-
 	}
-	
-	private String codeFormat(String code) {
-		String formattedCode = "";
-		if (code == null) return formattedCode;
-		if (code.isBlank()) return formattedCode;
-		formattedCode = code.replace("\t", "");
-		formattedCode = formattedCode.replace("{\n", "{\n\t");
-		formattedCode = formattedCode.replace("\n", "\n\t\t");
-		formattedCode = "\t\t" + formattedCode;
-		
-		return formattedCode;
-	}
-
-	private void generateHeader(String moduleType, StringBuffer buffer, PatternElement patternElement) {
-		if (selectedPackage != null) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
-		buffer.append(patternElement.getType() + " " + moduleType +" "+ patternElement.getName() + "{\n\n");
-	}
-	
-
 	
 	@Override
-	public void generateInterface(PatternInterface patternInterface) throws JavaModelException{
+	public void generate(PatternElement patternElement) throws JavaModelException {
 		StringBuffer buffer = new StringBuffer();
-		
-		
-			
-		
-		for (Method method: patternInterface.getMethods()) {
-			
-			buffer.append("\t"+method.getModifier()+" "+method.getType()+" "+method.getName());
-			buffer.append("(");
-			int numOfparameters = method.getParameters().size();
-			List<String[]> parameters = method.getParameters(); 
-			for (String[] parameter: parameters) {
-				String ending = "";
-				if (parameter[1].equals(parameters.get(numOfparameters-1))) {
-					ending = ", ";
-				}
-				buffer.append(parameter[0]+" "+parameter[1]+ending);
-			}
-			buffer.append(");\n");	
-
-		}
+		generatePackageHeader(buffer, patternElement);
+		generateFields(buffer, patternElement);
+		generateMethods(buffer, patternElement);
 		buffer.append("}");
-		selectedPackage.createCompilationUnit(patternInterface.getName()+".java", buffer.toString(), false, null);
-
+		selectedPackage.createCompilationUnit(patternElement.getName()+".java", buffer.toString(), false, null);
 	}
+	
+	private void generatePackageHeader(StringBuffer buffer, PatternElement patternElement) {
+		if (!selectedPackage.getElementName().isBlank()) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
+		generateHeader(buffer, patternElement);
+	}
+	
+	protected abstract void generateMethods(StringBuffer buffer, PatternElement patternElement);
+	protected abstract void generateFields(StringBuffer buffer, PatternElement patternElement);
+	protected abstract void generateHeader(StringBuffer buffer, PatternElement patternElement);
 
 }
