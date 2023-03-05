@@ -12,9 +12,10 @@ import org.eclipse.ui.PlatformUI;
 import dpb.model.Field;
 import dpb.model.Method;
 import dpb.model.PatternClass;
+import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
 
-public class PatternGenerator  implements IPatternGenerator {
+public abstract class PatternGenerator  implements IPatternGenerator {
 	private IPackageFragment selectedPackage;
 	
 	
@@ -123,12 +124,19 @@ public class PatternGenerator  implements IPatternGenerator {
 		return formattedCode;
 	}
 
+	private void generateHeader(String moduleType, StringBuffer buffer, PatternElement patternElement) {
+		if (selectedPackage != null) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
+		buffer.append(patternElement.getType() + " " + moduleType +" "+ patternElement.getName() + "{\n\n");
+	}
+	
+
+	
 	@Override
 	public void generateInterface(PatternInterface patternInterface) throws JavaModelException{
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("package "+selectedPackage.getElementName()+";\n\n");
 		
-		buffer.append(patternInterface.getType()+ " interface " +patternInterface.getName() + "{\n\n");	
+		
+			
 		
 		for (Method method: patternInterface.getMethods()) {
 			
@@ -143,9 +151,7 @@ public class PatternGenerator  implements IPatternGenerator {
 				}
 				buffer.append(parameter[0]+" "+parameter[1]+ending);
 			}
-			buffer.append(");\n");
-			
-			
+			buffer.append(");\n");	
 
 		}
 		buffer.append("}");
