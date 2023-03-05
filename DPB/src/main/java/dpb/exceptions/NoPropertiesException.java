@@ -2,7 +2,9 @@ package dpb.exceptions;
 
 public class NoPropertiesException extends Exception {
 
-    public NoPropertiesException() {
+    private static final long serialVersionUID = 1L;
+
+	public NoPropertiesException() {
         super("No properties were found.");
     }
 

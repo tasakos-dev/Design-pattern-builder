@@ -13,7 +13,6 @@ import dpb.controller.ClassGeneratorFactory;
 import dpb.controller.IPatternGenerator;
 import dpb.controller.IPatternGeneratorFactory;
 import dpb.controller.InterfaceGeneratorFactory;
-import dpb.controller.PatternGenerator;
 import dpb.model.PatternClass;
 import dpb.model.PatternInterface;
 
