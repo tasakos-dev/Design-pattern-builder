@@ -1,5 +1,7 @@
 package dpb.wizards.mainWizard;
 
+
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -56,6 +58,7 @@ public class MainWizard extends Wizard implements INewWizard {
 			classGenerator = classGeneratorFactory.createPatternGenerator();
 		} catch (CoreException e1) {
 			MessageDialog.openError(getShell(), "Error", e1.getMessage());
+//			e1.printStackTrace();
 		}
 		
 		IPatternGeneratorFactory interfaceGeneratorFactory = new InterfaceGeneratorFactory();
@@ -64,6 +67,7 @@ public class MainWizard extends Wizard implements INewWizard {
 			interfaceGenerator = interfaceGeneratorFactory.createPatternGenerator();
 		} catch (CoreException e1) {
 			MessageDialog.openError(getShell(), "Error", e1.getMessage());
+//			e1.printStackTrace();
 		}
 		
 
@@ -72,6 +76,7 @@ public class MainWizard extends Wizard implements INewWizard {
 				classGenerator.generate(patternClass);
 			} catch (JavaModelException e) {
 				MessageDialog.openError(getShell(), "Error", e.getMessage());
+//				e.printStackTrace();
 			}
 			
 		}
@@ -81,6 +86,7 @@ public class MainWizard extends Wizard implements INewWizard {
 				interfaceGenerator.generate(patternInterface);
 			} catch (JavaModelException e) {
 				MessageDialog.openError(getShell(), "Error", e.getMessage());
+//				e.printStackTrace();
 			}
 			
 		}
@@ -97,5 +103,7 @@ public class MainWizard extends Wizard implements INewWizard {
 		}
 		return super.getNextPage(page);
 	}
+
+
 
 }

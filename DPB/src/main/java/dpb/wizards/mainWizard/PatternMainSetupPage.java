@@ -59,6 +59,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			e.printStackTrace();
 		}
 		classes = new ArrayList<>();
+		
 	}
 
 	@Override
@@ -99,6 +100,8 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				for (PatternClass patternClass: classes) {
 					if (patternClass.getName().equals(className)) {
 						selectedClass = patternClass;
+						PatternInterface implementInterface = patternClass.getImplementedInterface();
+						availableInterfaces = new String[] {((implementInterface != null) ? implementInterface.getName() : "")};
 						break;
 					}
 				}
