@@ -1,5 +1,7 @@
 package dpb.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -11,7 +13,7 @@ import dpb.model.PatternElement;
 
 public class ClassGenerator extends PatternGenerator {
 	
-	public ClassGenerator() throws CoreException {
+	public ClassGenerator() throws CoreException, URISyntaxException, IOException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

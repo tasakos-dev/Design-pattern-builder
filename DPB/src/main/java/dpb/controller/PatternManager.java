@@ -74,22 +74,26 @@ public class PatternManager implements IPatternManager {
 			
 			PatternClass patternClass;
 			if (interfaceName != null && !interfaceName.isBlank()) {
-				PatternInterface implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);
+				PatternElement implementedInterface = new PatternInterface(interfaceName, "public", interfaceMethods);
 					for (PatternInterface patternInterface : interfaces) {
 						if (implementedInterface.equals(patternInterface)) {
 							implementedInterface = patternInterface;
 							break;
 						}
 					}
+				implementedInterface.setPattern(lowerCaseFirstLetter(pattern));
+				implementedInterface.setRole(implementedInterface.getName());
+				
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, implementedInterface);
 				patternClass.overrideMethods(implementedInterface.getMethods());
-				implementedInterface.addClass(patternClass);
+				((PatternInterface)implementedInterface).addClass(patternClass);
 				if (!containsInterface(implementedInterface))
-					interfaces.add(implementedInterface);
+					interfaces.add((PatternInterface) implementedInterface);
 			} else {
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, null);
 			}
-			
+			patternClass.setRole(patternClass.getName());
+			patternClass.setPattern(lowerCaseFirstLetter(pattern));
 			classes.add(patternClass);
 			
 		}
@@ -97,7 +101,11 @@ public class PatternManager implements IPatternManager {
 		return classes;
 	}
 	
-	private boolean containsInterface(PatternInterface patternInterface) {
+	private String lowerCaseFirstLetter(String word) {
+		return word.substring(0, 1).toLowerCase() + word.substring(1);
+	}
+	
+	private boolean containsInterface(PatternElement patternInterface) {
 		for (PatternInterface pInterface : interfaces) {
 			if (patternInterface.equals(pInterface)) {
 				return true;

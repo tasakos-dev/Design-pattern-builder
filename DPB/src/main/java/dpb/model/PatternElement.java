@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class PatternElement {
+	private String pattern;
+	private String categoryOfPattern;
+	private String role;
 	private String name;
 	private String type;
 	private List<Method> methods;
@@ -22,6 +25,37 @@ public class PatternElement {
 		this.name = name;
 		this.type = type;
 		methods = new ArrayList<>();
+	}
+
+	
+
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+
+	public String getPattern() {
+		return pattern;
+	}
+
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+
+	public String getCategoryOfPattern() {
+		return categoryOfPattern;
+	}
+
+
+	public void setCategoryOfPattern(String categoryOfPattern) {
+		this.categoryOfPattern = categoryOfPattern;
 	}
 
 

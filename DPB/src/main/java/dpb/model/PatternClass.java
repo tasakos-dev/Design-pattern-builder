@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PatternClass extends PatternElement{
 	
-	private PatternInterface implementedInterface;
+	private PatternElement implementedInterface;
 	private PatternClass extendedClass;
 
 	private boolean isAbstract;
@@ -14,7 +14,7 @@ public class PatternClass extends PatternElement{
 	
 	
 	public PatternClass(String name, String type, boolean isAbstract, List<Field> fields,
-			List<Method> methods, PatternInterface implementedInterface) {
+			List<Method> methods, PatternElement implementedInterface) {
 		super(name, type, methods);
 		this.implementedInterface = implementedInterface;
 		this.fields = fields;
@@ -51,7 +51,7 @@ public class PatternClass extends PatternElement{
 
 
 
-	public PatternInterface getImplementedInterface() {
+	public PatternElement getImplementedInterface() {
 		return implementedInterface;
 	}
 

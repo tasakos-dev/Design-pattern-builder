@@ -27,6 +27,7 @@ public class PatternSelectorPage extends WizardPage {
 	private boolean nextPage;
 	private IPatternManager patternManager;
 	private String pattern;
+	private String category;
 
 	
 	
@@ -98,6 +99,13 @@ public class PatternSelectorPage extends WizardPage {
 				
 			}
 		});	
+		
+		categoryCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				category = categoryCombo.getText();
+			}
+		});
 	}
 	
 
@@ -108,6 +116,9 @@ public class PatternSelectorPage extends WizardPage {
 
 	public String getPattern() {
 		return pattern;
+	}
+	public String getCategory() {
+		return category;
 	}
 	
 }

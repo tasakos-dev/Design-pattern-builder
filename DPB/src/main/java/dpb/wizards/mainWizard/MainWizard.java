@@ -2,6 +2,9 @@ package dpb.wizards.mainWizard;
 
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -56,7 +59,7 @@ public class MainWizard extends Wizard implements INewWizard {
 		IPatternGenerator classGenerator = null;
 		try {
 			classGenerator = classGeneratorFactory.createPatternGenerator();
-		} catch (CoreException e1) {
+		} catch (CoreException | URISyntaxException | IOException e1) {
 			MessageDialog.openError(getShell(), "Error", e1.getMessage());
 //			e1.printStackTrace();
 		}
@@ -65,7 +68,7 @@ public class MainWizard extends Wizard implements INewWizard {
 		IPatternGenerator interfaceGenerator = null;
 		try {
 			interfaceGenerator = interfaceGeneratorFactory.createPatternGenerator();
-		} catch (CoreException e1) {
+		} catch (CoreException | URISyntaxException | IOException e1) {
 			MessageDialog.openError(getShell(), "Error", e1.getMessage());
 //			e1.printStackTrace();
 		}
@@ -99,7 +102,7 @@ public class MainWizard extends Wizard implements INewWizard {
 		if (page instanceof PatternSelectorPage) {
 			PatternSelectorPage patternSelectorPage = (PatternSelectorPage) page;
 			patternMainSetupPage.setTitle("Setup "+patternSelectorPage.getPattern()+" Design Pattern");
-			patternMainSetupPage.addElements(patternSelectorPage.getPattern());
+			patternMainSetupPage.addElements(patternSelectorPage.getPattern(), patternSelectorPage.getCategory());
 		}
 		return super.getNextPage(page);
 	}

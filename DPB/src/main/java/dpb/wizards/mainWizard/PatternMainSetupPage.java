@@ -23,6 +23,7 @@ import dpb.controller.IPatternManager;
 import dpb.controller.PatternManager;
 import dpb.exceptions.NoPropertiesException;
 import dpb.model.PatternClass;
+import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
 import dpb.wizards.setupWizard.SetupWizard;
 
@@ -100,7 +101,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				for (PatternClass patternClass: classes) {
 					if (patternClass.getName().equals(className)) {
 						selectedClass = patternClass;
-						PatternInterface implementInterface = patternClass.getImplementedInterface();
+						PatternElement implementInterface =patternClass.getImplementedInterface();						
 						availableInterfaces = new String[] {((implementInterface != null) ? implementInterface.getName() : "")};
 						break;
 					}
@@ -173,7 +174,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	}
 
 	
-	public void addElements(String pattern) {
+	public void addElements(String pattern, String category) {
 		setDescription(patternManager.getPatternDescription(pattern));
 		classes = patternManager.getClasses(pattern);
 		interfaces = patternManager.getInterfaces();
@@ -204,12 +205,14 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		}
 		
 
-		for (PatternClass patternClass: classes) {
+		for (PatternElement patternClass: classes) {
+			patternClass.setCategoryOfPattern(category);
 			TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternClass.getName());
 		}
 		
-		for (PatternInterface patternInterface: interfaces) {
+		for (PatternElement patternInterface: interfaces) {
+			patternInterface.setCategoryOfPattern(category);
 			TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternInterface.getName());
 		}
