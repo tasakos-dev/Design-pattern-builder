@@ -4,7 +4,7 @@
 	<category id="creational">
 		<pattern id="Abstract Factory">
 			<description>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.</description>
-			<interface id="AbstractFactory">
+			<interface id="AbstractFactory" annotation="AbstractFactory">
 					<method id="createProductA">
 						<type>ProductA</type>
 					</method>
@@ -12,22 +12,22 @@
 						<type>ProductB</type>
 					</method>
 			</interface>
-			<interface id="ProductA">
+			<interface id="ProductA" annotation="Product">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
-			<interface id="ProductB">
+			<interface id="ProductB" annotation="Product">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="concreteFactory1" implements="AbstractFactory"></class>
-			<class id="concreteFactory2" implements="AbstractFactory"></class>
-			<class id="concreteProductA1" implements="ProductA"></class>
-			<class id="concreteProductA2" implements="ProductA"></class>
-			<class id="concreteProductB1" implements="ProductB"></class>
-			<class id="concreteProductB2" implements="ProductB"></class>
+			<class id="concreteFactory1" implements="AbstractFactory" annotation="ConcreteFactory"></class>
+			<class id="concreteFactory2" implements="AbstractFactory" annotation="ConcreteFactory"></class>
+			<class id="concreteProductA1" implements="ProductA" annotation="ConcreteProduct"></class>
+			<class id="concreteProductA2" implements="ProductA" annotation="ConcreteProduct"></class>
+			<class id="concreteProductB1" implements="ProductB" annotation="ConcreteProduct"></class>
+			<class id="concreteProductB2" implements="ProductB" annotation="ConcreteProduct"></class>
 			<properties>
 				<newClass implements= "AbstractFactory" />
 				<newClass implements= "ProductA"/>
@@ -37,13 +37,13 @@
 		</pattern>
 		<pattern id="Builder">
 			<description>Separate the construction of a complex object from its representation so that thesame construction process can create different representations.</description>
-			<interface id="Builder">
+			<interface id="Builder" annotation="Builder">
 				<method id="buildPart">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="ConcreteBuilder" implements="Builder"></class>
-			<class id="Director">
+			<class id="ConcreteBuilder" implements="Builder" annotation="ConcreteBuilder"></class>
+			<class id="Director" annotation="Director">
 				<field id="builder">
 					<type>Builder</type>
 				</field>
@@ -66,12 +66,12 @@
 		<pattern id="Factory Method">
 			<description>Define an interface for creating an object, but let subclasses decide which class to instantiate.
 			 Factory Method lets a class defer instantiation to subclasses.</description>
-			<interface id="Product">
+			<interface id="Product" annotation="Product">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="Creator" isAbstract="true">
+			<class id="Creator" isAbstract="true" annotation="Creator">
 					<method id="factoryMethodA" isAbstract="true">
 						<type>Product</type>
 					</method>
@@ -79,8 +79,8 @@
 						<type>void</type>
 					</method>
 			</class>
-			<class id="ConcreteCreator" extends="Creator"></class>
-			<class id="ConcreteProductA" implements="Product"></class>
+			<class id="ConcreteCreator" extends="Creator" annotation="ConcreteCreator"></class>
+			<class id="ConcreteProductA" implements="Product" annotation="ConcreteProduct"></class>
 			<properties>
 				<newClass implements="Product"/>
 				<newMethod belongs="Creator" />
@@ -88,7 +88,7 @@
 		</pattern>
 		<pattern id="Prototype">
 			<description>Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.</description>
-			<interface id="Prototype">
+			<interface id="Prototype" annotation="Prototype">
 				<method id="clone">
 					<type>Prototype</type>
 					<code>
@@ -96,7 +96,7 @@
 					</code>
 				</method>
 			</interface>
-			<class id="ConcretePrototype1" implements="Prototype">
+			<class id="ConcretePrototype1" implements="Prototype" annotation="ConcretePrototype">
 				<method id="clone">
 					<type>Prototype</type>
 					<code>
@@ -109,7 +109,7 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcretePrototype2" implements="Prototype">
+			<class id="ConcretePrototype2" implements="Prototype" annotation="ConcretePrototype">
 				<method id="clone">
 					<type>Prototype</type>
 					<code>
@@ -122,7 +122,7 @@
 					</code>
 				</method>
 			</class>
-			<class id="Client">
+			<class id="Client" annotation="Client">
 				<field id="prototype">
 					<type>
 						Prototype
@@ -142,7 +142,7 @@
 		</pattern>
 		<pattern id="Singleton">
 			<description>Ensure a class only has one instance, and provide a global point of access to it.</description>
-			<class id="Singleton">
+			<class id="Singleton" annotation="Singleton">
 				<field id="instance" isStatic="true">
 					<type>Singleton</type>
 				</field>
@@ -165,12 +165,12 @@
 		<pattern id="Object Adapter">
 			<description>Convert the interface of a class into another interface clients expect.
 			 Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.</description>
-			<interface id="Target">
+			<interface id="Target" annotation="Target">
 				<method id="request">
 					<type>void</type>
 				</method>				
 			</interface>
-			<class id="Adapter" implements="Target">
+			<class id="Adapter" implements="Target" annotation="Adapter">
 				<field id="adaptee"><type>Adaptee</type></field>
 				<method id="request">
 					<type>void</type>
@@ -179,12 +179,12 @@
 					</code>
 				</method>	
 			</class>
-			<class id="Adaptee">
+			<class id="Adaptee" annotation="Adaptee">
 				<method id="specificRequest">
 					<type>void</type>
 				</method>	
 			</class>
-			<class id="client">
+			<class id="client" annotation="Client">
 				<field id="target">
 					<type>Target</type>
 				</field>
@@ -193,12 +193,12 @@
 		<pattern id="Class Adapter">
 			<description>Convert the interface of a class into another interface clients expect.
 			 Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.</description>
-			<interface id="Target">
+			<interface id="Target" annotation="Target">
 				<method id="request">
 					<type>void</type>
 				</method>				
 			</interface>
-			<class id="Adapter" implements="Target" extends="Adaptee">
+			<class id="Adapter" implements="Target" extends="Adaptee" annotation="Adapter">
 				<method id="request">
 					<type>void</type>
 					<code>
@@ -206,12 +206,12 @@
 					</code>
 				</method>	
 			</class>
-			<class id="Adaptee">
+			<class id="Adaptee" annotation="Adaptee">
 				<method id="specificRequest">
 					<type>void</type>
 				</method>	
 			</class>
-			<class id="client">
+			<class id="Client" annotation="Client">
 				<field id="target">
 					<type>Target</type>
 				</field>
@@ -219,12 +219,12 @@
 		</pattern>
 		<pattern id="Bridge">
 			<description>Decouple an abstraction from its implementation so that the two can vary independently.</description>
-			<interface id="Implementor">
+			<interface id="Implementor" annotation="Implementor">
 				<method id="operationImp">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="Abstraction">
+			<class id="Abstraction" annotation="Abstraction">
 				<field id="imp">
 					<type>Implementor</type>
 				</field>
@@ -235,19 +235,19 @@
 					</code>
 				</method>
 			</class>
-			<class id="RefinedAbstraction" extends="Abstraction"></class>
-			<class id="ConcreteImplementorA" implements="Implementor"></class>
-			<class id="ConcreteImplementorB" implements="Implementor"></class>			
+			<class id="RefinedAbstraction" extends="Abstraction" annotation="RefinedAbstraction"></class>
+			<class id="ConcreteImplementorA" implements="Implementor" annotation="ConcreteImplementor"></class>
+			<class id="ConcreteImplementorB" implements="Implementor" annotation="ConcreteImplementor"></class>			
 		</pattern>
 		<pattern id="Composite">
 			<description>Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.</description>
-			<interface id="Component">
+			<interface id="Component" annotation="Component">
 				<method id="operation">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="Leaf" implements="Component"></class>
-			<class id="Composite" implements="Component">
+			<class id="Leaf" implements="Component" annotation="Leaf"></class>
+			<class id="Composite" implements="Component" annotation="Composite">
 				<field id="children"><type>Component[]</type></field>
 				<method id="add">
 					<type>void</type>
@@ -262,18 +262,18 @@
 		</pattern>
 		<pattern id="Decorator">
 			<description>Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.</description>
-			<interface id="Component">
+			<interface id="Component" annotation="Component">
 				<method id="operation"><type>void</type></method>
 			</interface>
-			<class id="ConcreteComponent" implements="Component"></class>
-			<class id="Decorator" implements="Component" isAbstract="true">
+			<class id="ConcreteComponent" implements="Component" annotation="ConcreteComponent"></class>
+			<class id="Decorator" implements="Component" isAbstract="true" annotation="Decorator">
 				<field id="component"><type>Component</type></field>
 				<method id="operation">
 					<type>void</type>
 					<code>component.operation();</code>
 				</method>
 			</class>
-			<class id="ConcreteDecoratorA" extends="Decorator">
+			<class id="ConcreteDecoratorA" extends="Decorator" annotation="ConcreteDecorator">
 				<method id="addedBehavior"><type>void</type></method>
 				<method id="operation">
 					<type>void</type>
@@ -283,18 +283,18 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteDecoratorB" extends="Decorator">
+			<class id="ConcreteDecoratorB" extends="Decorator" annotation="ConcreteDecorator">
 				<field id="addedState"><type>Object</type></field>
 			</class>
 		</pattern>
 		<pattern id="Facade">
 			<description>Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.</description>
-			<class id="Subsystem1">
+			<class id="Subsystem1" annotation="Subsystem">
 				<method id="operation">
 					<type>void</type>
 				</method>
 			</class>
-			<class id="Facade">
+			<class id="Facade" annotation="Facade">
 				<field id="subsystem"><type>Subsystem1</type></field>
 				<method id="subsystemOperation">
 					<type>void</type>
@@ -306,14 +306,14 @@
 		</pattern>
 		<pattern id="Flyweight">
 			<description>Use sharing to support large numbers of fine-grained objects efficiently.</description>
-			<class id="Flyweight" isAbstract="true">
+			<class id="Flyweight" isAbstract="true" annotation="Flyweight">
 				<field id="repeatingState"><type>Object</type></field>
 				<method id="operation" isAbstract="true">
 					<type>void</type>
 					<parameter id="extinsicState"><type>Object</type></parameter>
 				</method>
 			</class>
-			<class id="FlyweightFactory">
+			<class id="FlyweightFactory" annotation="FlyweightFactory">
 				<field id="flyweights"><type>Flyweight[]</type></field>
 				<method id="getFlyweight">
 					<type>Flyweight</type>
@@ -326,21 +326,21 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteFlyweight" extends="Flyweight">
+			<class id="ConcreteFlyweight" extends="Flyweight" annotation="ConcreteFlyweight">
 				<field id="intrinsicState"><type>Object</type></field>
 			</class>
-			<class id="UnsharedConcreteFlyweight" extends="Flyweight">
+			<class id="UnsharedConcreteFlyweight" extends="Flyweight" annotation="UnsharedConcreteFlyweight">
 				<field id="allState"><type>Object</type></field>
 			</class>
 		</pattern>
 		<pattern id="Proxy">
 			<description>Provide a surrogate or placeholder for another object to control access to it.</description>
-			<interface id="Subject">
+			<interface id="Subject" annotation="Subject"> 
 				<method id="request">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="Proxy" implements="Subject">
+			<class id="Proxy" implements="Subject" annotation="Proxy">
 				<field id="realService"><type>RealService</type></field>
 				<method id="checkAccess"><type>boolean</type>
 					<code>
@@ -356,7 +356,7 @@
 					</code>
 				</method>
 			</class>
-			<class id="RealService">
+			<class id="RealService" annotation="RealService">
 				<method id="request"><type>void</type></method>
 			</class>
 		</pattern>
@@ -366,7 +366,7 @@
 		<pattern id="Chain of Responsibility">
 			<description>Avoid coupling the sender of a request to its receiver by 
 			giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.</description>
-			<class id="Handler">
+			<class id="Handler" annotation="Handler">
 				<field id="successor"><type>Handler</type></field>
 				<method id="setSuccessor">
 					<type>void</type>
@@ -384,19 +384,19 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteHandler1" extends="Handler">
+			<class id="ConcreteHandler1" extends="Handler" annotation="ConcreteHandler">
 			</class>
-			<class id="ConcreteHandler2" extends="Handler">
+			<class id="ConcreteHandler2" extends="Handler" annotation="ConcreteHandler">
 			</class>			
 		</pattern>
 		<pattern id="Command">
 			<description>Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.</description>
-			<interface id="Command">
+			<interface id="Command" annotation="Command">
 				<method id="execute">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="ConcreteCommand" implements="Command">
+			<class id="ConcreteCommand" implements="Command" annotation="ConcreteCommand">
 				<field id="state"><type>Object</type></field>
 				<field id="receiver"><type>Receiver</type></field>
 				<method id="execute">
@@ -406,12 +406,12 @@
 					</code>
 				</method>
 			</class>
-			<class id="Receiver">
+			<class id="Receiver" annotation="Receiver">
 				<method id="action">
 					<type>void</type>
 				</method>
 			</class>
-			<class id="Invoker">
+			<class id="Invoker" annotation="Invoker">
 				<field id="command"><type>Command</type></field>
 				<method id="setCommand">
 					<type>void</type>
@@ -430,25 +430,25 @@
 		</pattern>
 		<pattern id="Interpeter">
 			<description>Given a language, define a represention for its grammar along with an interpreter that uses the representation to interpret sentences in the language.</description>
-			<interface id="AbstractExpression">
+			<interface id="AbstractExpression" annotation="AbstractExpression">
 				<method id="interpet">
 					<type>void</type>
 					<parameter id="context"><type>Context</type></parameter>
 				</method>
 			</interface>
-			<class id="TerminalExpression" implements="AbstractExpression"></class>
-			<class id="NonTerminalExpression" implements="AbstractExpression">
+			<class id="TerminalExpression" implements="AbstractExpression" annotation="TerminalExpression"></class>
+			<class id="NonTerminalExpression" implements="AbstractExpression" annotation="NonTerminalExpression">
 				<field id="expression"><type>AbstractExpression</type></field>
 			</class>
-			<class id="Context"></class>
-			<class id="Client">
+			<class id="Context" annotation="Context"></class>
+			<class id="Client" annotation="Client">
 				<field id="context"><type>Context</type></field>
 				<field id="expr"><type>AbstractExpression</type></field>
 			</class>
 		</pattern>
 		<pattern id="Iterator">
 			<description>Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.</description>
-			<interface id="Iterator">
+			<interface id="Iterator" annotation="Iterator">
 				<method id="getNext">
 					<type>Object</type>
 				</method>
@@ -456,7 +456,7 @@
 					<type>boolean</type>
 				</method>
 			</interface>
-			<class id="ConcreteIterator" implements="Iterator">
+			<class id="ConcreteIterator" implements="Iterator" annotation="ConcreteIterator">
 				<field id="collection"><type>ConcreteCollection</type></field>
 				<field id="iterationState"><type>Object</type></field>
 				<method id="ConcreteIterator">
@@ -471,27 +471,27 @@
 					<code>return false;</code>
 				</method>
 			</class>
-			<interface id="Collection">
+			<interface id="Collection" annotation="Collection">
 				<method id="createIterator">
 					<type>Iterator</type>
 				</method>
 			</interface>
-			<class id="ConcreteCollection" implements="Collection"></class>
+			<class id="ConcreteCollection" implements="Collection" annotation="ConcreteCollection"></class>
 		</pattern>
 		<pattern id="Mediator">
 			<description>Define an object that encapsulates how a set of objects interact.
 			 Mediator promotes loose coupling by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently.</description>
-			<interface id="Mediator">
+			<interface id="Mediator" annotation="Mediator">
 				<method id="mediate">
 					<type>void</type>
 					<parameter id="colleague"><type>Colleague</type></parameter>
 				</method>
 			</interface>
-			<class id="ConcreteMediator" implements="Mediator">
+			<class id="ConcreteMediator" implements="Mediator" annotation="ConcreteMediator">
 				<field id="concreteColleague1"><type>ConcreteColleague1</type></field>
 				<field id="concreteColleague2"><type>ConcreteColleague2</type></field>
 			</class>
-			<class id="Colleague" isAbstract="false">
+			<class id="Colleague" isAbstract="false" annotation="Collegue">
 				<field id="mediator"><type>Mediator</type></field>
 				<method id="operation">
 					<type>void</type>
@@ -500,12 +500,12 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteColleague1" extends="Colleague"></class>
-			<class id="ConcreteColleague2" extends="Colleague"></class>
+			<class id="ConcreteColleague1" extends="Colleague" annotation="ConcreteCollegue"></class>
+			<class id="ConcreteColleague2" extends="Colleague" annotation="ConcreteCollegue"></class>
 		</pattern>
 		<pattern id="Memento">
 			<description>Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later.</description>
-			<class id="Originator">
+			<class id="Originator" annotation="Originator">
 				<field id="state">
 					<type>Object</type>
 				</field>
@@ -521,7 +521,7 @@
 					<code>return new Memento(state);</code>
 				</method>
 			</class>
-			<class id="Memento">
+			<class id="Memento" annotation="Memento">
 				<field id="state"><type>Object</type></field>
 				<method id="Memento">
 					<type></type>
@@ -542,13 +542,13 @@
 					<code>this.state = state;</code>
 				</method>
 			</class>
-			<class id="Caretaker">
+			<class id="Caretaker" annotation="Caretaker">
 				<field id="memento"><type>Memento</type></field>
 			</class>
 		</pattern>
 		<pattern id="Observer">
 			<description> Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</description>
-			<class id="Subject">
+			<class id="Subject" annotation="Subject">
 				<field id="observers"><type>Observer[]</type></field>
 				<method id="attach">
 					<type>void</type>
@@ -569,7 +569,7 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteSubject" extends="Subject">
+			<class id="ConcreteSubject" extends="Subject" annotation="ConcreteSubject">
 				<field id="subjectState"><type>Object</type></field>
 				<method id="getState">
 					<type>Object</type>
@@ -585,12 +585,12 @@
 					</code>
 				</method>
 			</class>
-			<interface id="Observer">
+			<interface id="Observer" annotation="Observer">
 				<method id="update">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="ConcreteObserver" implements="Observer">
+			<class id="ConcreteObserver" implements="Observer" annotation="ConcreteObserver">
 				<field id="observerState"><type>Object</type></field>
 				<field id="subject"><type>ConcreteSubject</type></field>
 				<method id="update">
@@ -601,7 +601,7 @@
 		</pattern>
 		<pattern id="State">
 			<description>Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.</description>
-			<class id="Context">
+			<class id="Context" annotation="Context">
 				<field id="state"><type>State</type></field>
 				<method id="request">
 					<type>void</type>
@@ -610,23 +610,23 @@
 					</code>
 				</method>
 			</class>
-			<interface id="State">
+			<interface id="State" annotation="State">
 				<method id="handle"><type>void</type></method>
 			</interface>
-			<class id="ConcreteStateA" implements="State"></class>
-			<class id="ConcreteStateB" implements="State"></class>
+			<class id="ConcreteStateA" implements="State" annotation="ConcreteState"></class>
+			<class id="ConcreteStateB" implements="State" annotation="ConcreteState"></class>
 		</pattern>
 		<pattern id="Strategy">
 			<description> Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.</description>
-			<interface id="Strategy">
+			<interface id="Strategy" annotation="Strategy">
 				<method id="algorithmInterface">
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="ConcreteStrategyA" implements="Strategy"></class>
-			<class id="ConcreteStrategyB" implements="Strategy"></class>
-			<class id="ConcreteStrategyC" implements="Strategy"></class>
-			<class id="Context">
+			<class id="ConcreteStrategyA" implements="Strategy" annotation="ConcreteStrategy"></class>
+			<class id="ConcreteStrategyB" implements="Strategy" annotation="ConcreteStrategy"></class>
+			<class id="ConcreteStrategyC" implements="Strategy" annotation="ConcreteStrategy"></class>
+			<class id="Context" annotation="Context">
 				<field id="strategy">
 					<type>Strategy</type>
 				</field>
@@ -637,7 +637,7 @@
 		</pattern>
 		<pattern id="Template Method">
 			<description>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.</description>
-			<class id="AbstractClass" isAbstract="true">
+			<class id="AbstractClass" isAbstract="true" annotation="Abstractlass">
 				<method id="templateMethod">
 					<type>void</type>
 					<code>
@@ -656,12 +656,12 @@
 					<type>void</type>
 				</method>
 			</class>
-			<class id="ConcreteClassA" extends="AbstractClass"></class>
-			<class id="ConcreteClassB" extends="AbstractClass"></class>
+			<class id="ConcreteClassA" extends="AbstractClass" annotation="ConcreteAbstractClass"></class>
+			<class id="ConcreteClassB" extends="AbstractClass" annotation="ConcreteAbstractClass"></class>
 		</pattern>
 		<pattern id="Visitor">
 			<description>Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.</description>
-			<interface id="Visitor">
+			<interface id="Visitor" annotation="Visitor">
 				<method id="visitConcreteElementA">
 					<type>void</type>
 					<parameter id="concreteElementA"><type>ConcreteElementA</type></parameter>
@@ -671,15 +671,15 @@
 					<parameter id="concreteElementB"><type>ConcreteElementB</type></parameter>
 				</method>
 			</interface>
-			<interface id="Element">
+			<interface id="Element" annotation="Element">
 				<method id="accept">
 					<type>void</type>
 					<parameter id="visitor"><type>Visitor</type></parameter>
 				</method>
 			</interface>
-			<class id="ConcreteVisitor1" implements="Visitor"></class>
-			<class id="ConcreteVisitor2" implements="Visitor"></class>
-			<class id="ConcreteElementA" implements="Element">
+			<class id="ConcreteVisitor1" implements="Visitor" annotation="ConcreteVisitor"></class>
+			<class id="ConcreteVisitor2" implements="Visitor" annotation="ConcreteVisitor"></class>
+			<class id="ConcreteElementA" implements="Element" annotation="ConcreteElement">
 				<method id="accept">
 					<type>void</type>
 					<parameter id="visitor"><type>Visitor</type></parameter>
@@ -689,7 +689,7 @@
 					<type>void</type>
 				</method>
 			</class>
-			<class id="ConcreteElementB" implements="Element">
+			<class id="ConcreteElementB" implements="Element" annotation="ConcreteElement">
 				<method id="accept">
 					<type>void</type>
 					<parameter id="visitor"><type>Visitor</type></parameter>
@@ -699,10 +699,10 @@
 					<type>void</type>
 				</method>
 			</class>
-			<class id="ObjectStructure">
+			<class id="ObjectStructure" annotation="ObjectStructure">
 				<field id="element"><type>Element</type></field>
 			</class>
-			<class id="Client">
+			<class id="Client" annotation="Client">
 				<field id="objectStructure"><type>ObjectStructure</type></field>
 				<field id="visitor"><type>Visitor</type></field>
 			</class>
