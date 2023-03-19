@@ -16,7 +16,7 @@ public interface IPatternManager {
 	public String[] getPatternsOfCategory(String category);
 	public String getPatternDescription(String pattern);
 	
-	public List<PatternClass> getClasses(String pattern);
+	public List<PatternClass> getClasses(String category, String pattern);
 	public List<PatternInterface> getInterfaces();
 	public void updateClassName(String newName, PatternElement element);
 	public void updateFieldName(String newName, Field field, PatternClass patternClass);

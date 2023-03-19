@@ -61,7 +61,7 @@ public class PatternManager implements IPatternManager {
 	}
 
 	@Override
-	public List<PatternClass> getClasses(String pattern) {
+	public List<PatternClass> getClasses(String category, String pattern) {
 		// TODO maybe discover interfaces on the other method 
 		interfaces.clear();
 		classes.clear();
@@ -82,7 +82,8 @@ public class PatternManager implements IPatternManager {
 						}
 					}
 				implementedInterface.setPattern(lowerCaseFirstLetter(pattern));
-				implementedInterface.setRole(implementedInterface.getName());
+				implementedInterface.setRole(fileParser.getAnnotation(interfaceName, category, pattern));
+				implementedInterface.setCategoryOfPattern(category);
 				
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, implementedInterface);
 				patternClass.overrideMethods(implementedInterface.getMethods());
@@ -92,8 +93,9 @@ public class PatternManager implements IPatternManager {
 			} else {
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, null);
 			}
-			patternClass.setRole(patternClass.getName());
+			patternClass.setRole(fileParser.getAnnotation(className, category, pattern));
 			patternClass.setPattern(lowerCaseFirstLetter(pattern));
+			patternClass.setCategoryOfPattern(category);
 			classes.add(patternClass);
 			
 		}

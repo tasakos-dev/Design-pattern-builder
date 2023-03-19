@@ -103,9 +103,10 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 	}
 	
 	private void generatePackageHeader(StringBuffer buffer, PatternElement patternElement) {
+		if (!selectedPackage.getElementName().isBlank()) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
 		String importString = "import " + patternElement.getCategoryOfPattern() + "." + patternElement.getPattern() + "." + patternElement.getRole()+ ";";
 		buffer.append(importString + "\n\n");
-		if (!selectedPackage.getElementName().isBlank()) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
+		buffer.append("@"+patternElement.getRole()+"\n");
 		generateHeader(buffer, patternElement);
 	}
 	

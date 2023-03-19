@@ -176,7 +176,7 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	
 	public void addElements(String pattern, String category) {
 		setDescription(patternManager.getPatternDescription(pattern));
-		classes = patternManager.getClasses(pattern);
+		classes = patternManager.getClasses(category, pattern);
 		interfaces = patternManager.getInterfaces();
 		classesTreeItem.removeAll();
 		interfacesTreeItem.removeAll();
@@ -206,13 +206,11 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 		
 
 		for (PatternElement patternClass: classes) {
-			patternClass.setCategoryOfPattern(category);
 			TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternClass.getName());
 		}
 		
 		for (PatternElement patternInterface: interfaces) {
-			patternInterface.setCategoryOfPattern(category);
 			TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternInterface.getName());
 		}

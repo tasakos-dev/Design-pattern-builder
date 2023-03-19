@@ -338,6 +338,14 @@ public class FileParser implements IFileParser {
 		return parameters;
 		
 	}
+	
+	@Override
+	public String getAnnotation(String name, String category, String pattern) {
+		Element patternElement = getPatternElement(name, pattern, "class");
+		if (patternElement == null) patternElement = getPatternElement(name, pattern, "interface"); 
+		
+		return patternElement.getAttribute("annotation")+"Annotation";
+	}
 
 	
 

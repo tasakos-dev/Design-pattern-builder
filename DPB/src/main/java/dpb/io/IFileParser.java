@@ -27,7 +27,7 @@ public interface IFileParser {
 	public String[][] getClassFields(String className, String pattern);
 	public boolean isStaticField(String name, String classname, String pattern);
 	public boolean isStaticMethod(String name, String classname, String pattern);
-	
+	public String getAnnotation(String name, String category, String pattern);
 	
 	
 	
