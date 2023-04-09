@@ -17,6 +17,7 @@ import dpb.model.Method;
 import dpb.model.PatternClass;
 import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
+import dpb.model.Property;
 
 
 public class PatternManager implements IPatternManager {
@@ -32,7 +33,7 @@ public class PatternManager implements IPatternManager {
 	}
 	
 	@Override
-	public String[] getProperties(String pattern) throws NoPropertiesException {
+	public Property[] getProperties(String pattern) throws NoPropertiesException {
 		return fileParser.getProperties(pattern);
 		
 	}	
@@ -81,7 +82,7 @@ public class PatternManager implements IPatternManager {
 							break;
 						}
 					}
-				implementedInterface.setPattern(lowerCaseFirstLetter(pattern));
+				implementedInterface.setPattern(pattern);
 				implementedInterface.setRole(fileParser.getAnnotation(interfaceName, category, pattern));
 				implementedInterface.setCategoryOfPattern(category);
 				
@@ -94,7 +95,7 @@ public class PatternManager implements IPatternManager {
 				patternClass = new PatternClass(className, "public", isAbstract, classFields, classMethods, null);
 			}
 			patternClass.setRole(fileParser.getAnnotation(className, category, pattern));
-			patternClass.setPattern(lowerCaseFirstLetter(pattern));
+			patternClass.setPattern(pattern);
 			patternClass.setCategoryOfPattern(category);
 			classes.add(patternClass);
 			
@@ -103,9 +104,7 @@ public class PatternManager implements IPatternManager {
 		return classes;
 	}
 	
-	private String lowerCaseFirstLetter(String word) {
-		return word.substring(0, 1).toLowerCase() + word.substring(1);
-	}
+	
 	
 	private boolean containsInterface(PatternElement patternInterface) {
 		for (PatternInterface pInterface : interfaces) {
@@ -191,7 +190,7 @@ public class PatternManager implements IPatternManager {
 	}
 
 	@Override
-	public void updateClassName(String newName, PatternElement element) {
+	public void updatePatternElementName(String newName, PatternElement element) {
 		String oldName = element.getName();
 		element.setName(newName);
 		for (PatternClass patternClass: classes) {
@@ -211,6 +210,15 @@ public class PatternManager implements IPatternManager {
 					method.setCode(newCode);
 				}
 				if(method.getName().equals(oldName)) method.setName(newName);	
+				if (method.getType().equals(oldName)) method.setType(newName);
+			}
+			
+			
+		}
+		
+		for (PatternInterface patternInterface : interfaces) {
+			List<Method> methods = patternInterface.getMethods();
+			for (Method method : methods) {	
 				if (method.getType().equals(oldName)) method.setType(newName);
 			}
 		}

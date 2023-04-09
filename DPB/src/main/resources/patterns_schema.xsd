@@ -83,6 +83,7 @@
                            	<xs:element name="newClass" minOccurs="0" maxOccurs="unbounded">
 						        <xs:complexType>
 						          <xs:attribute name="implements" type="xs:string" use="optional"/>
+						          <xs:attribute name="annotation" type="xs:string" use="required"/>
 						        </xs:complexType>
 						    </xs:element>
 						    <xs:element name="newMethod" minOccurs="0" maxOccurs="unbounded">

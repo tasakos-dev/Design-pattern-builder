@@ -61,7 +61,7 @@ public class SetupWizard extends Wizard implements INewWizard {
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page instanceof ModuleSetup) {
-			moduleSetup.finish();
+//			moduleSetup.finish();
 			if (fieldsSetup != null) { 
 				fieldsSetup.addFields();
 			} else {

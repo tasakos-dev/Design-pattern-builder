@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GoF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="patterns_schema.xsd">
-	<category id="creational">
+	<category id="Creational">
 		<pattern id="Abstract Factory">
 			<description>Provide an interface for creating families of related or dependent objects without specifying their concrete classes.</description>
 			<interface id="AbstractFactory" annotation="AbstractFactory">
@@ -29,9 +29,9 @@
 			<class id="concreteProductB1" implements="ProductB" annotation="ConcreteProduct"></class>
 			<class id="concreteProductB2" implements="ProductB" annotation="ConcreteProduct"></class>
 			<properties>
-				<newClass implements= "AbstractFactory" />
-				<newClass implements= "ProductA"/>
-				<newClass implements= "ProductB"/>
+				<newClass implements= "AbstractFactory" annotation="ConcreteFactory"/>
+				<newClass implements= "ProductA" annotation="ConcreteProduct"/>
+				<newClass implements= "ProductB" annotation="ConcreteProduct"/>
 				<newMethod belongs="AbstractFactory"/>
 			</properties>
 		</pattern>
@@ -60,7 +60,7 @@
 				</method>
 			</class>
 			<properties>
-				<newClass implements="Builder"/>
+				<newClass implements="Builder" annotation="ConcreteBuilder"/>
 			</properties>
 		</pattern>
 		<pattern id="Factory Method">
@@ -82,7 +82,7 @@
 			<class id="ConcreteCreator" extends="Creator" annotation="ConcreteCreator"></class>
 			<class id="ConcreteProductA" implements="Product" annotation="ConcreteProduct"></class>
 			<properties>
-				<newClass implements="Product"/>
+				<newClass implements="Product" annotation="ConcreteProduct"/>
 				<newMethod belongs="Creator" />
 			</properties>
 		</pattern>
@@ -137,7 +137,7 @@
 				</method>
 			</class>
 			<properties>
-				<newClass implements="Prototype"/>
+				<newClass implements="Prototype" annotation="ConcretePrototype"/>
 			</properties>
 		</pattern>
 		<pattern id="Singleton">
@@ -237,7 +237,10 @@
 			</class>
 			<class id="RefinedAbstraction" extends="Abstraction" annotation="RefinedAbstraction"></class>
 			<class id="ConcreteImplementorA" implements="Implementor" annotation="ConcreteImplementor"></class>
-			<class id="ConcreteImplementorB" implements="Implementor" annotation="ConcreteImplementor"></class>			
+			<class id="ConcreteImplementorB" implements="Implementor" annotation="ConcreteImplementor"></class>
+			<properties>
+				<newClass implements="Implementor" annotation="ConcreteImplementor"/>
+			</properties>			
 		</pattern>
 		<pattern id="Composite">
 			<description>Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.</description>
@@ -259,6 +262,10 @@
 				</method>
 				<method id="getChildren"><type>Component</type></method>
 			</class>
+			<properties>
+				<newClass implements="Component" annotation="Leaf"/>
+				<newMethod belongs="Composite"/>
+			</properties>
 		</pattern>
 		<pattern id="Decorator">
 			<description>Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.</description>
@@ -286,6 +293,9 @@
 			<class id="ConcreteDecoratorB" extends="Decorator" annotation="ConcreteDecorator">
 				<field id="addedState"><type>Object</type></field>
 			</class>
+			<properties>
+				<newClass implements="Decorator" annotation="ConcreteDecorator"/>
+			</properties>
 		</pattern>
 		<pattern id="Facade">
 			<description>Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.</description>
@@ -303,6 +313,9 @@
 					</code>
 					</method>
 			</class>
+			<properties>
+				<newMethod belongs="Facade"/>
+			</properties>
 		</pattern>
 		<pattern id="Flyweight">
 			<description>Use sharing to support large numbers of fine-grained objects efficiently.</description>
@@ -332,6 +345,10 @@
 			<class id="UnsharedConcreteFlyweight" extends="Flyweight" annotation="UnsharedConcreteFlyweight">
 				<field id="allState"><type>Object</type></field>
 			</class>
+			<properties>
+				<newMethod belongs="ConcreteFlyweight"/>
+				<newMethod belongs="UnsharedConcreteFlyweight"/>
+			</properties>
 		</pattern>
 		<pattern id="Proxy">
 			<description>Provide a surrogate or placeholder for another object to control access to it.</description>
@@ -359,6 +376,11 @@
 			<class id="RealService" annotation="RealService">
 				<method id="request"><type>void</type></method>
 			</class>
+			<properties>
+				<newMethod belongs="Subject"/>
+				<newMethod belongs="Proxy"/>
+				<newMethod belongs="RealService"/>
+			</properties>
 		</pattern>
 		
 	</category>
@@ -387,7 +409,10 @@
 			<class id="ConcreteHandler1" extends="Handler" annotation="ConcreteHandler">
 			</class>
 			<class id="ConcreteHandler2" extends="Handler" annotation="ConcreteHandler">
-			</class>			
+			</class>
+			<properties>
+				<newClass implements="Handler" annotation="ConcreteHandler"/>
+			</properties>			
 		</pattern>
 		<pattern id="Command">
 			<description>Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations.</description>
@@ -427,6 +452,9 @@
 					</code>
 				</method>
 			</class>
+			<properties>
+				<newMethod belongs="ConcreteCommand"/>
+			</properties>
 		</pattern>
 		<pattern id="Interpeter">
 			<description>Given a language, define a represention for its grammar along with an interpreter that uses the representation to interpret sentences in the language.</description>
@@ -445,6 +473,9 @@
 				<field id="context"><type>Context</type></field>
 				<field id="expr"><type>AbstractExpression</type></field>
 			</class>
+			<properties>
+				<newClass implements="AbstractExpression" annotation="TerminalExpression"/>
+			</properties>
 		</pattern>
 		<pattern id="Iterator">
 			<description>Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation.</description>
@@ -476,7 +507,7 @@
 					<type>Iterator</type>
 				</method>
 			</interface>
-			<class id="ConcreteCollection" implements="Collection" annotation="ConcreteCollection"></class>
+			<class id="ConcreteCollection" implements="Collection" annotation="ConcreteCollection"></class>			
 		</pattern>
 		<pattern id="Mediator">
 			<description>Define an object that encapsulates how a set of objects interact.
@@ -502,6 +533,9 @@
 			</class>
 			<class id="ConcreteColleague1" extends="Colleague" annotation="ConcreteCollegue"></class>
 			<class id="ConcreteColleague2" extends="Colleague" annotation="ConcreteCollegue"></class>
+			<properties>
+				<newClass implements="Colleague" annotation="ConcreteCollegue"/>
+			</properties>
 		</pattern>
 		<pattern id="Memento">
 			<description>Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later.</description>
@@ -598,6 +632,10 @@
 					<code>observerState = subject.getState();</code>
 				</method>
 			</class>
+			<properties>
+				<newClass implements="Observer" annotation="ConcreteObserver"/>
+				<newClass implements="Subject" annotation="ConcreteSubject"/>
+			</properties>
 		</pattern>
 		<pattern id="State">
 			<description>Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.</description>
@@ -615,6 +653,9 @@
 			</interface>
 			<class id="ConcreteStateA" implements="State" annotation="ConcreteState"></class>
 			<class id="ConcreteStateB" implements="State" annotation="ConcreteState"></class>
+			<properties>
+				<newClass implements="State" annotation="ConcreteState"/>
+			</properties>
 		</pattern>
 		<pattern id="Strategy">
 			<description> Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.</description>
@@ -634,6 +675,9 @@
 					<type>void</type>
 					</method>
 			</class>
+			<properties>
+				<newClass implements="Strategy" annotation="ConcreteStrategy"/>
+			</properties>
 		</pattern>
 		<pattern id="Template Method">
 			<description>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.</description>
@@ -658,6 +702,10 @@
 			</class>
 			<class id="ConcreteClassA" extends="AbstractClass" annotation="ConcreteAbstractClass"></class>
 			<class id="ConcreteClassB" extends="AbstractClass" annotation="ConcreteAbstractClass"></class>
+			<properties>
+				<newClass implements="AbstractClass" annotation="ConcreteAbstractClass"/>
+				<newMethod belongs="AbstractClass"/>
+			</properties>
 		</pattern>
 		<pattern id="Visitor">
 			<description>Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.</description>
@@ -706,6 +754,10 @@
 				<field id="objectStructure"><type>ObjectStructure</type></field>
 				<field id="visitor"><type>Visitor</type></field>
 			</class>
+			<properties>
+			<newClass implements="Visitor" annotation="ConcreteVisitor"/>
+				<newClass implements="Element" annotation="ConcreteElement"/>
+			</properties>
 		</pattern>
 	</category>
 </GoF>

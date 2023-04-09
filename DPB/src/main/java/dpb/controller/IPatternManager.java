@@ -8,6 +8,7 @@ import dpb.model.Method;
 import dpb.model.PatternClass;
 import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
+import dpb.model.Property;
 
 
 
@@ -18,10 +19,10 @@ public interface IPatternManager {
 	
 	public List<PatternClass> getClasses(String category, String pattern);
 	public List<PatternInterface> getInterfaces();
-	public void updateClassName(String newName, PatternElement element);
+	public void updatePatternElementName(String newName, PatternElement element);
 	public void updateFieldName(String newName, Field field, PatternClass patternClass);
 	public void updateMethodName(String newName, Method method);
-	public String[] getProperties(String pattern) throws NoPropertiesException;
+	public Property[] getProperties(String pattern) throws NoPropertiesException;
 	
 	
 }

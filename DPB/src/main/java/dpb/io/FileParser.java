@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import dpb.exceptions.NoPropertiesException;
+import dpb.model.Property;
 
 
 
@@ -46,20 +47,24 @@ public class FileParser implements IFileParser {
 	}
 	
 	@Override
-	public String[] getProperties(String pattern) throws NoPropertiesException {
-		Element properties =(Element) getElementByTagAndId("pattern", pattern).getElementsByTagName("properties").item(0);
+	public Property[] getProperties(String pattern) throws NoPropertiesException {
+		System.err.println("hii"+getElementByTagAndId("pattern", pattern));
+		Element properties = (Element) getElementByTagAndId("pattern", pattern).getElementsByTagName("properties").item(0);
 		if (properties == null) throw new NoPropertiesException();
 		
 		NodeList classPropertiesList = (NodeList) properties.getElementsByTagName("newClass");
 		int length = classPropertiesList.getLength();
 		String implementsString;
-		String[] newClasses = new String[length];
+		String annotation;
+		Property[] propertiesArray = new Property[length];
+		System.err.println(length);
 		
 		for (int i = 0; i < length;i++) {
 			implementsString = ((Element)classPropertiesList.item(i)).getAttribute("implements");	
-			newClasses[i] = implementsString;
+			annotation = ((Element)classPropertiesList.item(i)).getAttribute("annotation")+"Annotation";	
+			propertiesArray[i] = new Property(annotation, implementsString);
 		}
-		return newClasses;
+		return propertiesArray;
 		
 	}
 	

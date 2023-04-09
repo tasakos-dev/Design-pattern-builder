@@ -104,10 +104,14 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 	
 	private void generatePackageHeader(StringBuffer buffer, PatternElement patternElement) {
 		if (!selectedPackage.getElementName().isBlank()) buffer.append("package "+selectedPackage.getElementName()+";\n\n");
-		String importString = "import " + patternElement.getCategoryOfPattern() + "." + patternElement.getPattern() + "." + patternElement.getRole()+ ";";
+		String importString = "import " + lowerCaseFirstLetter(patternElement.getCategoryOfPattern().replaceAll("\\s+", "")) + "." + lowerCaseFirstLetter(patternElement.getPattern().replaceAll("\\s+", "")) + "." + patternElement.getRole()+ ";";
 		buffer.append(importString + "\n\n");
 		buffer.append("@"+patternElement.getRole()+"\n");
 		generateHeader(buffer, patternElement);
+	}
+	
+	private String lowerCaseFirstLetter(String word) {
+		return word.substring(0, 1).toLowerCase() + word.substring(1);
 	}
 	
 	protected abstract void generateMethods(StringBuffer buffer, PatternElement patternElement);

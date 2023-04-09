@@ -12,8 +12,11 @@ import org.eclipse.swt.widgets.Text;
 import org.xml.sax.SAXException;
 
 import dpb.controller.PatternManager;
+import dpb.exceptions.NoPropertiesException;
 import dpb.model.PatternClass;
 import dpb.model.PatternElement;
+import dpb.model.PatternInterface;
+import dpb.model.Property;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridLayout;
@@ -75,33 +78,59 @@ public class ModuleSetup extends WizardPage {
 			
 			Label lblNewLabel_2 = new Label(container, SWT.NONE);
 			lblNewLabel_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-			lblNewLabel_2.setText("Implement Interface:");
-			
-			// TODO maybe remove it
-//			String[] interfaceNames = new String[patternManager.getInterfaces().size()];
-//			int implementedInterfaceIndex = -1;
-//			for (int i = 0;i<patternManager.getInterfaces().size();i++) {
-//				interfaceNames[i] = patternManager.getInterfaces().get(i).getName();
-//				if (patternClass.getImplementedInterface().getName().equals(interfaceNames[i])) {
-//					implementedInterfaceIndex = i;
-//				}
-//			}
-		
-			 
+			lblNewLabel_2.setText("Implement Interface:");		 
 			
 			combo = new Combo(container, SWT.NONE);
 			combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			combo.setItems(availableInterfaces);
 			combo.select(0);
-			
-			// TODO maybe remove it
-//			if (implementedInterfaceIndex > 0) combo.select(implementedInterfaceIndex);
-//			if (patternClass.getImplementedInterface() != null) combo.setEnabled(false);
 		}
 		
 		
 	}
 	public void finish() {
-		patternManager.updateClassName(text.getText(), patternElement);
+		if (module.equals("class")) {
+			PatternClass patternClass = (PatternClass) patternElement;
+			PatternInterface patternInterface = null;
+			int selectionIndex = combo.getSelectionIndex();
+			String selectedText = "";
+			if (selectionIndex != -1) {
+				selectedText = combo.getItem(selectionIndex);
+			    
+			} 
+			for (PatternInterface anInterface : patternManager.getInterfaces()) {
+				if (anInterface.getName().equals(selectedText)) {
+					patternInterface = anInterface;
+					break;
+					
+				}
+			}
+			
+			patternClass.setImplementedInterface(patternInterface);
+			patternClass.overrideMethods(patternInterface.getMethods());
+			
+			String role = "";
+			System.err.println("elare"+patternClass.getPattern());
+			if (patternElement.getRole() == null || patternElement.getRole().isEmpty()) {
+				try {
+					for (Property property : patternManager.getProperties(patternClass.getPattern())) {
+						if (property.getImplement().equals(patternInterface.getName())) {
+							role = property.getAnnotation();
+							break;
+						}					
+					}
+				} catch (NoPropertiesException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				patternClass.setCategoryOfPattern(patternClass.getCategoryOfPattern());
+				patternClass.setPattern(patternClass.getPattern());
+				patternClass.setRole(role);
+			}
+		}
+		
+		patternManager.updatePatternElementName(text.getText(), patternElement);
 	}
 }

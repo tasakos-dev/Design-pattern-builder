@@ -25,6 +25,7 @@ import dpb.exceptions.NoPropertiesException;
 import dpb.model.PatternClass;
 import dpb.model.PatternElement;
 import dpb.model.PatternInterface;
+import dpb.model.Property;
 import dpb.wizards.setupWizard.SetupWizard;
 
 import org.eclipse.swt.widgets.Button;
@@ -101,14 +102,16 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 				for (PatternClass patternClass: classes) {
 					if (patternClass.getName().equals(className)) {
 						selectedClass = patternClass;
-						PatternElement implementInterface =patternClass.getImplementedInterface();						
-						availableInterfaces = new String[] {((implementInterface != null) ? implementInterface.getName() : "")};
+						PatternElement implementInterface =patternClass.getImplementedInterface();
+						if (availableInterfaces == null)
+							availableInterfaces = new String[] {((implementInterface != null) ? implementInterface.getName() : "")};
 						break;
 					}
 				}
 				classSetupWizard = new SetupWizard(selectedClass, "class", availableInterfaces);
 				WizardDialog wizardDialog = new WizardDialog(getShell(), classSetupWizard);
 				wizardDialog.open();
+				updateTree();
 			}
 		});
 		
@@ -127,13 +130,18 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 						break;
 					}
 				}
+				
 				interfaceSetupWizard = new SetupWizard(selectedInterface, "interface", null);
 				
 				WizardDialog wizardDialog = new WizardDialog(getShell(), interfaceSetupWizard);
 				wizardDialog.open();
-				
-				
-		
+				for (int i = 0;i<availableInterfaces.length;i++) {
+					if (availableInterfaces[i].equals(interfaceName)) {
+						availableInterfaces[i] = selectedInterface.getName();
+						break;
+					}
+				}
+				updateTree();		
 			}
 		});
 		
@@ -172,39 +180,10 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 	public List<PatternInterface> getInterfaces() {
 		return interfaces;
 	}
-
 	
-	public void addElements(String pattern, String category) {
-		setDescription(patternManager.getPatternDescription(pattern));
-		classes = patternManager.getClasses(category, pattern);
-		interfaces = patternManager.getInterfaces();
+	private void updateTree() {
 		classesTreeItem.removeAll();
 		interfacesTreeItem.removeAll();
-		Listener[] listeners = btnNewButton.getListeners(SWT.Selection);
-		for (Listener listener : listeners) {
-		    btnNewButton.removeListener(SWT.Selection, listener);
-		}
-
-		try {
-			String[] properties = patternManager.getProperties(pattern);
-			if (properties.length == 0) btnNewButton.setEnabled(false);
-				
-			btnNewButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					PatternClass newClass = new PatternClass("NewClass", "public");
-					// TODO refactor it please!
-					availableInterfaces = properties;
-					classes.add(newClass);
-					TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
-					trtmNewTreeitem_1.setText(newClass.getName());
-				}
-			});
-		} catch (NoPropertiesException e) {
-			btnNewButton.setEnabled(false);
-		}
-		
-
 		for (PatternElement patternClass: classes) {
 			TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternClass.getName());
@@ -214,5 +193,43 @@ public class PatternMainSetupPage extends WizardPage implements IWizardPage {
 			TreeItem trtmNewTreeitem_1 = new TreeItem(interfacesTreeItem, SWT.NONE);
 			trtmNewTreeitem_1.setText(patternInterface.getName());
 		}
+	}
+
+	
+	public void addElements(String pattern, String category) {
+		setDescription(patternManager.getPatternDescription(pattern));
+		classes = patternManager.getClasses(category, pattern);
+		interfaces = patternManager.getInterfaces();
+		Listener[] listeners = btnNewButton.getListeners(SWT.Selection);
+		for (Listener listener : listeners) {
+		    btnNewButton.removeListener(SWT.Selection, listener);
+		}
+
+		try {
+			Property[] properties = patternManager.getProperties(pattern);
+			if (properties.length == 0) btnNewButton.setEnabled(false);
+				
+			btnNewButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					PatternElement newClass = new PatternClass("NewClass", "public");
+					
+					newClass.setCategoryOfPattern(category);
+					newClass.setPattern(pattern);
+					availableInterfaces = new String[properties.length];
+					for (int i = 0; i < properties.length;i++) {
+						availableInterfaces[i] = properties[i].getImplement();
+					}
+					classes.add((PatternClass) newClass);
+					TreeItem trtmNewTreeitem_1 = new TreeItem(classesTreeItem, SWT.NONE);
+					trtmNewTreeitem_1.setText(newClass.getName());
+				}
+			});
+		} catch (NoPropertiesException e) {
+			btnNewButton.setEnabled(false);
+		}
+		updateTree();
+
+		
 	}
 }

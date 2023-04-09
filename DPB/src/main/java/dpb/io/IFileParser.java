@@ -1,13 +1,14 @@
 package dpb.io;
 
 import dpb.exceptions.NoPropertiesException;
+import dpb.model.Property;
 
 public interface IFileParser {
 	
 	public String[] getPatternCategories();
 	public String[] getPatternsOfCategory(String category);
 	
-	public String[] getProperties(String pattern) throws NoPropertiesException;
+	public Property[] getProperties(String pattern) throws NoPropertiesException;
 	
 	public String[] getClasses(String pattern);
 	public String getPatternDescription(String pattern);
@@ -28,6 +29,7 @@ public interface IFileParser {
 	public boolean isStaticField(String name, String classname, String pattern);
 	public boolean isStaticMethod(String name, String classname, String pattern);
 	public String getAnnotation(String name, String category, String pattern);
+	
 	
 	
 	
