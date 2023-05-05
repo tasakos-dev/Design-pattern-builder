@@ -77,7 +77,6 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 		
 		for (IClasspathEntry entry : oldEntries) {
 		    if (entry.getPath().equals(customJarPath)) {
-		    	System.err.println("hellofromthere");
 		        // JAR entry already exists in classpath, do not add it again
 		        return;
 		    }

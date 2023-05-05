@@ -13,21 +13,27 @@ public class Field {
 		this.modifier = modifier;
 		this.isStatic = isStatic;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public String getType() {
 		return type;
 	}
+	
 	public String getModifier() {
 		return modifier;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public void setType(String type) {
 		this.type = type;
 	}
+	
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
 	}

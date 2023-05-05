@@ -57,7 +57,6 @@ public class FileParser implements IFileParser {
 		String implementsString;
 		String annotation;
 		Property[] propertiesArray = new Property[length];
-		System.err.println(length);
 		
 		for (int i = 0; i < length;i++) {
 			implementsString = ((Element)classPropertiesList.item(i)).getAttribute("implements");	
@@ -100,8 +99,6 @@ public class FileParser implements IFileParser {
 			patterns[i] = patternString;
 			
 		}
-		
-
 		
 		return patterns;
 	}
@@ -210,8 +207,9 @@ public class FileParser implements IFileParser {
 	
 	@Override
 	public String getPatternDescription(String pattern) {
-		NodeList description = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("class");
-		return description.item(0).getTextContent().strip();
+		NodeList desrciptioNodeList = (NodeList) getElementByTagAndId("pattern", pattern).getElementsByTagName("description");
+		return desrciptioNodeList.item(0).getTextContent().trim().replaceAll("\\s+", " ");
+		
 	}
 
 	@Override

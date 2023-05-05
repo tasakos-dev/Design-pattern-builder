@@ -22,12 +22,12 @@
 					<type>void</type>
 				</method>
 			</interface>
-			<class id="concreteFactory1" implements="AbstractFactory" annotation="ConcreteFactory"></class>
-			<class id="concreteFactory2" implements="AbstractFactory" annotation="ConcreteFactory"></class>
-			<class id="concreteProductA1" implements="ProductA" annotation="ConcreteProduct"></class>
-			<class id="concreteProductA2" implements="ProductA" annotation="ConcreteProduct"></class>
-			<class id="concreteProductB1" implements="ProductB" annotation="ConcreteProduct"></class>
-			<class id="concreteProductB2" implements="ProductB" annotation="ConcreteProduct"></class>
+			<class id="ConcreteFactory1" implements="AbstractFactory" annotation="ConcreteFactory"></class>
+			<class id="ConcreteFactory2" implements="AbstractFactory" annotation="ConcreteFactory"></class>
+			<class id="ConcreteProductA1" implements="ProductA" annotation="ConcreteProduct"></class>
+			<class id="ConcreteProductA2" implements="ProductA" annotation="ConcreteProduct"></class>
+			<class id="ConcreteProductB1" implements="ProductB" annotation="ConcreteProduct"></class>
+			<class id="ConcreteProductB2" implements="ProductB" annotation="ConcreteProduct"></class>
 			<properties>
 				<newClass implements= "AbstractFactory" annotation="ConcreteFactory"/>
 				<newClass implements= "ProductA" annotation="ConcreteProduct"/>
@@ -36,7 +36,7 @@
 			</properties>
 		</pattern>
 		<pattern id="Builder">
-			<description>Separate the construction of a complex object from its representation so that thesame construction process can create different representations.</description>
+			<description>Separate the construction of a complex object from its representation so that the same construction process can create different representations.</description>
 			<interface id="Builder" annotation="Builder">
 				<method id="buildPart">
 					<type>void</type>
@@ -273,7 +273,7 @@
 				<method id="operation"><type>void</type></method>
 			</interface>
 			<class id="ConcreteComponent" implements="Component" annotation="ConcreteComponent"></class>
-			<class id="Decorator" implements="Component" isAbstract="true" annotation="Decorator">
+			<class id="Decorator" implements="Component" isAbstract="false" annotation="Decorator">
 				<field id="component"><type>Component</type></field>
 				<method id="operation">
 					<type>void</type>
@@ -292,6 +292,12 @@
 			</class>
 			<class id="ConcreteDecoratorB" extends="Decorator" annotation="ConcreteDecorator">
 				<field id="addedState"><type>Object</type></field>
+				<method id="operation">
+					<type>void</type>
+					<code>
+						super.operation();
+					</code>
+				</method>
 			</class>
 			<properties>
 				<newClass implements="Decorator" annotation="ConcreteDecorator"/>
@@ -305,7 +311,7 @@
 				</method>
 			</class>
 			<class id="Facade" annotation="Facade">
-				<field id="subsystem"><type>Subsystem1</type></field>
+				<field id="subsystem1"><type>Subsystem1</type></field>
 				<method id="subsystemOperation">
 					<type>void</type>
 					<code>
@@ -358,7 +364,7 @@
 				</method>
 			</interface>
 			<class id="Proxy" implements="Subject" annotation="Proxy">
-				<field id="realService"><type>RealService</type></field>
+				<field id="realSubject"><type>RealSubject</type></field>
 				<method id="checkAccess"><type>boolean</type>
 					<code>
 						return false;
@@ -373,13 +379,13 @@
 					</code>
 				</method>
 			</class>
-			<class id="RealService" annotation="RealService">
+			<class id="RealSubject" annotation="RealService">
 				<method id="request"><type>void</type></method>
 			</class>
 			<properties>
 				<newMethod belongs="Subject"/>
 				<newMethod belongs="Proxy"/>
-				<newMethod belongs="RealService"/>
+				<newMethod belongs="RealSubject"/>
 			</properties>
 		</pattern>
 		
@@ -407,8 +413,14 @@
 				</method>
 			</class>
 			<class id="ConcreteHandler1" extends="Handler" annotation="ConcreteHandler">
+				<method id="handleRequest">
+					<type>void</type>
+				</method>
 			</class>
 			<class id="ConcreteHandler2" extends="Handler" annotation="ConcreteHandler">
+				<method id="handleRequest">
+					<type>void</type>
+				</method>
 			</class>
 			<properties>
 				<newClass implements="Handler" annotation="ConcreteHandler"/>
@@ -456,10 +468,10 @@
 				<newMethod belongs="ConcreteCommand"/>
 			</properties>
 		</pattern>
-		<pattern id="Interpeter">
+		<pattern id="Interpreter">
 			<description>Given a language, define a represention for its grammar along with an interpreter that uses the representation to interpret sentences in the language.</description>
 			<interface id="AbstractExpression" annotation="AbstractExpression">
-				<method id="interpet">
+				<method id="interpret">
 					<type>void</type>
 					<parameter id="context"><type>Context</type></parameter>
 				</method>

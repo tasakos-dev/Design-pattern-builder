@@ -7,7 +7,4 @@ import dpb.model.PatternElement;
 
 public interface IPatternGenerator {
 	public void generate(PatternElement patternElement) throws JavaModelException;
-	
-	
-
 }
