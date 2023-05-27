@@ -32,19 +32,24 @@ public class TestGetClassesStructural {
 	  
 	  @Test
 	  public void testGetObjectAdapterClasses() {
+		  String CODE = "adaptee.specificRequest();";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Object Adapter");
 	      assertEquals(3, classes.size());
 
 	      PatternClass adapterClass = classes.get(0);
 	      assertEquals("Adapter", adapterClass.getName());
+	      assertEquals("Target", adapterClass.getImplementedInterface().getName());
 
 	      List<Field> fields = adapterClass.getFields();
 	      assertEquals(1, fields.size());
 	      assertEquals("adaptee", fields.get(0).getName());
+	      assertEquals("Adaptee", fields.get(0).getType());
 
 	      List<Method> methods = adapterClass.getMethods();
 	      assertEquals(1, methods.size());
 	      assertEquals("request", methods.get(0).getName());
+	      assertEquals(CODE, methods.get(0).getCode());
+	      
 
 	      PatternClass adapteeClass = classes.get(1);
 	      assertEquals("Adaptee", adapteeClass.getName());
@@ -58,10 +63,12 @@ public class TestGetClassesStructural {
 	      
 	      PatternClass client = classes.get(2);
 	      assertEquals("Client", client.getName());
-	      assertEquals("target", fields.get(0).getName());
 
 	      fields = client.getFields();
 	      assertEquals(1, fields.size());
+	      assertEquals("target", fields.get(0).getName());
+	      assertEquals("Target", fields.get(0).getType());
+	      
 
 	      methods = client.getMethods();
 	      assertEquals(0, methods.size());
@@ -69,12 +76,14 @@ public class TestGetClassesStructural {
 	  
 	  @Test
 	  public void testGetClassAdapterClasses() {
+		  String CODE = "super.specificRequest();";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Class Adapter");
 	      assertEquals(3, classes.size());
 
 	      PatternClass adapterClass = classes.get(0);
 	      assertEquals("Adapter", adapterClass.getName());
 	      assertEquals("Adaptee", adapterClass.getExtendedClass().getName());
+	      assertEquals("Target", adapterClass.getImplementedInterface().getName());
 
 	      List<Field> fields = adapterClass.getFields();
 	      assertEquals(0, fields.size());
@@ -82,9 +91,10 @@ public class TestGetClassesStructural {
 	      
 
 	      List<Method> methods = adapterClass.getMethods();
-	      assertEquals(2, methods.size());
+	      assertEquals(1, methods.size());
 	      assertEquals("request", methods.get(0).getName());
-	      assertEquals("specificRequest", methods.get(1).getName());
+	      assertEquals(CODE, methods.get(0).getCode());
+
 
 	      PatternClass adapteeClass = classes.get(1);
 	      assertEquals("Adaptee", adapteeClass.getName());
@@ -96,12 +106,13 @@ public class TestGetClassesStructural {
 	      assertEquals(1, methods.size());
 	      assertEquals("specificRequest", methods.get(0).getName());
 	      
-	      PatternClass client = classes.get(3);
+	      PatternClass client = classes.get(2);
 	      assertEquals("Client", client.getName());
-	      assertEquals("target", fields.get(0).getName());
-
+	      
 	      fields = client.getFields();
 	      assertEquals(1, fields.size());
+	      assertEquals("target", fields.get(0).getName());
+	      assertEquals("Target", fields.get(0).getType());     
 
 	      methods = client.getMethods();
 	      assertEquals(0, methods.size());
@@ -109,6 +120,7 @@ public class TestGetClassesStructural {
 	  
 	  @Test
 	  public void testGetClassesBridgePattern() {
+		  String CODE = "imp.operationImp();";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Bridge");
 	      assertEquals(4, classes.size());
 
@@ -121,12 +133,16 @@ public class TestGetClassesStructural {
 	      assertEquals("imp", fields.get(0).getName());
 	      assertEquals("Implementor", fields.get(0).getType());
 
+	      
 	      List<Method> methods = abstraction.getMethods();
 	      assertEquals(1, methods.size());
 	      assertEquals("operation", methods.get(0).getName());
+	      assertEquals(CODE, methods.get(0).getCode());
+	      
 
 	      PatternClass refinedAbstraction = classes.get(1);
 	      assertEquals("RefinedAbstraction", refinedAbstraction.getName());
+	      assertEquals("Abstraction", refinedAbstraction.getExtendedClass().getName());
 
 	      fields = refinedAbstraction.getFields();
 	      assertEquals(0, fields.size());
@@ -136,6 +152,7 @@ public class TestGetClassesStructural {
 	      
 	      PatternClass concreteImplementorA = classes.get(2);
 	      assertEquals("ConcreteImplementorA", concreteImplementorA.getName());
+	      assertEquals("Implementor", concreteImplementorA.getImplementedInterface().getName());
 
 	      fields = concreteImplementorA.getFields();
 	      assertEquals(0, fields.size());
@@ -146,6 +163,7 @@ public class TestGetClassesStructural {
 	      
 	      PatternClass concreteImplementorB = classes.get(3);
 	      assertEquals("ConcreteImplementorB", concreteImplementorB.getName());
+	      assertEquals("Implementor", concreteImplementorB.getImplementedInterface().getName());
 
 	      fields = concreteImplementorB.getFields();
 	      assertEquals(0, fields.size());
@@ -157,16 +175,13 @@ public class TestGetClassesStructural {
 
 	  @Test
 	  public void testGetClassesCompositePattern() {
-		  
-  
 		  List<PatternClass> classes = patternManager.getClasses("Structural", "Composite");
-  
 		  assertEquals(2, classes.size());
-  
   
 		  PatternClass composite = classes.get(1);
  
 		  assertEquals("Composite", composite.getName());
+		  assertEquals("Component", composite.getImplementedInterface().getName());
 
   
 		  List<Field> fields = composite.getFields();
@@ -187,6 +202,7 @@ public class TestGetClassesStructural {
 		
 		  PatternClass leaf = classes.get(0);
 		  assertEquals("Leaf", leaf.getName());
+		  assertEquals("Component", leaf.getImplementedInterface().getName());
 		
 		  fields = leaf.getFields();
 		  assertEquals(0, fields.size());
@@ -198,41 +214,59 @@ public class TestGetClassesStructural {
 	  
 	  @Test
 	  public void testGetClassesDecoratorPattern() {
+		  String CODE_DECORATOR = "component.operation();";
+		  String CODE_CONCRETE_DECORATORB = "super.operation();";
+		  String CODE_CONCRETE_DECORATORA = "super.operation();\n"
+		  		+ "						addedBehavior();";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Decorator");
 	      assertEquals(4, classes.size());
 
 
 	      PatternClass concreteComponent = classes.get(0);
 	      assertEquals("ConcreteComponent", concreteComponent.getName());
+	      assertEquals("Component", concreteComponent.getImplementedInterface().getName());
+	      
+	      
 	      assertEquals(0, concreteComponent.getFields().size());
+	      
 	      assertEquals(1, concreteComponent.getMethods().size());
 	      assertEquals("operation", concreteComponent.getMethods().get(0).getName());
+	 
 
 	      PatternClass decorator = classes.get(1);
 	      assertEquals("Decorator", decorator.getName());
+	      assertEquals("Component", decorator.getImplementedInterface().getName());
+	      
 	      assertEquals(1, decorator.getFields().size());
 	      assertEquals("component", decorator.getFields().get(0).getName());
 	      assertEquals("Component", decorator.getFields().get(0).getType());
 	      assertEquals(1, decorator.getMethods().size());
 	      assertEquals("operation", decorator.getMethods().get(0).getName());
+	      assertEquals(CODE_DECORATOR, decorator.getMethods().get(0).getCode());
 	      
 	      PatternClass concreteDecoratorA = classes.get(2);
 	      assertEquals("ConcreteDecoratorA", concreteDecoratorA.getName());
+	      assertEquals("Decorator", concreteDecoratorA.getExtendedClass().getName());
+	      
 	      assertEquals(0, concreteDecoratorA.getFields().size());
 	      assertEquals(2, concreteDecoratorA.getMethods().size());
 	      assertEquals("addedBehavior", concreteDecoratorA.getMethods().get(0).getName());
 	      assertEquals("operation", concreteDecoratorA.getMethods().get(1).getName());
-	      
+	      assertEquals(CODE_CONCRETE_DECORATORA, concreteDecoratorA.getMethods().get(1).getCode());
 	      PatternClass concreteDecoratorB = classes.get(3);
 	      assertEquals("ConcreteDecoratorB", concreteDecoratorB.getName());
+	      assertEquals("Decorator", concreteDecoratorB.getExtendedClass().getName());
+	      
 	      assertEquals(1, concreteDecoratorB.getFields().size());
 	      assertEquals("addedState", concreteDecoratorB.getFields().get(0).getName());
 	      assertEquals(1, concreteDecoratorB.getMethods().size());
 	      assertEquals("operation", concreteDecoratorB.getMethods().get(0).getName());
+	      assertEquals(CODE_CONCRETE_DECORATORB, concreteDecoratorB.getMethods().get(0).getCode());
 	  }
 	  
 	  @Test
 	  public void testGetClassesFacadePattern() {
+		  String CODE = "subsystem.operation();";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Facade");
 	      assertEquals(2, classes.size());
 
@@ -248,10 +282,15 @@ public class TestGetClassesStructural {
 	      assertEquals("subsystem1", facade.getFields().get(0).getName());
 	      assertEquals(1, facade.getMethods().size());
 	      assertEquals("subsystemOperation", facade.getMethods().get(0).getName());
+	      assertEquals(CODE, facade.getMethods().get(0).getCode());
 	  }
 
 	  @Test
 	  public void testGetClassesFlyweightPattern() {
+		  String CODE = "if (flyweights[key] == null) {\n"
+		  		+ "							flyweights[key] = new ConcreteFlyweight();\n"
+		  		+ "						}\n"
+		  		+ "						return flyweights[key];";
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Flyweight");
 	      assertEquals(4, classes.size());
 
@@ -280,9 +319,11 @@ public class TestGetClassesStructural {
 	      assertEquals(1, methods.get(0).getParameters().size());
 	      assertEquals("int", methods.get(0).getParameters().get(0)[0]);
 	      assertEquals("key", methods.get(0).getParameters().get(0)[1]);
+	      assertEquals(CODE, methods.get(0).getCode());
 	      
 	      PatternClass concreteFlyweightClass = classes.get(2);
 	      assertEquals("ConcreteFlyweight", concreteFlyweightClass.getName());
+	      assertEquals("Flyweight", concreteFlyweightClass.getExtendedClass().getName());
 	      fields = concreteFlyweightClass.getFields();
 	      assertEquals(1, fields.size());
 	      assertEquals("intrinsicState", fields.get(0).getName());
@@ -296,6 +337,8 @@ public class TestGetClassesStructural {
 	      
 	      PatternClass unsharedConcreteFlyweight = classes.get(3);
 	      assertEquals("UnsharedConcreteFlyweight", unsharedConcreteFlyweight.getName());
+	      assertEquals("Flyweight", unsharedConcreteFlyweight.getExtendedClass().getName());
+	      
 	      fields = unsharedConcreteFlyweight.getFields();
 	      assertEquals(1, fields.size());
 	      assertEquals("allState", fields.get(0).getName());
@@ -310,12 +353,18 @@ public class TestGetClassesStructural {
 	  
 	  @Test
 	  public void testGetClassesProxyPattern() {
+		  String CODE = "if (checkAccess()){\n"
+		  		+ "							realService.request();\n"
+		  		+ "						}";
+		  
 	      List<PatternClass> classes = patternManager.getClasses("Structural", "Proxy");
 	      assertEquals(2, classes.size());
 
 
 	      PatternClass realSubjectClass = classes.get(1);
 	      assertEquals("RealSubject", realSubjectClass.getName());
+	      assertEquals("Subject", realSubjectClass.getImplementedInterface().getName());
+	      
 	      List<Field> fields = realSubjectClass.getFields();
 	      assertEquals(0, fields.size());
 
@@ -325,6 +374,8 @@ public class TestGetClassesStructural {
 
 	      PatternClass proxyClass = classes.get(0);
 	      assertEquals("Proxy", proxyClass.getName());
+	      assertEquals("Subject", proxyClass.getImplementedInterface().getName());
+	      
 	      fields = proxyClass.getFields();
 	      assertEquals(1, fields.size());
 	      assertEquals("realSubject", fields.get(0).getName());
@@ -332,7 +383,10 @@ public class TestGetClassesStructural {
 	      methods = proxyClass.getMethods();
 	      assertEquals(2, methods.size());
 	      assertEquals("checkAccess", methods.get(0).getName());
+	      assertEquals("boolean", methods.get(0).getType());
+	      assertEquals("return false;", methods.get(0).getCode());
 	      assertEquals("request", methods.get(1).getName());
+	      assertEquals(CODE, methods.get(1).getCode());
 	  }
 
 	

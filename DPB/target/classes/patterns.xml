@@ -379,8 +379,7 @@
 					</code>
 				</method>
 			</class>
-			<class id="RealSubject" annotation="RealService">
-				<method id="request"><type>void</type></method>
+			<class id="RealSubject" implements="Subject" annotation="RealService">
 			</class>
 			<properties>
 				<newMethod belongs="Subject"/>
@@ -394,7 +393,7 @@
 		<pattern id="Chain of Responsibility">
 			<description>Avoid coupling the sender of a request to its receiver by 
 			giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it.</description>
-			<class id="Handler" annotation="Handler">
+			<class id="Handler" annotation="Handler" isAbstract="true">
 				<field id="successor"><type>Handler</type></field>
 				<method id="setSuccessor">
 					<type>void</type>
@@ -403,24 +402,19 @@
 						this.successor = successor1;
 					</code>
 				</method>
-				<method id="handleRequest">
+				<method id="handleRequest" isAbstract="true">
 					<type>void</type>
-					<code>
-						if (successor != null) {
-							successor.handleRequest();
-						}
-					</code>
 				</method>
 			</class>
 			<class id="ConcreteHandler1" extends="Handler" annotation="ConcreteHandler">
-				<method id="handleRequest">
+				<!-- <method id="handleRequest">
 					<type>void</type>
-				</method>
+				</method> -->
 			</class>
 			<class id="ConcreteHandler2" extends="Handler" annotation="ConcreteHandler">
-				<method id="handleRequest">
+				<!-- <method id="handleRequest">
 					<type>void</type>
-				</method>
+				</method> -->
 			</class>
 			<properties>
 				<newClass implements="Handler" annotation="ConcreteHandler"/>
@@ -685,7 +679,7 @@
 				</field>
 				<method id="contextInterface">
 					<type>void</type>
-					</method>
+				</method>
 			</class>
 			<properties>
 				<newClass implements="Strategy" annotation="ConcreteStrategy"/>
