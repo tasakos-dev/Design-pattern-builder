@@ -147,7 +147,7 @@ public class TestGetClassesBehavioral {
 	      assertEquals(1, methods.size());
 	      assertEquals("interpret", methods.get(0).getName());
 	      assertEquals("Context", methods.get(0).getParameters().get(0)[0]);
-	      assertEquals("context", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("context", methods.get(0).getParameters().get(0)[1]);
 
 	      PatternClass nonTerminalExpression = classes.get(1);
 	      assertEquals("NonTerminalExpression", nonTerminalExpression.getName());
@@ -163,7 +163,7 @@ public class TestGetClassesBehavioral {
 	      assertEquals(1, methods.size());
 	      assertEquals("interpret", methods.get(0).getName());
 	      assertEquals("Context", methods.get(0).getParameters().get(0)[0]);
-	      assertEquals("context", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("context", methods.get(0).getParameters().get(0)[1]);
 	      PatternClass context = classes.get(2);
 	      assertEquals("Context", context.getName());
 
@@ -210,8 +210,8 @@ public class TestGetClassesBehavioral {
 	      List<Method> methods = iterator.getMethods();
 	      assertEquals(3, methods.size());
 	      assertEquals("ConcreteIterator", methods.get(0).getName());
-	      assertEquals("c", methods.get(0).getParameters().get(0)[0]);
-	      assertEquals("ConcreteCollection", methods.get(0).getParameters().get(0)[1]);
+	      assertEquals("ConcreteCollection", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("c", methods.get(0).getParameters().get(0)[1]);
 	      assertEquals("this.collection = c;", methods.get(0).getCode());
 	      assertEquals("hasNext", methods.get(1).getName());
 	      assertEquals("boolean", methods.get(1).getType());
@@ -299,6 +299,7 @@ public class TestGetClassesBehavioral {
 
 	      PatternClass patternClass = classes.get(1);
 	      assertEquals("Memento", patternClass.getName());
+	      
 
 	      List<Field> fields = patternClass.getFields();
 	      assertEquals(1, fields.size());
@@ -315,8 +316,8 @@ public class TestGetClassesBehavioral {
 	      assertEquals("Object", methods.get(1).getType());
 	      assertEquals("return state;", methods.get(1).getCode());
 	      assertEquals("setState", methods.get(2).getName());
-	      assertEquals("state", methods.get(2).getParameters().get(0)[0]);
-	      assertEquals("Object", methods.get(2).getParameters().get(0)[1]);
+	      assertEquals("Object", methods.get(2).getParameters().get(0)[0]);
+	      assertEquals("state", methods.get(2).getParameters().get(0)[1]);
 	      assertEquals("this.state = state;", methods.get(2).getCode());
 
 	      patternClass = classes.get(0);
@@ -335,7 +336,7 @@ public class TestGetClassesBehavioral {
 	      assertEquals("state = m.getState();", methods.get(0).getCode());
 	      assertEquals("createMemento", methods.get(1).getName());
 	      assertEquals("Memento", methods.get(1).getType());
-	      assertEquals("return new Memento(state)", methods.get(1).getCode());
+	      assertEquals("return new Memento(state);", methods.get(1).getCode());
 
 	      patternClass = classes.get(2);
 	      assertEquals("Caretaker", patternClass.getName());
@@ -351,34 +352,56 @@ public class TestGetClassesBehavioral {
 	  
 	  @Test
 	  public void testGetClassesObserverPattern() {
-	      List<PatternClass> classes = patternManager.getClasses("Behavioral", "Observer");
+	      String NOTIFY_CODE = "for (Observer o: observers) {\n"
+	      		+ "							o.update();\n"
+	      		+ "						}";
+	      
+	      String UPDATE_CODE = "observerState = subject.getState();";
+		  List<PatternClass> classes = patternManager.getClasses("Behavioral", "Observer");
 	      assertEquals(3, classes.size());
-
+	     
 
 	      PatternClass patternClass2 = classes.get(0);
 	      assertEquals("Subject", patternClass2.getName());
-	      assertEquals(0, patternClass2.getFields().size());
+	      assertEquals(1, patternClass2.getFields().size());
+	      assertEquals("observers", patternClass2.getFields().get(0).getName());
+	      assertEquals("Observer[]", patternClass2.getFields().get(0).getType());
 	      assertEquals(3, patternClass2.getMethods().size());
 	      assertEquals("attach", patternClass2.getMethods().get(0).getName());
+	      assertEquals("Observer", patternClass2.getMethods().get(0).getParameters().get(0)[0]);
+	      assertEquals("o", patternClass2.getMethods().get(0).getParameters().get(0)[1]);
 	      assertEquals("detach", patternClass2.getMethods().get(1).getName());
+	      assertEquals("Observer", patternClass2.getMethods().get(1).getParameters().get(0)[0]);
+	      assertEquals("o", patternClass2.getMethods().get(1).getParameters().get(0)[1]);
 	      assertEquals("notifyObservers", patternClass2.getMethods().get(2).getName());
+	      assertEquals(NOTIFY_CODE, patternClass2.getMethods().get(2).getCode());
 
 	      PatternClass patternClass3 = classes.get(1);
 	      assertEquals("ConcreteSubject", patternClass3.getName());
+	      assertEquals("Subject", patternClass3.getExtendedClass().getName());
 	      assertEquals(1, patternClass3.getFields().size());
 	      assertEquals("subjectState", patternClass3.getFields().get(0).getName());
+	      assertEquals("Object", patternClass3.getFields().get(0).getType());
 	      assertEquals(2, patternClass3.getMethods().size());
-	      assertEquals("getState", patternClass3.getFields().get(0).getName());
-	      assertEquals("setState", patternClass3.getFields().get(1).getName());
+	      assertEquals("getState", patternClass3.getMethods().get(0).getName());
+	      assertEquals("Object", patternClass3.getMethods().get(0).getType());
+	      assertEquals("return subjectState;", patternClass3.getMethods().get(0).getCode());
+	      assertEquals("setState", patternClass3.getMethods().get(1).getName());
+	      assertEquals("Object", patternClass3.getMethods().get(1).getParameters().get(0)[0]);
+	      assertEquals("subjectState", patternClass3.getMethods().get(1).getParameters().get(0)[1]);
+	      assertEquals("this.subjectState = subjectState;", patternClass3.getMethods().get(1).getCode());
+	      
 
 	      PatternClass patternClass4 = classes.get(2);
 	      assertEquals("ConcreteObserver", patternClass4.getName());
+	      assertEquals("Observer", patternClass4.getImplementedInterface().getName());
 	      assertEquals(2, patternClass4.getFields().size());
 	      assertEquals("observerState", patternClass4.getFields().get(0).getName());
 	      assertEquals("subject", patternClass4.getFields().get(1).getName());
 	      assertEquals("ConcreteSubject", patternClass4.getFields().get(1).getType());
 	      assertEquals(1, patternClass4.getMethods().size());
 	      assertEquals("update", patternClass4.getMethods().get(0).getName());
+	      assertEquals(UPDATE_CODE, patternClass4.getMethods().get(0).getCode());
 	  }
 	  
 	
@@ -399,10 +422,12 @@ public class TestGetClassesBehavioral {
 	      List<Method> methods1 = patternClass1.getMethods();
 	      assertEquals(1, methods1.size());
 	      assertEquals("request", methods1.get(0).getName());
+	      assertEquals("state.handle();", methods1.get(0).getCode());
 	      
 
 	      PatternClass patternClass2 = classes.get(1);
 	      assertEquals("ConcreteStateA", patternClass2.getName());
+	      assertEquals("State", patternClass2.getImplementedInterface().getName());
 
 	      List<Field> fields2 = patternClass2.getFields();
 	      assertEquals(0, fields2.size());
@@ -413,6 +438,7 @@ public class TestGetClassesBehavioral {
 
 	      PatternClass patternClass3 = classes.get(2);
 	      assertEquals("ConcreteStateB", patternClass3.getName());
+	      assertEquals("State", patternClass3.getImplementedInterface().getName());
 
 	      List<Field> fields3 = patternClass3.getFields();
 	      assertEquals(0, fields3.size());
@@ -431,6 +457,7 @@ public class TestGetClassesBehavioral {
 	      
 	      PatternClass concreteStrategyA = classes.get(0);
 	      assertEquals("ConcreteStrategyA", concreteStrategyA.getName());
+	      assertEquals("Strategy", concreteStrategyA.getImplementedInterface().getName());
 
 	      List<Field> concreteStrategyAFields = concreteStrategyA.getFields();
 	      assertEquals(0, concreteStrategyAFields.size());
@@ -441,6 +468,7 @@ public class TestGetClassesBehavioral {
 	      
 	      PatternClass concreteStrategyB = classes.get(1);
 	      assertEquals("ConcreteStrategyB", concreteStrategyB.getName());
+	      assertEquals("Strategy", concreteStrategyB.getImplementedInterface().getName());
 
 	      List<Field> concreteStrategyBFields = concreteStrategyB.getFields();
 	      assertEquals(0, concreteStrategyBFields.size());
@@ -451,6 +479,7 @@ public class TestGetClassesBehavioral {
 	      
 	      PatternClass concreteStrategyC = classes.get(2);
 	      assertEquals("ConcreteStrategyC", concreteStrategyC.getName());
+	      assertEquals("Strategy", concreteStrategyC.getImplementedInterface().getName());
 
 	      List<Field> concreteStrategyCFields = concreteStrategyC.getFields();
 	      assertEquals(0, concreteStrategyCFields.size());
@@ -477,44 +506,52 @@ public class TestGetClassesBehavioral {
 
 	  @Test
 	  public void testGetClassesForTemplateMethod() {
+		  String TEMPLATE_METHOD = "primitiveOperation1();\n"
+		  		+ "						primitiveOperation2();\n"
+		  		+ "						primitiveOperation3();";
 	      List<PatternClass> classes = patternManager.getClasses("Behavioral", "Template Method");
 	      assertEquals(3, classes.size());
 
 	      PatternClass abstractClass = classes.get(0);
 	      assertEquals("AbstractClass", abstractClass.getName());
+	      assertTrue(abstractClass.isAbstract());
 
 	      List<Field> abstractClassFields = abstractClass.getFields();
 	      assertEquals(0, abstractClassFields.size());
 
 	      List<Method> abstractClassMethods = abstractClass.getMethods();
-	      assertEquals(3, abstractClassMethods.size());
-	      assertEquals("primitiveOperation1", abstractClassMethods.get(0).getName());
-	      assertEquals("primitiveOperation2", abstractClassMethods.get(1).getName());
-	      assertEquals("primitiveOperation3", abstractClassMethods.get(2).getName());
+	      assertEquals(4, abstractClassMethods.size());
+	      assertEquals("templateMethod", abstractClassMethods.get(0).getName());
+	      assertEquals(TEMPLATE_METHOD, abstractClassMethods.get(0).getCode());
+	      assertEquals("primitiveOperation1", abstractClassMethods.get(1).getName());
+	      assertEquals("primitiveOperation2", abstractClassMethods.get(2).getName());
+	      assertEquals("primitiveOperation3", abstractClassMethods.get(3).getName());
 
 	      PatternClass concreteClass1 = classes.get(1);
 	      assertEquals("ConcreteClassA", concreteClass1.getName());
+	      assertEquals("AbstractClass", concreteClass1.getExtendedClass().getName());
 
 	      List<Field> concreteClass1Fields = concreteClass1.getFields();
 	      assertEquals(0, concreteClass1Fields.size());
 
 	      List<Method> concreteClass1Methods = concreteClass1.getMethods();
 	      assertEquals(2, concreteClass1Methods.size());
-	      assertEquals("primitiveOperation1", concreteClass1Methods.get(0).getName());
-	      assertEquals("primitiveOperation2", concreteClass1Methods.get(1).getName());
-	      assertEquals("primitiveOperation3", concreteClass1Methods.get(2).getName());
+	      assertEquals("primitiveOperation2", concreteClass1Methods.get(0).getName());
+	      assertEquals("primitiveOperation3", concreteClass1Methods.get(1).getName());
+//	      assertEquals("primitiveOperation3", concreteClass1Methods.get(2).getName());
 
 	      PatternClass concreteClass2 = classes.get(2);
 	      assertEquals("ConcreteClassB", concreteClass2.getName());
+	      assertEquals("AbstractClass", concreteClass2.getExtendedClass().getName());
 
 	      List<Field> concreteClass2Fields = concreteClass2.getFields();
 	      assertEquals(0, concreteClass2Fields.size());
 
 	      List<Method> concreteClass2Methods = concreteClass2.getMethods();
 	      assertEquals(2, concreteClass2Methods.size());
-	      assertEquals("primitiveOperation1", concreteClass2Methods.get(0).getName());
-	      assertEquals("primitiveOperation2", concreteClass2Methods.get(1).getName());
-	      assertEquals("primitiveOperation2", concreteClass2Methods.get(2).getName());
+	      assertEquals("primitiveOperation2", concreteClass2Methods.get(0).getName());
+	      assertEquals("primitiveOperation3", concreteClass2Methods.get(1).getName());
+//	      assertEquals("primitiveOperation2", concreteClass2Methods.get(2).getName());
 	  }
 	  
 	  @Test
@@ -524,6 +561,7 @@ public class TestGetClassesBehavioral {
 
 	      PatternClass patternClass = classes.get(0);
 	      assertEquals("ConcreteVisitor1", patternClass.getName());
+	      assertEquals("Visitor", patternClass.getImplementedInterface().getName());
 
 	      List<Field> fields = patternClass.getFields();
 	      assertEquals(0, fields.size());
@@ -531,10 +569,15 @@ public class TestGetClassesBehavioral {
 	      List<Method> methods = patternClass.getMethods();
 	      assertEquals(2, methods.size());
 	      assertEquals("visitConcreteElementA", methods.get(0).getName());
+	      assertEquals("ConcreteElementA", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("concreteElementA", methods.get(0).getParameters().get(0)[1]);
 	      assertEquals("visitConcreteElementB", methods.get(1).getName());
+	      assertEquals("ConcreteElementB", methods.get(1).getParameters().get(0)[0]);
+	      assertEquals("concreteElementB", methods.get(1).getParameters().get(0)[1]);
 
 	      patternClass = classes.get(1);
 	      assertEquals("ConcreteVisitor2", patternClass.getName());
+	      assertEquals("Visitor", patternClass.getImplementedInterface().getName());
 
 	      fields = patternClass.getFields();
 	      assertEquals(0, fields.size());
@@ -542,10 +585,15 @@ public class TestGetClassesBehavioral {
 	      methods = patternClass.getMethods();
 	      assertEquals(2, methods.size());
 	      assertEquals("visitConcreteElementA", methods.get(0).getName());
+	      assertEquals("ConcreteElementA", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("concreteElementA", methods.get(0).getParameters().get(0)[1]);
 	      assertEquals("visitConcreteElementB", methods.get(1).getName());
+	      assertEquals("ConcreteElementB", methods.get(1).getParameters().get(0)[0]);
+	      assertEquals("concreteElementB", methods.get(1).getParameters().get(0)[1]);
 	      
 	      patternClass = classes.get(2);
 	      assertEquals("ConcreteElementA", patternClass.getName());
+	      assertEquals("Element", patternClass.getImplementedInterface().getName());
 
 	      fields = patternClass.getFields();
 	      assertEquals(0, fields.size());
@@ -553,6 +601,8 @@ public class TestGetClassesBehavioral {
 	      methods = patternClass.getMethods();
 	      assertEquals(2, methods.size());
 	      assertEquals("accept", methods.get(0).getName());
+	      assertEquals("Visitor", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("visitor", methods.get(0).getParameters().get(0)[1]);
 	      assertEquals("operationA", methods.get(1).getName());
 	      
 	      patternClass = classes.get(3);
@@ -564,6 +614,8 @@ public class TestGetClassesBehavioral {
 	      methods = patternClass.getMethods();
 	      assertEquals(2, methods.size());
 	      assertEquals("accept", methods.get(0).getName());
+	      assertEquals("Visitor", methods.get(0).getParameters().get(0)[0]);
+	      assertEquals("visitor", methods.get(0).getParameters().get(0)[1]);
 	      assertEquals("operationB", methods.get(1).getName());
 	      
 	      patternClass = classes.get(4);
@@ -582,7 +634,7 @@ public class TestGetClassesBehavioral {
 
 	      fields = patternClass.getFields();
 	      assertEquals(2, fields.size());
-	      assertEquals("objectSttestGetClassesForStrategyructure", fields.get(0).getName());
+	      assertEquals("objectStructure", fields.get(0).getName());
 	      assertEquals("ObjectStructure", fields.get(0).getType());
 	      assertEquals("visitor", fields.get(1).getName());
 	      assertEquals("Visitor", fields.get(1).getType());

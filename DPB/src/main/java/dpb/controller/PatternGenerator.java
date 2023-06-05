@@ -61,7 +61,7 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 		addAnnotationsToClassPath();
 	}
 	
-	private void addAnnotationsToClassPath() throws JavaModelException, URISyntaxException, IOException {
+	protected void addAnnotationsToClassPath() throws JavaModelException, URISyntaxException, IOException {
 		IJavaProject project = selectedPackage.getJavaProject();
 		IClasspathEntry[] oldEntries = project.getRawClasspath();
 		
@@ -116,5 +116,11 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 	protected abstract void generateMethods(StringBuffer buffer, PatternElement patternElement);
 	protected abstract void generateFields(StringBuffer buffer, PatternElement patternElement);
 	protected abstract void generateHeader(StringBuffer buffer, PatternElement patternElement);
+
+	public void setSelectedPackage(IPackageFragment selectedPackage) {
+		this.selectedPackage = selectedPackage;
+	}
+	
+	
 
 }
