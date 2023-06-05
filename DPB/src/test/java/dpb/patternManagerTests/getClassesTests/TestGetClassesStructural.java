@@ -193,7 +193,7 @@ public class TestGetClassesStructural {
 		  assertEquals(4, methods.size());
 		  assertEquals("add", methods.get(0).getName());
 		  assertEquals("remove", methods.get(1).getName());
-		  assertEquals("getChild", methods.get(2).getName());
+		  assertEquals("getChildren", methods.get(2).getName());
 		  assertEquals("Component", methods.get(2).getType());
 		  assertEquals("int", methods.get(2).getParameters().get(0)[0]);
 		  assertEquals("id", methods.get(2).getParameters().get(0)[1]);

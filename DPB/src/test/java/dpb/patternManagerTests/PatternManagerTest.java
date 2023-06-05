@@ -1,3 +1,4 @@
+package dpb.patternManagerTests;
 import org.junit.*;
 import org.xml.sax.SAXException;
 

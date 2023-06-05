@@ -184,7 +184,7 @@
 					<type>void</type>
 				</method>	
 			</class>
-			<class id="client" annotation="Client">
+			<class id="Client" annotation="Client">
 				<field id="target">
 					<type>Target</type>
 				</field>
@@ -260,7 +260,10 @@
 					<type>void</type>
 					<parameter id="c"><type>Component</type></parameter>
 				</method>
-				<method id="getChildren"><type>Component</type></method>
+				<method id="getChildren">
+					<type>Component</type>
+					<parameter id="id"><type>int</type></parameter>
+				</method>
 			</class>
 			<properties>
 				<newClass implements="Component" annotation="Leaf"/>

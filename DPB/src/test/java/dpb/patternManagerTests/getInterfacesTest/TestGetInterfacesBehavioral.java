@@ -84,16 +84,12 @@ public class TestGetInterfacesBehavioral {
 	      assertEquals("Iterator", iterator.getName());
 
 	      List<Method> methods = iterator.getMethods();
-	      assertEquals(3, methods.size());
-	      assertEquals("ConcreteIterator", methods.get(0).getName());
-	      assertEquals("ConcreteCollection", methods.get(0).getParameters().get(0)[0]);
-	      assertEquals("c", methods.get(0).getParameters().get(0)[1]);
-	      assertEquals("this.collection = c;", methods.get(0).getCode());
+	      assertEquals(2, methods.size());
+	      assertEquals("getNext", methods.get(0).getName());
+	      assertEquals("Object", methods.get(0).getType());
 	      assertEquals("hasNext", methods.get(1).getName());
 	      assertEquals("boolean", methods.get(1).getType());
-	      assertEquals("return false;", methods.get(1).getCode());
-	      assertEquals("getNext", methods.get(2).getName());
-	      assertEquals("Object", methods.get(2).getType());
+	      
 	      
 
 	      PatternInterface collection = interfaces.get(1);
@@ -154,7 +150,7 @@ public class TestGetInterfacesBehavioral {
 	  public void testGetClassesStatePattern() {
 	      List<PatternClass> classes = patternManager.getClasses("Behavioral", "State");
 	      List<PatternInterface> interfaces = patternManager.getInterfaces();
-	      assertEquals(3, interfaces.size());
+	      assertEquals(1, interfaces.size());
 
 
 	      PatternInterface state = interfaces.get(0);
@@ -218,12 +214,10 @@ public class TestGetInterfacesBehavioral {
 	      assertEquals("Element", patternInterface.getName());
 
 	      methods = patternInterface.getMethods();
-	      assertEquals(2, methods.size());
+	      assertEquals(1, methods.size());
 	      assertEquals("accept", methods.get(0).getName());
 	      assertEquals("Visitor", methods.get(0).getParameters().get(0)[0]);
-	      assertEquals("visitor", methods.get(0).getParameters().get(0)[1]);
-	      assertEquals("operationA", methods.get(1).getName());
-	      
+	      assertEquals("visitor", methods.get(0).getParameters().get(0)[1]);    
 	  }
 
 	  

@@ -12,7 +12,7 @@ import dpb.controller.PatternManager;
 
 public class GenerateTests {
     @Test
-    public void testAddAnnotationsToClassPath() throws Exception {
+    public void testGenerate() throws Exception {
     	String SINGLETON_CODE = "package test;\n"
     			+ "\n" 
     			+ "import creational.singleton.SingletonAnnotation;\n"
