@@ -25,7 +25,9 @@
 % Πακέτο για τη διατήρηση των floats (εικόνες κ.α.) εντός των ενοτήτων
 %\usepackage[section]{placeins}
 
+\usepackage{totcount}
 
+\regtotcounter{chapter}
 
 \begin{document}
 
@@ -85,7 +87,7 @@
 
 % Εισαγωγή της βιβλιογραφίας
 \addstarredchapterc{\bibname} % minitoc
-\bibliographystyle{ieeetran}
+\bibliographystyle{ieeetr}
 \bibliography{Content/Bibliography}
 
 % Προαιρετικά, μπορείτε να εισάγετε παραρτήματα
