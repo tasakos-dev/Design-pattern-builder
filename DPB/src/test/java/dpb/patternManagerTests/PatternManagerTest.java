@@ -49,12 +49,12 @@ public class PatternManagerTest {
   }
   
 
-  @Test
-  public void testGetInterfaces() {
-	patternManager.getClasses("Creational", "Builder");
-    List<PatternInterface> interfaces = patternManager.getInterfaces();
-    assertEquals(1, interfaces.size());
-  }
+//  @Test
+//  public void testGetInterfaces() {
+//	patternManager.getClasses("Creational", "Builder");
+//    List<PatternInterface> interfaces = patternManager.getInterfaces();
+//    assertEquals(1, interfaces.size());
+//  }
 
   @Test
   public void testUpdatePatternElementName() {

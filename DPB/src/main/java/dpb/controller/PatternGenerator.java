@@ -65,7 +65,7 @@ public abstract class PatternGenerator  implements IPatternGenerator {
 		IJavaProject project = selectedPackage.getJavaProject();
 		IClasspathEntry[] oldEntries = project.getRawClasspath();
 		
-		System.err.println(project.getElementName());	
+//		System.err.println(project.getElementName());	
 		Bundle bundle = Platform.getBundle("DPB");
 		URL filUrl = bundle.getEntry("src/main/resources/Annotations.jar");
 		File patternsFIle = null;
