@@ -1,21 +1,194 @@
-\chapter{Τίτλος πρώτου παραρτήματος}
-\label{app:FirstAppendix}
+\chapter{Κάρτες αρμοδιοτήτων και συνεργασιών κλάσεων}
+\label{app:crc}
 
-Εδώ είναι ο χώρος του πρώτου Παραρτήματος.
-
-\begin{table}[h]
-	\centering
-	\caption{Πίνακας Παραρτήματος.}
-	\label{tab:AppendixTable}
-	\begin{tabular}{l l l l l}
-		\hline
-		~ & ~ & Sample Mean & ~ & 95\% Confidence Interval \\
-		\hline
-		1 process & ~ & $3.640966$  & ~ & $0.100136$ \\
-		4 processes & ~ & $1.053655$  & ~ & $0.037212$ \\
-		8 processes & ~ & $0.610223$  & ~ & $0.023470$ \\
-		16 processes & ~ & $0.357321$  & ~ & $0.014783$ \\
-		32 processes & ~ & $0.227180$  & ~ & $0.016923$ \\
-		\hline
-	\end{tabular}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: PatternClass} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Αυτή η κλάση είναι υπεύθυνη για την μοντελοποίηση μίας κλάσης ενός μοτίβου.
+        \end{itemize} &   
+        \begin{itemize}
+            \item Method
+            \item Field
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+    \caption{PatternClass κάρτα αρμοδιοτήτων.}
+    \label{tab:PatternClassCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: PatternInterface} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Αυτή η κλάση είναι υπεύθυνη για την μοντελοποίηση μίας διεπαφής ενός μοτίβου.
+        \end{itemize} &   
+        \begin{itemize}
+            \item Method
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+    \caption{PatternInterface κάρτα αρμοδιοτήτων.}
+    \label{tab:PatternInterfaceCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: Method} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή διατηρεί τα χαρακτηριστικά μίας μεθόδου που ανήκει σε κάποια κλάση ή διεπαφή.
+        \end{itemize} &    
+        % \begin{itemize}
+        %     \item hi
+        % \end{itemize} 
+        \\
+        \hline
+    \end{tabular}
+    \caption{Method κάρτα αρμοδιοτήτων.}
+    \label{tab:MethodCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: Field} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή διατηρεί τα χαρακτηριστικά ενός πεδίου που ανήκει σε κάποια κλάση.
+        \end{itemize} &   
+        % \begin{itemize}
+        %     \item hi
+        % \end{itemize} 
+        \\
+        \hline
+    \end{tabular}
+    \caption{Field κάρτα αρμοδιοτήτων.}
+    \label{tab:FieldCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{10cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: FileParser} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή είναι υπεύθυνη για την άντληση των κατηγοριών που ορίζουν οι GoF \cite{GoF}.
+            \item Η κλάση αυτή αρμόδια για την άντληση των μοτίβων κάποιας κατηγορίας.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των κλάσεων ενός μοτίβου, όπως και την ορατότητα της κλάσης.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των διεπαφών ενός μοτίβου όπως και την ορατότητα της διεπαφής.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των μεθόδων κάποιας κλάσης, καθώς τους διάφορους τροποποιητές που μπορεί 
+            να έχει μία μέθοδος, όπως και τον επιστρεφόμενο τύπο της μεθόδου και τέλος τον κώδικα της μεθόδου.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των πεδίων κάποιας κλάσης ενός μοτίβου.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των μεθόδων κάποιας διεπαφής μαζί με τους 
+            τροποποιητές της μεθόδου και τον επιστρεφόμενο τύπο της.
+            \item Η κλάση αυτή είναι αρμόδια για την άντληση των annotations ενός στοιχείου του μοτίβου.
+        \end{itemize} &   
+        % \begin{itemize}
+        %     \item 
+        % \end{itemize}
+         \\
+        \hline
+    \end{tabular}
+    \caption{FileParser κάρτα αρμοδιοτήτων.}
+    \label{tab:fileParserCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{10cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: PatternManager} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή είναι αρμόδια για την διάθεση των κατηγοριών των μοτίβων στην γραφική διεπαφή.
+            \item Η κλάση αυτή είναι αρμόδια για την διάθεση των μοτίβων κάποιας κατηγορίας στην γραφική διεπαφή.
+            \item Η κλάση αυτή είναι αρμόδια για την δημιουργία αντικειμένων τύπου PatternClass και την διαθέση τους στο front-end τμήμα του 
+            εργαλείου, ώστε να μπορεί να διαχειριστεί ο χρήστης τις διάφορες κλάσεις ενός μοτίβου.
+            \item Η κλάση αυτή είναι αρμόδια για την δημιουργία αντικειμένων τύπου PatternInterface και την διαθέση τους στο front-end τμήμα του 
+            εργαλείου, ώστε να μπορεί να διαχειριστεί ο χρήστης τις διάφορες διεπαφές ενός μοτίβου.
+            \item Η κλάση αυτή είναι αρμόδια για την ενημέρωση του ονόματος μίας κλάσης.
+            \item Η κλάση αυτή είναι αρμόδια για την ενημέρωση του ονόματος μίας διεπαφής.
+            \item Η κλάση αυτή είναι αρμόδια για την ενημέρωση του ονόματος μίας μεθόδου.
+            \item Η κλάση αυτή είναι αρμόδια για την ενημέρωση του ονόματος ενός πεδίου.
+        \end{itemize} &   
+        \begin{itemize}
+            \item FileParser
+            \item PatternClass
+            \item PatternInterface
+            \item Method
+            \item Field
+            \item Property
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+    \caption{PatternManager κάρτα αρμοδιοτήτων.}
+    \label{tab:PatternManagerCRC}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: ClassGenerator} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή είναι αρμόδια για την προσθήκη των annotations στο classpath του έργου που έχει επιλέξει ο προγραμματιστής.
+            \item Η κλάση αυτή είναι αρμόδια για την παραγωγή των πηγαίων αρχείων java μίας κλάσης.
+        \end{itemize} &   
+        \begin{itemize}
+            \item PatternManager
+            \item PatternClass
+            \item PatternInterface
+            \item Method
+            \item Field
+            \item Property
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+    \label{tab:ClassGeneratorCRC}
+    \caption{ClassGenerator κάρτα αρμοδιοτήτων}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{Όνομα κλάσης: InterfaceGenerator} \\
+        \hline
+        \textbf{Αρμοδιότητες} & \textbf{Συνεργασίες} \\
+        \hline
+        \begin{itemize}
+            \item Η κλάση αυτή είναι αρμόδια για την προσθήκη των annotations στο classpath του έργου που έχει επιλέξει ο προγραμματιστής.
+            \item Η κλάση αυτή είναι αρμόδια για την παραγωγή των πηγαίων αρχείων java μίας διεπαφής.
+        \end{itemize} &   
+        \begin{itemize}
+            \item PatternManager
+            \item PatternClass
+            \item PatternInterface
+            \item Method
+            \item Field
+            \item Property
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+    \caption{InterfaceGenerator κάρτα αρμοδιοτήτων.}
+    \label{tab:InterfaceGeneratorCRC}
 \end{table}

@@ -12,26 +12,26 @@
 						<type>ProductB</type>
 					</method>
 			</interface>
-			<interface id="ProductA" annotation="Product">
+			<interface id="ProductA" annotation="AbstractProduct">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
-			<interface id="ProductB" annotation="Product">
+			<interface id="ProductB" annotation="AbstractProduct">
 				<method id="doStuff">
 					<type>void</type>
 				</method>
 			</interface>
 			<class id="ConcreteFactory1" implements="AbstractFactory" annotation="ConcreteFactory"></class>
 			<class id="ConcreteFactory2" implements="AbstractFactory" annotation="ConcreteFactory"></class>
-			<class id="ConcreteProductA1" implements="ProductA" annotation="ConcreteProduct"></class>
-			<class id="ConcreteProductA2" implements="ProductA" annotation="ConcreteProduct"></class>
-			<class id="ConcreteProductB1" implements="ProductB" annotation="ConcreteProduct"></class>
-			<class id="ConcreteProductB2" implements="ProductB" annotation="ConcreteProduct"></class>
+			<class id="ConcreteProductA1" implements="ProductA" annotation="Product"></class>
+			<class id="ConcreteProductA2" implements="ProductA" annotation="Product"></class>
+			<class id="ConcreteProductB1" implements="ProductB" annotation="Product"></class>
+			<class id="ConcreteProductB2" implements="ProductB" annotation="Product"></class>
 			<properties>
 				<newClass implements= "AbstractFactory" annotation="ConcreteFactory"/>
-				<newClass implements= "ProductA" annotation="ConcreteProduct"/>
-				<newClass implements= "ProductB" annotation="ConcreteProduct"/>
+				<newClass implements= "ProductA" annotation="Product"/>
+				<newClass implements= "ProductB" annotation="Product"/>
 				<newMethod belongs="AbstractFactory"/>
 			</properties>
 		</pattern>
@@ -511,12 +511,12 @@
 					<code>return false;</code>
 				</method>
 			</class>
-			<interface id="Collection" annotation="Collection">
+			<interface id="Collection" annotation="Aggregate">
 				<method id="createIterator">
 					<type>Iterator</type>
 				</method>
 			</interface>
-			<class id="ConcreteCollection" implements="Collection" annotation="ConcreteCollection"></class>			
+			<class id="ConcreteCollection" implements="Collection" annotation="ConcreteAggregate"></class>	
 		</pattern>
 		<pattern id="Mediator">
 			<description>Define an object that encapsulates how a set of objects interact.
@@ -531,7 +531,7 @@
 				<field id="concreteColleague1"><type>ConcreteColleague1</type></field>
 				<field id="concreteColleague2"><type>ConcreteColleague2</type></field>
 			</class>
-			<class id="Colleague" isAbstract="false" annotation="Collegue">
+			<class id="Colleague" isAbstract="false" annotation="Colleague">
 				<field id="mediator"><type>Mediator</type></field>
 				<method id="operation">
 					<type>void</type>
@@ -540,10 +540,10 @@
 					</code>
 				</method>
 			</class>
-			<class id="ConcreteColleague1" extends="Colleague" annotation="ConcreteCollegue"></class>
-			<class id="ConcreteColleague2" extends="Colleague" annotation="ConcreteCollegue"></class>
+			<class id="ConcreteColleague1" extends="Colleague" annotation="ConcreteColleague"></class>
+			<class id="ConcreteColleague2" extends="Colleague" annotation="ConcreteColleague"></class>
 			<properties>
-				<newClass implements="Colleague" annotation="ConcreteCollegue"/>
+				<newClass implements="Colleague" annotation="ConcreteColleague"/>
 			</properties>
 		</pattern>
 		<pattern id="Memento">

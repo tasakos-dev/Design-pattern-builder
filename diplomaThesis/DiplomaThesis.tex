@@ -27,6 +27,44 @@
 
 \usepackage{totcount}
 \usepackage{pifont}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{caption}
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35, 0.01}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\renewcommand\lstlistingname{Παράδειγμα Κώδικα}
+\renewcommand\lstlistlistingname{Κατάλογος Παραδειγμάτων Κώδικα}
+\newcommand{\anotelia}{\char"02D9}
+
+\lstdefinelanguage{XML}
+{
+  numbers=left,
+  basicstyle=\ttfamily\color{darkblue}\bfseries,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+  numbersep=12pt,
+	tabsize=4,
+	extendedchars=true,
+  breaklines=true,
+  frame=b,
+	xleftmargin=24pt,
+	framexleftmargin=24pt,
+	framexrightmargin=0pt
+}
+
+\lstset{language=XML,basicstyle=\ttfamily,breaklines=true}
 
 \regtotcounter{chapter}
 
@@ -60,6 +98,10 @@
 \addstarredchapterc{\listtablename} % minitoc
 \listoftables
 
+% Κατάλογος Παραδειγμάτων κώδικα
+\addstarredchapterc{\lstlistingname} % minitoc
+\lstlistoflistings
+
 % Κατάλογος Αλγορίθμων
 %\addstarredchapterc{\listalgorithmname} % minitoc
 %\listof{algorithm}{\listalgorithmname}
@@ -92,8 +134,8 @@
 \bibliography{Content/Bibliography}
 
 % Προαιρετικά, μπορείτε να εισάγετε παραρτήματα
-%\appendix
-%\include{Content/AppendixA}
+\appendix
+\include{Content/AppendixA}
 %\include{Content/AppendixB}
 %\include{Content/AppendixC}
 

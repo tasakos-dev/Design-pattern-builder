@@ -52,18 +52,84 @@ TestGetDescription, η οποία έχει τρεις περιπτώσεις ε�
 περιγράφηκαν στην προηγούμενη ενότητα \ref{subsec:patternManagerTesting}, παρά μόνο για ένα τυχαίο μοτίβο, 
 διαλέξαμε το μοτίβο Singleton της κατηγορίας creational καθώς έχει απλή δομή. Για την υλοποίησή των ελέγχων χρειάστηκε να δημιουργήσουμε
 μερικά mock αντικείμενα \cite{SWEBOK}, διότι η μέθοδος generate έχει πεδίο ένα αντικείμενο τύπου IPackageFragment, 
-το οποίο κατά την φάση του ελέγχου έχει τιμή null. Επίσης είναι απαραίτητο να κάνουμε faking \cite{SWEBOK} και την κλάση που υλοποιεί
-την διεπαφή IPatternGenerator, καθώς κατά την δημιουργία ενός αντικειμένου της κλάσης αυτής καλείται η μέθοδος addAnnotationsToClassPath()
-η οποία κατά τον έλεγχο δεν είναι απαραίτητη καθώς προσθέτει στο classpath του εκάστοτε έργου τα annotations. 
-Για την κατασκευή των fake αντικειμένων \cite{SWEBOK}, απλώς κάναμε override τις απαραίτητες μεθόδους. 
-Για την κατασκευή του fake αντικειμένου \cite{SWEBOK} IPackageFragment, δημιουργήσαμε μία κλάση η οποία υλοποιεί την διεπαφή  IPackageFragment,
-η κλάση αυτή έχει τρία πεδία τα οποία αναπαριστούν το όνομα του παραγόμενου πηγαίου αρχείου, τον κώδικα του αρχείου αυτού 
-και το όνομα του πακέτου που θα εξαχθεί το πηγαίο αρχείο. 
-Επίσης, τροποποιούμε την μέθοδο getElementName ώστε να επιστρέφει το πεδίο με το όνομα του πακέτου 
-την createCompilationUnit, ώστε να θέτει το όνομα και τον κώδικα του πηγαίου αρχείου 
-και τέλος, προσθέτουμε δύο getters για το όνομα και τον κώδικα, ώστε να μπορούμε να επαληθεύσουμε αργότερα την ορθή λειτουργία της παραγωγής κώδικα.
-Τέιλος, η κλάση για τον έλεγχο είναι η dpp.patternGeneratorTests.GenerateTests. Αφού, έχουμε δημιουργήσει τα απαραίτητα mock αντικείμενα \cite{SWEBOK}, καλούμε την μέθοδο generate με παράμετρο την 
-μοναδική κλάση του μοτίβου Singleton και επιβεβαιώνουμε την ορθή λειτουργία της μεθόδου generate ελέγχοντας τι επιστρέφουν οι getters.
+το οποίο κατά την φάση του ελέγχου έχει τιμή null, καθώς αυτό το αντικείμενο αναπαριστά το πακέτο που έχει επιλέξει ο προγραμματιστής 
+για την εξαγωγή όλων των πηγαίων αρχείων. Επίσης είναι απαραίτητο να κάνουμε faking \cite{SWEBOK} και την κλάση που υλοποιεί
+την διεπαφή IPatternGenerator, καθώς κατά την δημιουργία ενός αντικειμένου της κλάσης αυτής καλείται 
+η μέθοδος addAnnotationsToClassPath() η οποία κατά τον έλεγχο δεν είναι απαραίτητη καθώς προσθέτει στο classpath του εκάστοτε έργου 
+τα annotations. Για την κατασκευή των fake αντικειμένων \cite{SWEBOK}, απλώς κάναμε override τις απαραίτητες μεθόδους.
+Δηλαδή, για την περίπτωση της ClassGenerator, υλοποιήσαμε μία νέα κλάση στο πακέτο που έχουμε τους ελέγχους, 
+η οποία επεκτείνει την κλάση ClassGenerator, και απλώς υλοποιεί την μέθοδο addAnnotationsToClassPath(), όπως φαίνεται στο παράδειγμα 
+\ref{code:ClassGenerator}. Για την κατασκευή του fake αντικειμένου \cite{SWEBOK} IPackageFragment, 
+δημιουργήσαμε μία κλάση η οποία υλοποιεί την διεπαφή IPackageFragment, η κλάση αυτή έχει τρία πεδία τα οποία αναπαριστούν 
+το όνομα του παραγόμενου πηγαίου αρχείου, τον κώδικα του αρχείου αυτού και το όνομα του πακέτου που θα εξαχθεί το πηγαίο αρχείο. 
+Επίσης, τροποποιούμε την μέθοδο getElementName ώστε να επιστρέφει το πεδίο με το όνομα του πακέτου την createCompilationUnit, 
+ώστε να θέτει το όνομα και τον κώδικα του πηγαίου αρχείου και τέλος, προσθέτουμε δύο getters για το όνομα και τον κώδικα, 
+ώστε να μπορούμε να επαληθεύσουμε αργότερα την ορθή λειτουργία της παραγωγής κώδικα όπως φαίνεται στο παράδειγμα 
+\ref{code:mockPackage}. Τέλος, η κλάση για τον έλεγχο είναι η dpb.patternGeneratorTests.GenerateTests. 
+Αφού, έχουμε δημιουργήσει τα απαραίτητα mock αντικείμενα \cite{SWEBOK}, 
+καλούμε την μέθοδο generate με παράμετρο την μοναδική κλάση του μοτίβου Singleton και επιβεβαιώνουμε 
+την ορθή λειτουργία της μεθόδου generate ελέγχοντας τι επιστρέφουν οι getters.
+\newpage
+\begin{lstlisting}[label=code:ClassGenerator, caption=Mock κλάση για την κλάση ClassGenerator, language=java]
+package dpb.patternGeneratorTests;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.JavaModelException;
+
+import dpb.controller.ClassGenerator;
+
+public class MockClassGenerator extends ClassGenerator {
+
+    public MockClassGenerator() throws CoreException, URISyntaxException, IOException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    protected void addAnnotationsToClassPath() throws JavaModelException, URISyntaxException, IOException {
+        // TODO Auto-generated method stub
+    }
+}
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[label=code:mockPackage, caption=Mock κλάση για την κλάση PackageFragment, language=java]
+public class MockPackageFragment implements IPackageFragment {
+    private final String elementName;
+    private String arg0;
+    private String arg1;
+            
+    public MockPackageFragment(String elementName) {
+        this.elementName = elementName;
+    }
+
+    @Override
+    public String getElementName() {
+        return elementName;
+    }
+
+    @Override
+    public ICompilationUnit createCompilationUnit(String arg0, String arg1, boolean arg2, IProgressMonitor arg3)
+            throws JavaModelException {
+        this.arg0 = arg0;
+        this.arg1 = arg1;
+        return null;
+    }
+
+
+    public String getArg0() {
+        return arg0;
+    }
+
+    public String getArg1() {
+        return arg1;
+}
+\end{lstlisting}
+    
+
+
 \section{Λοιποί έλεγχοι}
 \label{sec:moreTests}
 Τέλος, δημιουργήθηκαν μερικά ακόμα τεστ, για την επαλήθευση κάποιων μεθόδων τα οποία τεστ περιγράφουμε παρακάτω,
