@@ -75,6 +75,8 @@ public class ModuleSetup extends WizardPage {
 			btnCheckButton.setSelection(patternClass.isAbstract());
 			btnCheckButton.setEnabled(!patternClass.isAbstract());
 			
+			lblNewLabel_1.setVisible(false);
+			btnCheckButton.setVisible(false);
 			
 			Label lblNewLabel_2 = new Label(container, SWT.NONE);
 			lblNewLabel_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
