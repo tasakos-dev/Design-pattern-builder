@@ -48,7 +48,6 @@ public class FileParser implements IFileParser {
 	
 	@Override
 	public Property[] getProperties(String pattern) throws NoPropertiesException {
-		System.err.println("hii"+getElementByTagAndId("pattern", pattern));
 		Element properties = (Element) getElementByTagAndId("pattern", pattern).getElementsByTagName("properties").item(0);
 		if (properties == null) throw new NoPropertiesException();
 		

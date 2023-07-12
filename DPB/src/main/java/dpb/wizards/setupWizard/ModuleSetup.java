@@ -109,10 +109,10 @@ public class ModuleSetup extends WizardPage {
 			}
 			
 			patternClass.setImplementedInterface(patternInterface);
+			patternInterface.addClass(patternClass);
 			patternClass.overrideMethods(patternInterface.getMethods());
 			
 			String role = "";
-			System.err.println("elare"+patternClass.getPattern());
 			if (patternElement.getRole() == null || patternElement.getRole().isEmpty()) {
 				try {
 					for (Property property : patternManager.getProperties(patternClass.getPattern())) {

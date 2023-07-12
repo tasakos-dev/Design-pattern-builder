@@ -69,7 +69,6 @@ public class ClassGenerator extends PatternGenerator {
 			int numOfparameters = method.getParameters().size();
 			List<String[]> parameters = method.getParameters(); 
 			for (String[] parameter: parameters) {
-				System.err.println(parameter[1]);
 				String ending = "";
 				if (!parameter[1].equals(parameters.get(numOfparameters-1)[1])) {
 					ending = ", ";
