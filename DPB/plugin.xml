@@ -5,7 +5,7 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="Design pattern builder"
+            name="Pattern Genius"
             id="DPB">
       </category>
       <wizard
